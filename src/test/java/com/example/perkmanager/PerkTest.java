@@ -3,8 +3,8 @@ package com.example.perkmanager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Year;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 class PerkTest {
@@ -19,6 +19,8 @@ class PerkTest {
          membership1 = new Membership("Airline Loyalty Program", "West Jet", "West Jet Rewards Member");
          product1 = new Product("Flight", "Flight with West Jet", "West Jet");
          perk = new Perk(membership1, product1, "Free Wifi On West Jet Flight");
+         perk.setExpiryDate(new GregorianCalendar(2030, Calendar.NOVEMBER, 5));
+         perk.setRegion("Europe");
     }
 
     @Test
@@ -43,6 +45,33 @@ class PerkTest {
         perk.setBenefit("Free Wifi On Air Canada Flight");
         assertEquals("Free Wifi On Air Canada Flight", perk.getBenefit());
     }
+
+    @Test
+    void getDate(){
+        assertEquals(2030, perk.getExpiryDate().get(Calendar.YEAR));
+        assertEquals(Calendar.NOVEMBER, perk.getExpiryDate().get(Calendar.MONTH));
+        assertEquals(5, perk.getExpiryDate().get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    void setDate(){
+        perk.setExpiryDate(new GregorianCalendar(2027, Calendar.JUNE, 24));
+        assertEquals(2027, perk.getExpiryDate().get(Calendar.YEAR));
+        assertEquals(Calendar.JUNE, perk.getExpiryDate().get(Calendar.MONTH));
+        assertEquals(24, perk.getExpiryDate().get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    void getRegion() {
+        assertEquals("Europe", perk.getRegion());
+    }
+
+    @Test
+    void setRegion() {
+        perk.setRegion("North America");
+        assertEquals("North America", perk.getRegion());
+    }
+
 
     @Test
     void getMembership() {

@@ -3,6 +3,8 @@ package com.example.perkmanager;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +14,11 @@ public class Perk {
     private long id;
     //The benefit offered by the perk. Ex: 10% next flight
     private String benefit;
+    //The date the perk expires on (Optional)
+    private Calendar expiryDate;
+    //The region the perk applies to  (Optional)
+    //Multiple regions should be listed in the same string
+    private String region;
     @OneToOne
     private Membership membership;
     @OneToOne
@@ -20,6 +27,7 @@ public class Perk {
     private List<Account> upvotes;
     @OneToMany
     private  List<Account> downvotes;
+
 
     public Perk() {
         upvotes = new ArrayList<>();
@@ -48,6 +56,22 @@ public class Perk {
 
     public void setBenefit(String benefit) {
         this.benefit = benefit;
+    }
+
+    public Calendar getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Calendar date) {
+        this.expiryDate = date;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public Membership getMembership() {
