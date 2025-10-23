@@ -1,13 +1,94 @@
 package com.example.perkmanager;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
+    //Username associated with account
+    @Column(unique = true, nullable = false)
+    private String Username;
+    //Password associated with account
+    @Column(nullable = false)
+    private String Password;
+    @OneToMany
+    private List<Perk> perks;
+
+    public Account() {
+        perks = new ArrayList<>();
+    }
+
+    public Account(String username, String password) {
+        this.setUsername(username);
+        Password = password;
+        perks = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return Username;
+    }
+
+    //TODO Check database for uniqueness when setting username
+    public void setUsername(String username) {
+        Username = username;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public boolean isCorrectPassword(String password) {
+        return Password.equals(password);
+    }
+
+    public void setPerks(List<Perk> perks) {
+        this.perks = perks;
+    }
+
+    public List<Perk> getPerks() {
+        return perks;
+    }
+
+
+    public void addPerk(Perk perk) {
+        perks.add(perk);
+    }
+
+    public boolean removePerk(Perk perk) {
+        return perks.remove(perk);
+    }
+
+    /**
+     * Remove perk with given id
+     *
+     * @param id The id of the perk to be removed
+     * @return The removed perk
+     */
+    public Perk removePerk(Long id) {
+        Perk temp = null;
+        for (Perk perk : perks) {
+            if (perk.getId().equals(id)) {
+                temp = perk;
+                perks.remove(perk);
+                return temp;
+            }
+        }
+        return temp;
+    }
+
+
 }
