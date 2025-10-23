@@ -8,10 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "perks")
 public class Perk {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     //The benefit offered by the perk. Ex: 10% next flight
     private String benefit;
     //The date the perk expires on (Optional)
@@ -42,11 +43,11 @@ public class Perk {
         downvotes = new ArrayList<>();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
