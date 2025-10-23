@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 public class Product {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     //The name of the product. Ex:
     private String name;
     //Optional: Description of the product
