@@ -16,9 +16,11 @@ public class Perk {
     //The benefit offered by the perk. Ex: 10% next flight
     private String benefit;
     //The date the perk expires on (Optional)
+    @Column(nullable = true)
     private Calendar expiryDate;
     //The region the perk applies to  (Optional)
     //Multiple regions should be listed in the same string
+    @Column(nullable = true)
     private String region;
     @OneToOne
     private Membership membership;
