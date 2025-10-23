@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
  * Represents a product or service for which the perk applies.
  */
 @Entity
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
