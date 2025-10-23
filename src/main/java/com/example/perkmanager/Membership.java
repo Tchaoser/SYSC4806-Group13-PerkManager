@@ -5,7 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
- * Represents a certain membership
+ * Represents a membership used for perks.
  */
 @Entity
 public class Membership {
