@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
  * Represents a membership used for perks.
  */
 @Entity
+@Table(name = "memberships")
 public class Membership {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
