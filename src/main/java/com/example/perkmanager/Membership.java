@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 public class Membership {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     //What type of membership it is. Ex: Credit card, Air Miles, etc
     private String type;
     //The Company or Organization associated with the membership. Ex: RBC, WestJet, Cineplex, etc
