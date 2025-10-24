@@ -110,7 +110,7 @@ class PerkTest {
     @Test
     void setUpvotesList() {
         assertEquals(0, perk.getUpvotes());
-        List<Account> upvotes = new ArrayList<>();
+        Set<Account> upvotes = new HashSet<>();
         for (int i = 0; i < 10; i++){
             upvotes.add(new Account());
         }
@@ -123,10 +123,10 @@ class PerkTest {
     @Test
     void getUpvotesList() {
         assertEquals(0, perk.getUpvotes());
-        List<Account> upvotes = perk.getUpvoteList();
+        Set<Account> upvotes = perk.getUpvoteList();
         assertEquals(0, upvotes.size());
 
-        upvotes = new ArrayList<>();
+        upvotes = new HashSet<>();
         for (int i = 0; i < 50; i++){
             upvotes.add(new Account());
         }
@@ -148,9 +148,9 @@ class PerkTest {
     @Test
     void getDownvotesList() {
         assertEquals(0, perk.getDownvotes());
-        List<Account> downvotes = perk.getDownvoteList();
+        Set<Account> downvotes = perk.getDownvoteList();
         assertEquals(0, downvotes.size());
-        downvotes = new ArrayList<>();
+        downvotes = new HashSet<>();
         for (int i = 0; i < 10; i++){
             downvotes.add(new Account());
         }
@@ -163,9 +163,9 @@ class PerkTest {
     @Test
     void setDownvotesList() {
         assertEquals(0, perk.getDownvotes());
-        List<Account> downvotes = perk.getDownvoteList();
+        Set<Account> downvotes = perk.getDownvoteList();
         assertEquals(0, downvotes.size());
-        downvotes = new ArrayList<>();
+        downvotes = new HashSet<>();
         for (int i = 0; i < 50; i++){
             downvotes.add(new Account());
         }
@@ -180,7 +180,7 @@ class PerkTest {
         Account upvote = new Account();
         perk.addUpvote(upvote);
         assertEquals(1, perk.getUpvotes());
-        assertEquals(upvote, perk.getUpvoteList().get(0));
+        assertTrue(perk.getUpvoteList().contains(upvote));
     }
 
     @Test
@@ -189,7 +189,7 @@ class PerkTest {
         Account downvote = new Account();
         perk.addDownvote(downvote);
         assertEquals(1, perk.getDownvotes());
-        assertEquals(downvote, perk.getDownvoteList().get(0));
+        assertTrue(perk.getDownvoteList().contains(downvote));
     }
 
     @Test
@@ -219,19 +219,19 @@ class PerkTest {
     @Test
     void getRating() {
         assertEquals(0, perk.getDownvotes());
-        List<Account> downvotes = perk.getDownvoteList();
+        Set<Account> downvotes = perk.getDownvoteList();
         assertEquals(0, downvotes.size());
-        downvotes = new ArrayList<>();
+        downvotes = new HashSet<>();
         for (int i = 0; i < 10; i++){
             downvotes.add(new Account());
         }
         perk.setDownvoteList(downvotes);
 
         assertEquals(0, perk.getUpvotes());
-        List<Account> upvotes = perk.getUpvoteList();
+        Set<Account> upvotes = perk.getUpvoteList();
         assertEquals(0, upvotes.size());
 
-        upvotes = new ArrayList<>();
+        upvotes = new HashSet<>();
         for (int i = 0; i < 50; i++){
             upvotes.add(new Account());
         }
@@ -250,19 +250,19 @@ class PerkTest {
     @Test
     void getTotalRatings() {
         assertEquals(0, perk.getDownvotes());
-        List<Account> downvotes = perk.getDownvoteList();
+        Set<Account> downvotes = perk.getDownvoteList();
         assertEquals(0, downvotes.size());
-        downvotes = new ArrayList<>();
+        downvotes = new HashSet<>();
         for (int i = 0; i < 10; i++){
             downvotes.add(new Account());
         }
         perk.setDownvoteList(downvotes);
 
         assertEquals(0, perk.getUpvotes());
-        List<Account> upvotes = perk.getUpvoteList();
+        Set<Account> upvotes = perk.getUpvoteList();
         assertEquals(0, upvotes.size());
 
-        upvotes = new ArrayList<>();
+        upvotes = new HashSet<>();
         for (int i = 0; i < 50; i++){
             upvotes.add(new Account());
         }
