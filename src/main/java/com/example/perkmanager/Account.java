@@ -9,15 +9,17 @@ import java.util.List;
 @Table(name = "accounts")
 public class Account {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     //Username associated with account
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String Username;
     //Password associated with account
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String Password;
     @OneToMany
+    @Column(name = "perks")
     private List<Perk> perks;
 
     public Account() {
