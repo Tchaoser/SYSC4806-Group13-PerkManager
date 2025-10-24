@@ -3,17 +3,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 /**
- * Represents a certain membership
+ * Represents a membership used for perks.
  */
 @Entity
+@Table(name = "memberships")
 public class Membership {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     //What type of membership it is. Ex: Credit card, Air Miles, etc
     @Column(name = "type")
     private String type;
@@ -33,11 +35,11 @@ public class Membership {
         this.description = description;
     }
 
-    public long getId(){
+    public Long getId(){
         return id;
     }
 
-    public void setId(long id){
+    public void setId(Long id){
         this.id = id;
     }
 
