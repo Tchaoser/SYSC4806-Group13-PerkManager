@@ -2,47 +2,50 @@ package com.example.perkmanager;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "perks")
 public class Perk {
     @Id
+    @Column(name  = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     //The benefit offered by the perk. Ex: 10% next flight
+    @Column(name  = "benefit")
     private String benefit;
     //The date the perk expires on (Optional)
-    @Column(nullable = true)
+    @Column(name = "expirydate", nullable = true)
     private Calendar expiryDate;
     //The region the perk applies to  (Optional)
     //Multiple regions should be listed in the same string
-    @Column(nullable = true)
+    @Column(name = "region", nullable = true)
     private String region;
     @OneToOne
+    @Column(name = "membership")
     private Membership membership;
     @OneToOne
+    @Column(name = "product")
     private Product product;
     @OneToMany
-    private List<Account> upvotes;
+    @Column(name = "upvotes")
+    private Set<Account> upvotes;
     @OneToMany
-    private  List<Account> downvotes;
+    @Column(name = "downvotes")
+    private Set<Account> downvotes;
 
 
     public Perk() {
-        upvotes = new ArrayList<>();
-        downvotes = new ArrayList<>();
+        upvotes = new HashSet<>();
+        downvotes = new HashSet<>();
     }
 
     public Perk(Membership membership, Product product, String Benefit) {
         this.membership = membership;
         this.product = product;
         this.benefit = Benefit;
-        upvotes = new ArrayList<>();
-        downvotes = new ArrayList<>();
+        upvotes = new HashSet<>();
+        downvotes = new HashSet<>();
     }
 
     public Long getId() {
@@ -97,11 +100,11 @@ public class Perk {
         return upvotes.size();
     }
 
-    public List<Account> getUpvoteList() {
+    public Set<Account> getUpvoteList() {
         return upvotes;
     }
 
-    public void setUpvoteList(List<Account> upvoteList) {
+    public void setUpvoteList(Set<Account> upvoteList) {
         this.upvotes = upvoteList;
     }
 
@@ -109,11 +112,11 @@ public class Perk {
         return downvotes.size();
     }
 
-    public List<Account> getDownvoteList() {
+    public Set<Account> getDownvoteList() {
         return downvotes;
     }
 
-    public void setDownvoteList(List<Account> downvoteList) {
+    public void setDownvoteList(Set<Account> downvoteList) {
         this.downvotes = downvoteList;
     }
 
