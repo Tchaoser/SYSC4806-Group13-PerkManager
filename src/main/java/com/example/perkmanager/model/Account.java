@@ -18,16 +18,13 @@ public class Account {
     @Column(name = "password", nullable = false) //Password associated with account
     private String password;
 
-    // Perks created by this account
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true) // Perks created by this account
     private Set<Perk> perks = new HashSet<>();
 
-    // Upvoted perks
-    @ManyToMany(mappedBy = "upvotedBy")
+    @ManyToMany(mappedBy = "upvotedBy") // Upvoted perks
     private Set<Perk> upvotedPerks = new HashSet<>();
 
-    // Downvoted perks
-    @ManyToMany(mappedBy = "downvotedBy")
+    @ManyToMany(mappedBy = "downvotedBy") // Downvoted perks
     private Set<Perk> downvotedPerks = new HashSet<>();
 
     public Account() {}
