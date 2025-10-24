@@ -10,13 +10,17 @@ import jakarta.persistence.Id;
 @Entity
 public class Membership {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     //What type of membership it is. Ex: Credit card, Air Miles, etc
+    @Column(name = "type")
     private String type;
     //The Company or Organization associated with the membership. Ex: RBC, WestJet, Cineplex, etc
+    @Column(name = "orgName")
     private String organizationName;
     //The Name/Description of the membership. Ex: West Jet Rewards Member
+    @Column(name = "description")
     private String description;
 
     public Membership() {
