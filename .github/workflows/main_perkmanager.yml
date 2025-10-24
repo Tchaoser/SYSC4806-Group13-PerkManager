@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'PerkManager'
           slot-name: 'Production'
-          package: '${{ github.workspace }}/target/perkmanager-1.0-SNAPSHOT.jar'
+          package: '*.jar'
