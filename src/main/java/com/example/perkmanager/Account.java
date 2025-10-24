@@ -2,8 +2,8 @@ package com.example.perkmanager;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "accounts")
@@ -20,16 +20,16 @@ public class Account {
     private String Password;
     @OneToMany
     @Column(name = "perks")
-    private List<Perk> perks;
+    private Set<Perk> perks;
 
     public Account() {
-        perks = new ArrayList<>();
+        perks = new HashSet<>();
     }
 
     public Account(String username, String password) {
         this.setUsername(username);
         Password = password;
-        perks = new ArrayList<>();
+        perks = new HashSet<>();
     }
 
     public Long getId() {
@@ -57,11 +57,11 @@ public class Account {
         return Password.equals(password);
     }
 
-    public void setPerks(List<Perk> perks) {
+    public void setPerks(Set<Perk> perks) {
         this.perks = perks;
     }
 
-    public List<Perk> getPerks() {
+    public Set<Perk> getPerks() {
         return perks;
     }
 

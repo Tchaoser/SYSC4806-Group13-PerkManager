@@ -3,7 +3,8 @@ package com.example.perkmanager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,7 +51,7 @@ class AccountTest {
 
     @Test
     void setPerks() {
-        ArrayList<Perk> perks = new ArrayList<>();
+        Set<Perk> perks = new HashSet<>();
         perks.add(new Perk());
         account.setPerks(perks);
         assertEquals(perks, account.getPerks());
@@ -58,7 +59,7 @@ class AccountTest {
 
     @Test
     void getPerks() {
-        ArrayList<Perk> perks = new ArrayList<>();
+        Set<Perk> perks = new HashSet<>();
         perks.add(new Perk());
         account.setPerks(perks);
         account.setPerks(perks);
@@ -70,7 +71,7 @@ class AccountTest {
         assertEquals(0, account.getPerks().size());
         Perk perk = new Perk();
         account.addPerk(perk);
-        assertEquals(perk, account.getPerks().get(0));
+        assertTrue(account.getPerks().contains(perk));
     }
 
     @Test
