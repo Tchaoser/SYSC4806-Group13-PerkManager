@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 /**
  * Represents a membership used for perks.
@@ -12,13 +13,17 @@ import jakarta.persistence.Table;
 @Table(name = "memberships")
 public class Membership {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     //What type of membership it is. Ex: Credit card, Air Miles, etc
+    @Column(name = "type")
     private String type;
     //The Company or Organization associated with the membership. Ex: RBC, WestJet, Cineplex, etc
+    @Column(name = "orgName")
     private String organizationName;
     //The Name/Description of the membership. Ex: West Jet Rewards Member
+    @Column(name = "description")
     private String description;
 
     public Membership() {
