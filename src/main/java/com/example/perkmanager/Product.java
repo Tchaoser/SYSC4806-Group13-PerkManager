@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 /**
  * Represents a product or service for which the perk applies.
@@ -13,13 +14,17 @@ import jakarta.persistence.Table;
 @Table(name = "product")
 public class Product {
     @Id
+    @Column(name = "id")
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
-    //The name of the product. Ex:
+    //The name of the product. Ex: KitKat
+    @Column(name = "name")
     private String name;
     //Optional: Description of the product
+    @Column(name = "description", nullable = true)
     private String description;
-    //The company the product is associated with. Ex:
+    //The company the product is associated with. Ex: Nestle
+    @Column(name = "company")
     private String company;
 
     public Product() {}
