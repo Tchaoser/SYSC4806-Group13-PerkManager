@@ -2,7 +2,9 @@ package com.example.perkmanager;
 
 import jakarta.persistence.*;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "perks")
@@ -22,10 +24,10 @@ public class Perk {
     @Column(name = "region", nullable = true)
     private String region;
     @OneToOne
-    @Column(name = "membership")
+    @JoinColumn(name = "membership")
     private Membership membership;
     @OneToOne
-    @Column(name = "product")
+    @JoinColumn(name = "product")
     private Product product;
     @OneToMany
     @Column(name = "upvotes")
