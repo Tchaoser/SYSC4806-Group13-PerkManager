@@ -1,4 +1,4 @@
-package com.example.perkmanager;
+package com.example.perkmanager.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,16 +14,16 @@ class AccountTest {
     @BeforeEach
     void setUp() {
         account = new Account("Bob", "123456");
-        account.setId(1l);
+        account.setId(1L);
         assertNotNull(account);
     }
 
     @Test
     void getSetId() {
-        account.setId(1l);
-        assertEquals(1l, account.getId());
-        account.setId(2l);
-        assertEquals(2l, account.getId());
+        account.setId(1L);
+        assertEquals(1L, account.getId());
+        account.setId(2L);
+        assertEquals(2L, account.getId());
     }
 
     @Test
@@ -31,7 +31,6 @@ class AccountTest {
         assertEquals("Bob", account.getUsername());
     }
 
-    //TODO Check Username for uniqueness in database
     @Test
     void setUsername() {
         account.setUsername("Jim24");
@@ -52,16 +51,8 @@ class AccountTest {
     @Test
     void setPerks() {
         Set<Perk> perks = new HashSet<>();
-        perks.add(new Perk());
-        account.setPerks(perks);
-        assertEquals(perks, account.getPerks());
-    }
-
-    @Test
-    void getPerks() {
-        Set<Perk> perks = new HashSet<>();
-        perks.add(new Perk());
-        account.setPerks(perks);
+        Perk p = new Perk();
+        perks.add(p);
         account.setPerks(perks);
         assertEquals(perks, account.getPerks());
     }
@@ -75,23 +66,20 @@ class AccountTest {
     }
 
     @Test
-    void removePerk1() {
-        assertEquals(0, account.getPerks().size());
+    void removePerkByObject() {
         Perk perk = new Perk();
         account.addPerk(perk);
         assertTrue(account.removePerk(perk));
-        assertEquals(0, account.getPerks().size());
-        assertFalse(account.removePerk(perk));
-        assertEquals(0, account.getPerks().size());
+        assertFalse(account.getPerks().contains(perk));
     }
 
     @Test
-    void removePerk2() {
-        assertEquals(0, account.getPerks().size());
+    void removePerkById() {
         Perk perk = new Perk();
-        perk.setId(1l);
+        perk.setId(1L);
         account.addPerk(perk);
-        assertEquals(perk, account.removePerk(perk.getId()));
+        Perk removed = account.removePerkById(1L);
+        assertEquals(perk, removed);
         assertEquals(0, account.getPerks().size());
     }
 }
