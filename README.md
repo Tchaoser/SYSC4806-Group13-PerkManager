@@ -65,8 +65,7 @@ spring.datasource.password=${DATABASE_PASSWORD}   # Enter the Aiven password
 
 **Purpose:** isolated testing / offline development.
 
-> `application-local.properties` exists in the repo (committed) and points at the local DB (this file is intentionally *
-*not displayed** here). It uses the committed `devpass` for convenience.
+> `application-local.properties` exists in the repo points at the local DB 
 
 ### A. Start the local DB (Windows CMD / PowerShell)
 
