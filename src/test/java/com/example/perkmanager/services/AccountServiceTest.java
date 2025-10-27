@@ -1,0 +1,65 @@
+package com.example.perkmanager.services;
+
+import com.example.perkmanager.model.Account;
+import com.example.perkmanager.model.Perk;
+import com.example.perkmanager.repositories.AccountRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class AccountServiceTest {
+
+    private AccountRepository accountRepository;
+    private AccountService accountService;
+
+    @BeforeEach
+    void setUp() {
+        accountRepository = mock(AccountRepository.class);
+        accountService = new AccountService(accountRepository);
+    }
+
+    @Test
+    void createAccount_shouldSaveAccount() {
+        when(accountRepository.findByUsername("user1")).thenReturn(Optional.empty());
+        when(accountRepository.save(any(Account.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Account account = accountService.createAccount("user1", "password");
+
+        assertEquals("user1", account.getUsername());
+        verify(accountRepository).save(account);
+    }
+
+    @Test
+    void createAccount_existingUsername_shouldThrow() {
+        when(accountRepository.findByUsername("user1")).thenReturn(Optional.of(new Account("user1", "pass")));
+
+        assertThrows(IllegalArgumentException.class, () -> accountService.createAccount("user1", "pass"));
+    }
+
+    @Test
+    void checkPassword_correctPassword_shouldReturnTrue() {
+        Account account = new Account("user1", "pass");
+        assertTrue(accountService.checkPassword(account, "pass"));
+        assertFalse(accountService.checkPassword(account, "wrong"));
+    }
+
+    @Test
+    void linkPerkToCreator_shouldLinkPerkAndSaveAccount() {
+        Account account = new Account("user1", "pass");
+        Perk perk = new Perk();
+        perk.setBenefit("10% off");
+
+        when(accountRepository.save(account)).thenReturn(account);
+
+        accountService.linkPerkToCreator(account, perk);
+
+        assertTrue(account.getPerks().contains(perk));
+        assertEquals(account, perk.getCreator());
+        verify(accountRepository).save(account);
+    }
+}

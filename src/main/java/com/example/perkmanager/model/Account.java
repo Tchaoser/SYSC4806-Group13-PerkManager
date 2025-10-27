@@ -27,12 +27,24 @@ public class Account {
     @ManyToMany(mappedBy = "downvotedBy") // Downvoted perks
     private Set<Perk> downvotedPerks = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "account_memberships",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "membership_id")
+    )
+    private Set<Membership> memberships = new HashSet<>();
+
     public Account() {}
 
     public Account(String username, String password) {
         this.username = username;
         this.password = password;
     }
+
+    public Set<Membership> getMemberships() { return memberships; }
+    public void addMembership(Membership membership) { memberships.add(membership); }
+    public void removeMembership(Membership membership) { memberships.remove(membership); }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
