@@ -57,7 +57,7 @@ public class PerkController {
                 case "expiry":
                     perks.sort(Comparator.comparing(
                             Perk::getExpiryDate,
-                            Comparator.nullsFirst(Comparator.comparingLong(Calendar::getTimeInMillis))
+                            Comparator.nullsLast(Comparator.comparingLong(Calendar::getTimeInMillis))
                     ));
                     if ("desc".equalsIgnoreCase(direction.orElse("asc"))) {
                         Collections.reverse(perks);
@@ -66,6 +66,8 @@ public class PerkController {
             }
         }
 
+        List<String> allMembershipTypes = membershipService.getAllMembershipTypes();
+        model.addAttribute("allMembershipTypes", allMembershipTypes);
         model.addAttribute("perks", perks);
         model.addAttribute("membershipType", membershipType.orElse(""));
         model.addAttribute("region", region.orElse(""));
