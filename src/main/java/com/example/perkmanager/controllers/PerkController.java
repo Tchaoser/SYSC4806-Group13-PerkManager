@@ -83,7 +83,6 @@ public class PerkController {
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("memberships", membershipService.getAllMemberships());
 
-        // TODO: Pre-fill membership based on logged-in user's memberships
         return "add-perk";
     }
 
