@@ -49,7 +49,7 @@ public class AccountService {
     }
 
     // Add a membership to account
-    // TODO: Handle duplicate membership addition gracefully
+    // TODO: Handle duplicate membership addition gracefully in frontend implementation
     public void addMembership(Account account, Membership membership) {
         // When a logged-in user searches perks, you can filter: perk.getMembership() in account.getMemberships()
         account.addMembership(membership);
