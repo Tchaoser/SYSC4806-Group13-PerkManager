@@ -54,13 +54,13 @@ public class PerkService {
      * Filter perks optionally by:
      * - membershipType: string (or null)
      * - region: string (or null)
-     * - activeOnly: boolean (or null)
+     * - expiryOnly: boolean (or null)
      * - userMemberships: Set<Membership> (for logged-in users)
      */
     @Transactional(readOnly = true)
     public List<Perk> filterPerks(Optional<String> membershipType,
                                   Optional<String> region,
-                                  Optional<Boolean> activeOnly,
+                                  Optional<Boolean> expiryOnly,
                                   Optional<Set<Membership>> userMemberships) {
 
         Calendar now = Calendar.getInstance();
@@ -76,9 +76,9 @@ public class PerkService {
                         region.get().trim().isEmpty() ||
                         (p.getRegion() != null &&
                                 p.getRegion().toLowerCase().contains(region.get().toLowerCase())))
-                // Active only filter
+                // Expiry Only filter (Exclude perks with no expiry)
                 .filter(p -> {
-                    if (!activeOnly.orElse(false)) return true; // include all if not filtering
+                    if (!expiryOnly.orElse(false)) return true; // include all if not filtering
                     if (p.getExpiryDate() == null) return false; // exclude perks with no expiry
                     return p.getExpiryDate().after(now); // only include future expiry dates
                 })

@@ -117,7 +117,7 @@ class PerkServiceTest {
     }
 
     @Test
-    void filterPerks_shouldFilterByActiveOnlyAndUserMemberships() {
+    void filterPerks_shouldFilterByExpiryOnlyAndUserMemberships() {
         Membership m1 = new Membership("Card", "Visa", "Visa Rewards");
         Membership m2 = new Membership("AirMiles", "CAA", "CAA Rewards");
 

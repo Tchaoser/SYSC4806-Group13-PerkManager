@@ -38,13 +38,13 @@ public class PerkController {
     public String listPerks(
             @RequestParam Optional<String> membershipType,
             @RequestParam Optional<String> region,
-            @RequestParam Optional<Boolean> activeOnly,
+            @RequestParam Optional<Boolean> expiryOnly,
             @RequestParam Optional<String> sort,
             @RequestParam Optional<String> direction, // new param
             Model model) {
         // TODO: Add pagination for large perk lists, or otherwise re-organize the table set-up
 
-        List<Perk> perks = perkService.filterPerks(membershipType, region, activeOnly, Optional.empty());
+        List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
 
         // Apply sorting if requested
         if (sort.isPresent()) {
@@ -69,7 +69,7 @@ public class PerkController {
         model.addAttribute("perks", perks);
         model.addAttribute("membershipType", membershipType.orElse(""));
         model.addAttribute("region", region.orElse(""));
-        model.addAttribute("activeOnly", activeOnly.orElse(false));
+        model.addAttribute("expiryOnly", expiryOnly.orElse(false));
         model.addAttribute("sort", sort.orElse(""));
         model.addAttribute("direction", direction.orElse("asc"));
 
