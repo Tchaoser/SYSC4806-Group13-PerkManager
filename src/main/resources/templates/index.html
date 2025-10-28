@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Perk Manager</title>
+    <title>PerkManager Home</title>
 </head>
 <body>
-<h1>Hello from Perk Manager</h1>
-<p>This is the first Thymeleaf page.</p>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h1>Welcome to PerkManager</h1>
+<p>Search, track, and discover perks for your memberships!</p>
+<a th:href="@{/perks}">View Perks</a>
+
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

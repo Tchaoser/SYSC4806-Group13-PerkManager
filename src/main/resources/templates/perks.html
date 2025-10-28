@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Perks</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h1>Perks</h1>
+<a th:href="@{/perks/add}">Add a Perk</a>
+
+<!--TODO: Prettify sorting options-->
+<a th:href="@{/perks(sort='rating', direction='asc')}">Rating ↑</a>
+<a th:href="@{/perks(sort='rating', direction='desc')}">Rating ↓</a>
+<a th:href="@{/perks(sort='expiry', direction='asc')}">Expiry ↑</a>
+<a th:href="@{/perks(sort='expiry', direction='desc')}">Expiry ↓</a>
+<form method="get" th:action="@{/perks}">
+    <label>Membership Type:</label>
+    <input type="text" name="membershipType" th:value="${membershipType}" />
+    <label>Region:</label>
+    <input type="text" name="region" th:value="${region}" />
+    <label>Active Only:</label>
+    <input type="checkbox" name="activeOnly" th:checked="${activeOnly}" />
+    <button type="submit">Filter</button>
+</form>
+
+<!--TODO: Rethink showing all of these attributes. We may be showing info to the user that they wouldn't care about, or should have to ask about to see (more filtering options)  -->
+<table>
+    <thead>
+    <tr>
+        <th>Benefit</th>
+        <th>Membership Type</th>
+        <th>Membership</th>
+        <th>Membership Organization</th>
+        <th>Product</th>
+        <th>Product Company</th>
+        <th>Product Description</th>
+        <th>Region</th>
+        <th>Expiry</th>
+        <th>Rating</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="perk : ${perks}">
+        <td th:text="${perk.benefit}"></td>
+        <td th:text="${perk.membership != null ? perk.membership.type : 'None'}"></td>
+        <td th:text="${perk.membership != null ? perk.membership.description : 'None'}"></td>
+        <td th:text="${perk.membership != null ? perk.membership.organizationName : 'None'}"></td>
+        <td th:text="${perk.product != null ? perk.product.name : 'None'}"></td>
+        <td th:text="${perk.product != null ? perk.product.company : 'None'}"></td>
+        <td th:text="${perk.product != null ? perk.product.description : ''}"></td>
+        <td th:text="${perk.region != null ? perk.region : 'Global'}"></td>
+        <td th:text="${perk.expiryDate != null ? #dates.format(perk.expiryDate.time, 'yyyy-MM-dd') : 'No Expiry'}"></td>
+        <td th:text="${perk.rating}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

@@ -58,38 +58,34 @@ public class PerkService {
      * - userMemberships: Set<Membership> (for logged-in users)
      */
     @Transactional(readOnly = true)
-    public List<Perk> filterPerks(Optional<String> membershipType, Optional<String> region, Optional<Boolean> activeOnly, Optional<Set<Membership>> userMemberships) {
-        List<Perk> perks = perkRepository.findAll();
+    public List<Perk> filterPerks(Optional<String> membershipType,
+                                  Optional<String> region,
+                                  Optional<Boolean> activeOnly,
+                                  Optional<Set<Membership>> userMemberships) {
 
-        if (membershipType.isPresent()) {
-            String typeFilter = membershipType.get().toLowerCase();
-            perks = perks.stream()
-                    .filter(p -> p.getMembership() != null && typeFilter.equals(p.getMembership().getType().toLowerCase()))
-                    .collect(Collectors.toList());
-        }
+        Calendar now = Calendar.getInstance();
 
-        if (region.isPresent()) {
-            String regionFilter = region.get().toLowerCase();
-            perks = perks.stream()
-                    .filter(p -> p.getRegion() != null && p.getRegion().toLowerCase().contains(regionFilter))
-                    .collect(Collectors.toList());
-        }
-
-        if (activeOnly.isPresent() && activeOnly.get()) {
-            Calendar now = Calendar.getInstance();
-            perks = perks.stream()
-                    .filter(p -> p.getExpiryDate() == null || p.getExpiryDate().after(now))
-                    .collect(Collectors.toList());
-        }
-
-        if (userMemberships.isPresent() && !userMemberships.get().isEmpty()) {
-            Set<Membership> memberships = userMemberships.get();
-            perks = perks.stream()
-                    .filter(p -> p.getMembership() != null && memberships.contains(p.getMembership()))
-                    .collect(Collectors.toList());
-        }
-
-        return perks;
+        return perkRepository.findAll().stream()
+                // Membership type filter: only if non-empty
+                .filter(p -> membershipType.isEmpty() ||
+                        membershipType.get().trim().isEmpty() ||
+                        (p.getMembership() != null &&
+                                membershipType.get().equalsIgnoreCase(p.getMembership().getType())))
+                // Region filter: only if non-empty
+                .filter(p -> region.isEmpty() ||
+                        region.get().trim().isEmpty() ||
+                        (p.getRegion() != null &&
+                                p.getRegion().toLowerCase().contains(region.get().toLowerCase())))
+                // Active only filter
+                .filter(p -> {
+                    if (!activeOnly.orElse(false)) return true; // include all if not filtering
+                    if (p.getExpiryDate() == null) return false; // exclude perks with no expiry
+                    return p.getExpiryDate().after(now); // only include future expiry dates
+                })
+                // User memberships filter
+                .filter(p -> userMemberships.isEmpty() || userMemberships.get().isEmpty() ||
+                        (p.getMembership() != null && userMemberships.get().contains(p.getMembership())))
+                .collect(Collectors.toList());
     }
 
     // Upvote a perk
