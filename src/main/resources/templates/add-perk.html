@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Perk</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h1>Add a New Perk</h1>
+<form th:action="@{/perks/add}" method="post">
+    <label>Benefit:</label>
+    <input type="text" name="benefit" required /><br/>
+
+    <label>Product:</label>
+    <select name="productId">
+        <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
+    </select><br/>
+
+    <label>Membership:</label>
+    <select name="membershipId">
+        <option th:each="m : ${memberships}" th:value="${m.id}" th:text="${m.description}"></option>
+    </select><br/>
+
+    <label>Region (optional):</label>
+    <input type="text" name="region" /><br/>
+
+    <label>Expiry Date (optional):</label>
+    <input type="date" name="expiryDate" /><br/>
+
+    <button type="submit">Add Perk</button>
+</form>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
