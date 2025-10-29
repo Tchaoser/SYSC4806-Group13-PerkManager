@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products</title>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Products</h1>
+
+<p><a th:href="@{/products/add}">Add Product</a></p>
+
+<table border="1" style="border-collapse: collapse;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${products}">
+        <td th:text="${p.name}"></td>
+        <td th:text="${p.company}"></td>
+        <td th:text="${p.description}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
