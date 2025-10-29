@@ -1,11 +1,13 @@
 package com.example.perkmanager.services;
 
 import com.example.perkmanager.model.Account;
+import com.example.perkmanager.model.Membership;
 import com.example.perkmanager.model.Perk;
 import com.example.perkmanager.repositories.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -20,7 +22,10 @@ class AccountServiceTest {
     @BeforeEach
     void setUp() {
         accountRepository = mock(AccountRepository.class);
-        accountService = new AccountService(accountRepository);
+        accountService = new AccountService(accountRepository, new BCryptPasswordEncoder());
+
+        when(accountRepository.save(any(Account.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test
@@ -36,21 +41,29 @@ class AccountServiceTest {
 
     @Test
     void createAccount_existingUsername_shouldThrow() {
-        when(accountRepository.findByUsername("user1")).thenReturn(Optional.of(new Account("user1", "pass")));
+        Account existing = new Account();
+        existing.setUsername("user1");
+        existing.setPassword("pass");
+
+        when(accountRepository.findByUsername("user1"))
+                .thenReturn(Optional.of(existing));
 
         assertThrows(IllegalArgumentException.class, () -> accountService.createAccount("user1", "pass"));
     }
 
     @Test
     void checkPassword_correctPassword_shouldReturnTrue() {
-        Account account = new Account("user1", "pass");
+        Account account = accountService.createAccount("user1", "pass");
+
         assertTrue(accountService.checkPassword(account, "pass"));
         assertFalse(accountService.checkPassword(account, "wrong"));
     }
 
     @Test
     void linkPerkToCreator_shouldLinkPerkAndSaveAccount() {
-        Account account = new Account("user1", "pass");
+        Account account = new Account();
+        account.setUsername("user1");
+        account.setPassword("pass");
         Perk perk = new Perk();
         perk.setBenefit("10% off");
 
@@ -61,5 +74,19 @@ class AccountServiceTest {
         assertTrue(account.getPerks().contains(perk));
         assertEquals(account, perk.getCreator());
         verify(accountRepository).save(account);
+    }
+
+    @Test
+    void addMembership(){
+        Account account = new Account();
+        account.setUsername("user1");
+        account.setPassword("pass");
+        Membership membership = new Membership("Credit Card", "RBC", "RBC Rewards Member");
+
+        when(accountRepository.save(account)).thenReturn(account);
+
+        accountService.addMembership(account, membership);
+
+        assertTrue(account.getMemberships().contains(membership));
     }
 }

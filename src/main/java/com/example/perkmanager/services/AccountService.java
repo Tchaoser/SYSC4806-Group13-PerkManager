@@ -4,6 +4,8 @@ import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
 import com.example.perkmanager.model.Perk;
 import com.example.perkmanager.repositories.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +17,12 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
-    public AccountService(AccountRepository accountRepository) {
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Create a new account
@@ -24,7 +30,9 @@ public class AccountService {
         if (accountRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
-        Account account = new Account(username, password);
+        Account account = new Account();
+        account.setUsername(username);
+        account.setPassword(passwordEncoder.encode(password));
         return accountRepository.save(account);
     }
 
@@ -38,7 +46,7 @@ public class AccountService {
     // TODO: Strengthen password check (authentication tokens or session logic when login logic added)
     @Transactional(readOnly = true)
     public boolean checkPassword(Account account, String password) {
-        return account.isCorrectPassword(password);
+        return passwordEncoder.matches(password, account.getPassword());
     }
 
     // Link a perk to an account

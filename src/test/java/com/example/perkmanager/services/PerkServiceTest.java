@@ -27,7 +27,7 @@ class PerkServiceTest {
 
     @Test
     void createPerk_shouldSavePerkAndLinkToCreator() {
-        Account account = new Account("user1", "pass");
+        Account account = new Account();
         Membership membership = new Membership("Card", "Visa", "Visa Rewards");
         Product product = new Product("Movie", "Cinema");
 
@@ -66,7 +66,7 @@ class PerkServiceTest {
 
     @Test
     void upvotePerk_shouldAddUpvoteAndRemoveDownvote() {
-        Account user = new Account("user", "pass");
+        Account user = new Account();
         Perk perk = new Perk();
         perk.getDownvotedBy().add(user);
 
@@ -81,7 +81,7 @@ class PerkServiceTest {
 
     @Test
     void downvotePerk_shouldAddDownvoteAndRemoveUpvote() {
-        Account user = new Account("user", "pass");
+        Account user = new Account();
         Perk perk = new Perk();
         perk.getUpvotedBy().add(user);
 
@@ -153,10 +153,10 @@ class PerkServiceTest {
         Perk p3 = new Perk();
 
         // simulate rating
-        p1.getUpvotedBy().add(new Account("u1", "p"));
-        p1.getDownvotedBy().add(new Account("u2", "p")); // rating = 0
-        p2.getUpvotedBy().add(new Account("u3", "p")); // rating = 1
-        p3.getDownvotedBy().add(new Account("u4", "p")); // rating = -1
+        p1.getUpvotedBy().add(new Account());
+        p1.getDownvotedBy().add(new Account()); // rating = 0
+        p2.getUpvotedBy().add(new Account()); // rating = 1
+        p3.getDownvotedBy().add(new Account()); // rating = -1
 
         when(perkRepository.findAll()).thenReturn(Arrays.asList(p1, p2, p3));
 

@@ -13,9 +13,22 @@ class AccountTest {
 
     @BeforeEach
     void setUp() {
-        account = new Account("Bob", "123456");
+        account = new Account();
+        account.setUsername("Bob");
+        account.setPassword("123456");
         account.setId(1L);
         assertNotNull(account);
+    }
+
+    @Test
+    void addRemoveMembership() {
+        Membership membership = new Membership();
+
+        assertFalse(account.getMemberships().contains(membership));
+        account.addMembership(membership);
+        assertTrue(account.getMemberships().contains(membership));
+        account.removeMembership(membership);
+        assertFalse(account.getMemberships().contains(membership));
     }
 
     @Test
@@ -27,12 +40,9 @@ class AccountTest {
     }
 
     @Test
-    void getUsername() {
+    void getSetUsername() {
+        account.setUsername("Bob");
         assertEquals("Bob", account.getUsername());
-    }
-
-    @Test
-    void setUsername() {
         account.setUsername("Jim24");
         assertEquals("Jim24", account.getUsername());
     }
@@ -40,12 +50,7 @@ class AccountTest {
     @Test
     void setPassword() {
         account.setPassword("123457");
-        assertTrue(account.isCorrectPassword("123457"));
-    }
-
-    @Test
-    void isCorrectPassword() {
-        assertTrue(account.isCorrectPassword("123456"));
+        assertEquals("123457", account.getPassword());
     }
 
     @Test
