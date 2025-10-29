@@ -183,4 +183,51 @@ class PerkServiceTest {
 
         assertEquals(p2, sorted.get(0)); // soonest expiry first
     }
+
+    @Test
+    void sortPerks_shouldSortByRatingAscendingAndDescending() {
+        Perk low = new Perk();
+        low.getUpvotedBy().add(new Account("a1", "p"));
+        low.getDownvotedBy().add(new Account("a2", "p")); // rating = 0
+
+        Perk high = new Perk();
+        high.getUpvotedBy().add(new Account("a3", "p"));
+        high.getUpvotedBy().add(new Account("a4", "p")); // rating = 2
+
+        Perk mid = new Perk();
+        mid.getUpvotedBy().add(new Account("a5", "p")); // rating = 1
+
+        List<Perk> perks = Arrays.asList(low, high, mid);
+
+        // Ascending
+        List<Perk> ascSorted = perkService.sortPerks(perks, Optional.of("rating"), Optional.of("asc"));
+        assertEquals(Arrays.asList(low, mid, high), ascSorted);
+
+        // Descending
+        List<Perk> descSorted = perkService.sortPerks(perks, Optional.of("rating"), Optional.of("desc"));
+        assertEquals(Arrays.asList(high, mid, low), descSorted);
+    }
+
+    @Test
+    void sortPerks_shouldSortByExpiryAscendingAndDescending() {
+        Calendar soon = Calendar.getInstance();
+        soon.add(Calendar.DATE, 1);
+        Calendar later = Calendar.getInstance();
+        later.add(Calendar.DATE, 10);
+
+        Perk p1 = new Perk();
+        p1.setExpiryDate(later);
+        Perk p2 = new Perk();
+        p2.setExpiryDate(soon);
+
+        List<Perk> perks = Arrays.asList(p1, p2);
+
+        // Ascending (soonest first)
+        List<Perk> ascSorted = perkService.sortPerks(perks, Optional.of("expiry"), Optional.of("asc"));
+        assertEquals(p2, ascSorted.get(0));
+
+        // Descending (latest first)
+        List<Perk> descSorted = perkService.sortPerks(perks, Optional.of("expiry"), Optional.of("desc"));
+        assertEquals(p1, descSorted.get(0));
+    }
 }
