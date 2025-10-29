@@ -6,7 +6,7 @@ Kyle Foisy 101215573
 Peter Grose 101219562
 Sapthakeerthi Udayakumar 101289957
 Lucas Warburton 101276823
-
+Aziz Hamad 101232108
 
 # PerkManager – Developer Database Setup (Windows)
 
