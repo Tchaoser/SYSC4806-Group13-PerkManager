@@ -131,4 +131,29 @@ public class PerkService {
                 .sorted(Comparator.comparing(p -> p.getExpiryDate() != null ? p.getExpiryDate().getTime() : new Date(Long.MAX_VALUE)))
                 .collect(Collectors.toList());
     }
+
+    public List<Perk> sortPerks(List<Perk> perks, Optional<String> sortKey, Optional<String> direction) {
+        if (sortKey.isEmpty()) return perks;
+
+        boolean asc = !"desc".equalsIgnoreCase(direction.orElse("asc"));
+        Comparator<Perk> comparator = null;
+
+        switch (sortKey.get()) {
+            case "rating":
+                comparator = Comparator.comparingInt(Perk::getRating); //TODO: ensure sorting by rating works correctly when ratings are implemented.
+                break;
+            case "expiry":
+                comparator = Comparator.comparing(
+                        Perk::getExpiryDate,
+                        Comparator.nullsLast(Comparator.comparingLong(Calendar::getTimeInMillis))
+                );
+                break;
+            default:
+                return perks; // unknown sort -> leave as-is
+        }
+
+        if (!asc) comparator = comparator.reversed();
+        return perks.stream().sorted(comparator).collect(Collectors.toList());
+    }
+
 }

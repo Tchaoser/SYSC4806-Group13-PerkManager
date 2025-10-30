@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,6 +24,16 @@ public class MembershipService {
     @Transactional(readOnly = true)
     public List<Membership> getAllMemberships() {
         return membershipRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getAllMembershipTypes() {
+        return membershipRepository.findAll().stream()
+                .map(Membership::getType)
+                .filter(Objects::nonNull)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     // Fetch membership by ID
