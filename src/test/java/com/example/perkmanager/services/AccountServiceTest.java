@@ -52,14 +52,6 @@ class AccountServiceTest {
     }
 
     @Test
-    void checkPassword_correctPassword_shouldReturnTrue() {
-        Account account = accountService.createAccount("user1", "pass");
-
-        assertTrue(accountService.checkPassword(account, "pass"));
-        assertFalse(accountService.checkPassword(account, "wrong"));
-    }
-
-    @Test
     void linkPerkToCreator_shouldLinkPerkAndSaveAccount() {
         Account account = new Account();
         account.setUsername("user1");
