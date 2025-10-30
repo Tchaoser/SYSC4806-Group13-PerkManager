@@ -30,7 +30,7 @@ public class SecurityConfigTest {
     @Test
     void passwordEncoder(){
         Object encoder1 = securityConfig.passwordEncoder();
-        assertTrue(encoder1 instanceof BCryptPasswordEncoder);
+        assertInstanceOf(BCryptPasswordEncoder.class, encoder1);
         String encodedPassword = ((BCryptPasswordEncoder)encoder1).encode("password");
         BCryptPasswordEncoder encoder2 = (BCryptPasswordEncoder) securityConfig.passwordEncoder();
         assertTrue(encoder2.matches("password", encodedPassword));
