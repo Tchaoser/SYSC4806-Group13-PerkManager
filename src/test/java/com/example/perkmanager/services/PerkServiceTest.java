@@ -187,15 +187,21 @@ class PerkServiceTest {
     @Test
     void sortPerks_shouldSortByRatingAscendingAndDescending() {
         Perk low = new Perk();
-        low.getUpvotedBy().add(new Account("a1", "p"));
-        low.getDownvotedBy().add(new Account("a2", "p")); // rating = 0
+        Account a1 = new Account(); a1.setUsername("a1"); a1.setPassword("p");
+        Account a2 = new Account(); a2.setUsername("a2"); a2.setPassword("p");
+        Account a3 = new Account(); a3.setUsername("a3"); a3.setPassword("p");
+        Account a4 = new Account(); a4.setUsername("a4"); a4.setPassword("p");
+        Account a5 = new Account(); a5.setUsername("a5"); a5.setPassword("p");
+
+        low.getUpvotedBy().add(a1);
+        low.getDownvotedBy().add(a2); // rating = 0
 
         Perk high = new Perk();
-        high.getUpvotedBy().add(new Account("a3", "p"));
-        high.getUpvotedBy().add(new Account("a4", "p")); // rating = 2
+        high.getUpvotedBy().add(a3);
+        high.getUpvotedBy().add(a4); // rating = 2
 
         Perk mid = new Perk();
-        mid.getUpvotedBy().add(new Account("a5", "p")); // rating = 1
+        mid.getUpvotedBy().add(a5); // rating = 1
 
         List<Perk> perks = Arrays.asList(low, high, mid);
 
