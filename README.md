@@ -71,6 +71,8 @@ spring.datasource.password=${DATABASE_PASSWORD}   # Enter the Aiven password
 
 ### A. Start the local DB (Windows CMD / PowerShell)
 
+First, ensure Docker Desktop is running.
+
 From the directory containing `docker-compose.yml`:
 
 ```cmd
