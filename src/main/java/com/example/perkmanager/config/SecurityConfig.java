@@ -16,19 +16,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/signup", "/login", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/perks/add").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/perks/add").authenticated() //require logged in to create perks
+                        .anyRequest().permitAll() //allow access to all other urls
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/perks", true)
-                        .permitAll()
+                        .loginPage("/login") //set Spring login page to /login
+                        .defaultSuccessUrl("/perks", true) //redirect to /perks upon login
+                        .permitAll() //always allow permission to login
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll()
+                        .logoutUrl("/logout") //set Spring logout page to /logout
+                        .logoutSuccessUrl("/") //redirect to root upon logout
+                        .permitAll() //always allow permission to logout
                 );
 
 
