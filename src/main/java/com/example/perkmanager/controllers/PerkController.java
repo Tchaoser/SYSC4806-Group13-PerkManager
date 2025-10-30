@@ -1,3 +1,4 @@
+
 package com.example.perkmanager.controllers;
 
 import com.example.perkmanager.model.Account;
@@ -8,6 +9,8 @@ import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import com.example.perkmanager.services.PerkService;
 import com.example.perkmanager.services.ProductService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,30 +36,71 @@ public class PerkController {
         this.accountService = accountService;
     }
 
-    // List all the current User's perks in a table, with options to sort and filter
+    // List all perks with sorting + filtering + pagination
     @GetMapping
     public String listPerks(
             @RequestParam Optional<String> membershipType,
             @RequestParam Optional<String> region,
             @RequestParam Optional<Boolean> expiryOnly,
             @RequestParam Optional<String> sort,
-            @RequestParam Optional<String> direction, // new param
+            @RequestParam Optional<String> direction,
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size,
             Model model) {
-        // TODO: Add pagination for large perk lists, or otherwise re-organize the table set-up
+        try {
+            // Base filtered list
+            List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
 
-        List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
-        perks = perkService.sortPerks(perks, sort, direction);
+            // Sorting
+            if (sort.isPresent()) {
+                boolean asc = !"desc".equalsIgnoreCase(direction.orElse("asc"));
+                switch (sort.get()) {
+                    case "rating":
+                        perks.sort(Comparator.comparingInt(Perk::getRating));
+                        if (!asc) Collections.reverse(perks);
+                        break;
+                    case "expiry":
+                        perks.sort(Comparator.comparing(
+                                Perk::getExpiryDate,
+                                Comparator.nullsFirst(Comparator.comparingLong(Calendar::getTimeInMillis))
+                        ));
+                        if ("desc".equalsIgnoreCase(direction.orElse("asc"))) {
+                            Collections.reverse(perks);
+                        }
+                        break;
+                    default:
+                        // no-op
+                }
+            }
 
-        List<String> allMembershipTypes = membershipService.getAllMembershipTypes();
-        model.addAttribute("allMembershipTypes", allMembershipTypes);
-        model.addAttribute("perks", perks);
-        model.addAttribute("membershipType", membershipType.orElse(""));
-        model.addAttribute("region", region.orElse(""));
-        model.addAttribute("expiryOnly", expiryOnly.orElse(false));
-        model.addAttribute("sort", sort.orElse(""));
-        model.addAttribute("direction", direction.orElse("asc"));
+            // Pagination
+            int pageNum = Math.max(page.orElse(0), 0);
+            int pageSize = Math.max(size.orElse(10), 1);
+            int total = perks.size();
+            int totalPages = (int) Math.ceil((double) total / pageSize);
+            if (totalPages == 0) totalPages = 1;
+            if (pageNum >= totalPages) pageNum = totalPages - 1;
+            int from = pageNum * pageSize;
+            int to = Math.min(from + pageSize, total);
+            List<Perk> pageItems = perks.subList(from, to);
 
-        return "perks";
+            model.addAttribute("perks", pageItems);
+            model.addAttribute("membershipType", membershipType.orElse(""));
+            model.addAttribute("region", region.orElse(""));
+            model.addAttribute("expiryOnly", expiryOnly.orElse(false));
+            model.addAttribute("sort", sort.orElse(""));
+            model.addAttribute("direction", direction.orElse("asc"));
+            model.addAttribute("page", pageNum);
+            model.addAttribute("size", pageSize);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("totalPerks", total);
+
+            return "perks";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Failed to load perks: " + e.getMessage());
+            return "perks";
+        }
     }
 
     // Show form to add a new perk
@@ -65,56 +109,90 @@ public class PerkController {
         model.addAttribute("perk", new Perk());
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("memberships", membershipService.getAllMemberships());
-
         return "add-perk";
     }
 
-    // Handle add perk submission
+    // Create a perk using authenticated user
     @PostMapping("/add")
     public String addPerk(@RequestParam("benefit") String benefit,
                           @RequestParam("productId") Long productId,
                           @RequestParam("membershipId") Long membershipId,
                           @RequestParam(value = "region", required = false) String region,
                           @RequestParam(value = "expiryDate", required = false) String expiryDate,
+                          @AuthenticationPrincipal UserDetails userDetails,
                           Model model) {
-
         try {
-            // NOTE: Currently using a demo account for creation.
-            // TODO: Replace with actual logged-in account once authentication is implemented.
-            Account creator = accountService.findByUsername("Account 1 test")
-                    .orElseThrow(() -> new RuntimeException("Demo account not found"));
+            if (userDetails == null) {
+                throw new RuntimeException("Please log in to add a perk.");
+            }
+
+            Account creator = accountService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
 
             Product product = productService.findById(productId)
                     .orElseThrow(() -> new RuntimeException("Product not found"));
             Membership membership = membershipService.findById(membershipId)
                     .orElseThrow(() -> new RuntimeException("Membership not found"));
 
-            // Parse expiry date if provided
             Calendar cal = null;
             if (expiryDate != null && !expiryDate.isEmpty()) {
                 String[] parts = expiryDate.split("-");
                 cal = Calendar.getInstance();
-                cal.set(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])-1, Integer.parseInt(parts[2]), 0, 0, 0);
+                cal.set(
+                        Integer.parseInt(parts[0]),
+                        Integer.parseInt(parts[1]) - 1,
+                        Integer.parseInt(parts[2]),
+                        0, 0, 0
+                );
             }
 
-            Perk perk = perkService.createPerk(creator, membership, product, benefit, cal, region);
-
-            System.out.println("Perk added: id=" + perk.getId());
-
-            // TODO: Consider redirecting to the newly created perk's detail page
+            perkService.createPerk(creator, membership, product, benefit, cal, region);
             return "redirect:/perks";
-
         } catch (Exception e) {
-            e.printStackTrace(); // TODO: improve stack trace for debugging
+            e.printStackTrace();
             model.addAttribute("error", "Failed to add perk: " + e.getMessage());
             model.addAttribute("products", productService.getAllProducts());
             model.addAttribute("memberships", membershipService.getAllMemberships());
-
-            // TODO: Preserve form input values when returning after error
             return "add-perk";
         }
     }
 
-    // TODO: Implement perk upvote/downvote endpoints
-    // TODO: Implement perk edit/delete endpoints
+    // --- Voting endpoints (update counts immediately, then redirect back) ---
+
+    @PostMapping("/{id}/upvote")
+    public String upvote(@PathVariable Long id,
+                         @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            if (userDetails == null) {
+                return "redirect:/login";
+            }
+            Account account = accountService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
+            perkService.upvotePerk(id, account);
+            return "redirect:/perks";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/perks";
+        }
+    }
+
+    @PostMapping("/{id}/downvote")
+    public String downvote(@PathVariable Long id,
+                           @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            if (userDetails == null) {
+                return "redirect:/login";
+            }
+            Account account = accountService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
+            perkService.downvotePerk(id, account);
+            return "redirect:/perks";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/perks";
+        }
+    }
+
+    // TODO: add edit/delete
 }
+
