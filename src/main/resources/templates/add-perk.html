@@ -1,34 +1,103 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add Perk</title>
+    <meta charset="utf-8"/>
+    <style>
+        .form { max-width: 720px; }
+        .row { margin-bottom: 12px; display: flex; gap: 12px; align-items: center; }
+        .row label { width: 180px; font-weight: 600; }
+        .row input[type="text"], .row input[type="date"], .row select { flex: 1; padding: 6px; }
+        .actions { margin-top: 16px; display: flex; gap: 10px; }
+        .error { background: #ffecec; color: #a40000; padding: 10px; border: 1px solid #f5b5b5; margin-bottom: 16px; }
+        small.hint { color: #666; }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h1>Add a New Perk</h1>
-<form th:action="@{/perks/add}" method="post">
-    <label>Benefit:</label>
-    <input type="text" name="benefit" required /><br/>
+<h1>Add a Perk</h1>
 
-    <label>Product:</label>
-    <select name="productId">
-        <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
-    </select><br/>
 
-    <label>Membership:</label>
-    <select name="membershipId">
-        <option th:each="m : ${memberships}" th:value="${m.id}" th:text="${m.description}"></option>
-    </select><br/>
+<div th:if="${error}" class="error" th:text="${error}"></div>
 
-    <label>Region (optional):</label>
-    <input type="text" name="region" /><br/>
+<form class="form" th:action="@{/perks/add}" method="post" id="addPerkForm" novalidate>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-    <label>Expiry Date (optional):</label>
-    <input type="date" name="expiryDate" /><br/>
 
-    <button type="submit">Add Perk</button>
+    <div class="row">
+        <label for="benefit">Benefit <span style="color:#a40000">*</span></label>
+        <input id="benefit" name="benefit" type="text" required
+               placeholder="e.g., 20% off annual plan"
+               th:value="${param.benefit != null ? param.benefit[0] : ''}"/>
+    </div>
+
+
+    <div class="row">
+        <label for="productId">Product <span style="color:#a40000">*</span></label>
+        <select id="productId" name="productId" required>
+            <option value="" disabled th:selected="${param.productId == null}">Select a product…</option>
+            <option th:each="p : ${products}"
+                    th:value="${p.id}"
+                    th:text="${p.name + ' — ' + p.company}"
+                    th:selected="${param.productId != null and #numbers.parseLong(param.productId[0]) == p.id}">
+            </option>
+
+        </select>
+    </div>
+
+
+    <div class="row">
+        <label for="membershipId">Membership <span style="color:#a40000">*</span></label>
+        <select id="membershipId" name="membershipId" required>
+            <option value="" disabled th:selected="${param.membershipId == null}">Select a membership…</option>
+            <option th:each="m : ${memberships}"
+                    th:value="${m.id}"
+                    th:text="${m.type + ' — ' + m.organizationName}"
+                    th:selected="${param.membershipId != null and #numbers.parseLong(param.membershipId[0]) == m.id}">
+            </option>
+        </select>
+    </div>
+
+
+    <div class="row">
+        <label for="region">Region</label>
+        <input id="region" name="region" type="text" placeholder="e.g., Canada / Global"
+               th:value="${param.region != null ? param.region[0] : ''}"/>
+    </div>
+
+
+    <div class="row">
+        <label for="expiryDate">Expiry</label>
+        <input id="expiryDate" name="expiryDate" type="date"
+               th:value="${param.expiryDate != null ? param.expiryDate[0] : ''}"/>
+        <small class="hint">Leave empty if no expiry.</small>
+    </div>
+
+    <div class="actions">
+        <button type="submit">Save Perk</button>
+        <a th:href="@{/perks}">Cancel</a>
+    </div>
 </form>
+
+<script>
+
+    (function() {
+        const form = document.getElementById('addPerkForm');
+        const expiry = document.getElementById('expiryDate');
+        if (expiry) {
+            const today = new Date();
+            const y = today.getFullYear();
+            const m = String(today.getMonth() + 1).padStart(2, '0');
+            const d = String(today.getDate()).padStart(2, '0');
+            expiry.min = `${y}-${m}-${d}`;
+        }
+        form.addEventListener('submit', function (e) {
+            if (!form.checkValidity()) e.preventDefault();
+        });
+    })();
+</script>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
