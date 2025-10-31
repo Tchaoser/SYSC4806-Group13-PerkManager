@@ -42,13 +42,6 @@ public class AccountService {
         return accountRepository.findByUsername(username);
     }
 
-    // Simple password check (prototype only)
-    // TODO: Strengthen password check (authentication tokens or session logic when login logic added)
-    @Transactional(readOnly = true)
-    public boolean checkPassword(Account account, String password) {
-        return passwordEncoder.matches(password, account.getPassword());
-    }
-
     // Link a perk to an account
     public void linkPerkToCreator(Account account, Perk perk) {
         account.addPerk(perk);
