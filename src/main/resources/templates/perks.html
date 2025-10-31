@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <h1>Perks</h1>
 <a th:href="@{/perks/add}">Add a Perk</a>
@@ -71,6 +71,6 @@
     </tbody>
 </table>
 
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

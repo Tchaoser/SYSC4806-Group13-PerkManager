@@ -27,7 +27,7 @@ class PerkServiceTest {
 
     @Test
     void createPerk_shouldSavePerkAndLinkToCreator() {
-        Account account = new Account("user1", "pass");
+        Account account = new Account();
         Membership membership = new Membership("Card", "Visa", "Visa Rewards");
         Product product = new Product("Movie", "Cinema");
 
@@ -66,7 +66,7 @@ class PerkServiceTest {
 
     @Test
     void upvotePerk_shouldAddUpvoteAndRemoveDownvote() {
-        Account user = new Account("user", "pass");
+        Account user = new Account();
         Perk perk = new Perk();
         perk.getDownvotedBy().add(user);
 
@@ -81,7 +81,7 @@ class PerkServiceTest {
 
     @Test
     void downvotePerk_shouldAddDownvoteAndRemoveUpvote() {
-        Account user = new Account("user", "pass");
+        Account user = new Account();
         Perk perk = new Perk();
         perk.getUpvotedBy().add(user);
 
@@ -153,10 +153,10 @@ class PerkServiceTest {
         Perk p3 = new Perk();
 
         // simulate rating
-        p1.getUpvotedBy().add(new Account("u1", "p"));
-        p1.getDownvotedBy().add(new Account("u2", "p")); // rating = 0
-        p2.getUpvotedBy().add(new Account("u3", "p")); // rating = 1
-        p3.getDownvotedBy().add(new Account("u4", "p")); // rating = -1
+        p1.getUpvotedBy().add(new Account());
+        p1.getDownvotedBy().add(new Account()); // rating = 0
+        p2.getUpvotedBy().add(new Account()); // rating = 1
+        p3.getDownvotedBy().add(new Account()); // rating = -1
 
         when(perkRepository.findAll()).thenReturn(Arrays.asList(p1, p2, p3));
 
@@ -187,15 +187,21 @@ class PerkServiceTest {
     @Test
     void sortPerks_shouldSortByRatingAscendingAndDescending() {
         Perk low = new Perk();
-        low.getUpvotedBy().add(new Account("a1", "p"));
-        low.getDownvotedBy().add(new Account("a2", "p")); // rating = 0
+        Account a1 = new Account(); a1.setUsername("a1"); a1.setPassword("p");
+        Account a2 = new Account(); a2.setUsername("a2"); a2.setPassword("p");
+        Account a3 = new Account(); a3.setUsername("a3"); a3.setPassword("p");
+        Account a4 = new Account(); a4.setUsername("a4"); a4.setPassword("p");
+        Account a5 = new Account(); a5.setUsername("a5"); a5.setPassword("p");
+
+        low.getUpvotedBy().add(a1);
+        low.getDownvotedBy().add(a2); // rating = 0
 
         Perk high = new Perk();
-        high.getUpvotedBy().add(new Account("a3", "p"));
-        high.getUpvotedBy().add(new Account("a4", "p")); // rating = 2
+        high.getUpvotedBy().add(a3);
+        high.getUpvotedBy().add(a4); // rating = 2
 
         Perk mid = new Perk();
-        mid.getUpvotedBy().add(new Account("a5", "p")); // rating = 1
+        mid.getUpvotedBy().add(a5); // rating = 1
 
         List<Perk> perks = Arrays.asList(low, high, mid);
 
