@@ -81,4 +81,21 @@ class AccountServiceTest {
 
         assertTrue(account.getMemberships().contains(membership));
     }
+
+    @Test
+    void removeMembership(){
+        Account account = new Account();
+        account.setUsername("user1");
+        account.setPassword("pass");
+        Membership membership = new Membership("Credit Card", "RBC", "RBC Rewards Member");
+
+        when(accountRepository.save(account)).thenReturn(account);
+
+        accountService.addMembership(account, membership);
+
+        assertTrue(account.getMemberships().contains(membership));
+
+        accountService.removeMembership(account, membership);
+        assertFalse(account.getMemberships().contains(membership));
+    }
 }
