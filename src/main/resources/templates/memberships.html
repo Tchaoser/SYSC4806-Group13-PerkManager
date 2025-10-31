@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Memberships</title>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Memberships</h1>
+
+<p><a th:href="@{/memberships/add}">Add Membership</a></p>
+
+<table border="1" style="border-collapse: collapse;">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>Organization</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${memberships}">
+        <td th:text="${m.type}"></td>
+        <td th:text="${m.organizationName}"></td>
+        <td th:text="${m.description}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
