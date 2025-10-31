@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="navbar">
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="navbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <nav>
     <a th:href="@{/}">Home</a> |
-    <a th:href="@{/perks}">Perks</a>
-    <!-- TODO: Add login/profile links -->
+    <a th:href="@{/perks}">Perks</a> |
+    <span sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}">Login</a> |
+        <a th:href="@{/signup}">Sign Up</a>
+    </span>
+    <span sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post" style="display: inline">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit">Logout</button>
+        </form>
+        Logged in as <span sec:authentication="name"></span>
+    </span>
 </nav>
 <hr/>
 </body>

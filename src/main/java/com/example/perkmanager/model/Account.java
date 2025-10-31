@@ -37,11 +37,6 @@ public class Account {
 
     public Account() {}
 
-    public Account(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
     public Set<Membership> getMemberships() { return memberships; }
     public void addMembership(Membership membership) { memberships.add(membership); }
     public void removeMembership(Membership membership) { memberships.remove(membership); }
@@ -55,9 +50,6 @@ public class Account {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-    //TODO: improve security of this method
-    public boolean isCorrectPassword(String password) { return this.password.equals(password); }
 
     public Set<Perk> getPerks() { return perks; }
     public void setPerks(Set<Perk> perks) { this.perks = perks; }
