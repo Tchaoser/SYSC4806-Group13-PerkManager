@@ -45,27 +45,10 @@ public class PerkController {
         // TODO: Add pagination for large perk lists, or otherwise re-organize the table set-up
 
         List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
+        perks = perkService.sortPerks(perks, sort, direction);
 
-        // Apply sorting if requested
-        if (sort.isPresent()) {
-            boolean asc = !"desc".equalsIgnoreCase(direction.orElse("asc"));
-            switch (sort.get()) {
-                case "rating": // TODO: Ensure rating sorting works correctly once voting is implemented.
-                    perks.sort(Comparator.comparingInt(Perk::getRating));
-                    if (!asc) Collections.reverse(perks);
-                    break;
-                case "expiry":
-                    perks.sort(Comparator.comparing(
-                            Perk::getExpiryDate,
-                            Comparator.nullsFirst(Comparator.comparingLong(Calendar::getTimeInMillis))
-                    ));
-                    if ("desc".equalsIgnoreCase(direction.orElse("asc"))) {
-                        Collections.reverse(perks);
-                    }
-                    break;
-            }
-        }
-
+        List<String> allMembershipTypes = membershipService.getAllMembershipTypes();
+        model.addAttribute("allMembershipTypes", allMembershipTypes);
         model.addAttribute("perks", perks);
         model.addAttribute("membershipType", membershipType.orElse(""));
         model.addAttribute("region", region.orElse(""));
