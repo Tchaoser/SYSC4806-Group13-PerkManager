@@ -128,6 +128,10 @@ You **do not** edit property files to switch. You change the active Spring profi
   ```
 
 ---
+## Database Schema
+<img width="314" height="519" alt="image" src="https://github.com/user-attachments/assets/69dcc21d-3d38-4618-94fd-76a08066a148" />
+
+
 
 ## Quick reminders / rationale
 
