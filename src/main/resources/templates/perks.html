@@ -21,11 +21,21 @@
 <a th:href="@{/perks(sort='expiry', direction='desc')}">Expiry ↓</a>
 <form method="get" th:action="@{/perks}">
     <label>Membership Type:</label>
-    <input type="text" name="membershipType" th:value="${membershipType}" />
+    <select name="membershipType">
+        <option value="">All</option>
+        <option th:each="type : ${allMembershipTypes}"
+                th:value="${type}"
+                th:text="${type}"
+                th:selected="${type == membershipType}">
+        </option>
+    </select>
+
     <label>Region:</label>
     <input type="text" name="region" th:value="${region}" />
+
     <label>Expiry Only:</label>
     <input type="checkbox" name="expiryOnly" th:checked="${expiryOnly}" />
+
     <button type="submit">Filter</button>
 </form>
 
