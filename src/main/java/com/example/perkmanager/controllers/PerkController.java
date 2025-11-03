@@ -1,4 +1,5 @@
 
+
 package com.example.perkmanager.controllers;
 
 import com.example.perkmanager.model.Account;
@@ -50,29 +51,8 @@ public class PerkController {
         try {
             // Base filtered list
             List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
-
             // Sorting
-            if (sort.isPresent()) {
-                boolean asc = !"desc".equalsIgnoreCase(direction.orElse("asc"));
-                switch (sort.get()) {
-                    case "rating":
-                        perks.sort(Comparator.comparingInt(Perk::getRating));
-                        if (!asc) Collections.reverse(perks);
-                        break;
-                    case "expiry":
-                        perks.sort(Comparator.comparing(
-                                Perk::getExpiryDate,
-                                Comparator.nullsFirst(Comparator.comparingLong(Calendar::getTimeInMillis))
-                        ));
-                        if ("desc".equalsIgnoreCase(direction.orElse("asc"))) {
-                            Collections.reverse(perks);
-                        }
-                        break;
-                    default:
-                        // no-op
-                }
-            }
-
+            perks = perkService.sortPerks(perks, sort, direction);
             // Pagination
             int pageNum = Math.max(page.orElse(0), 0);
             int pageSize = Math.max(size.orElse(10), 1);
@@ -195,4 +175,5 @@ public class PerkController {
 
     // TODO: add edit/delete
 }
+
 
