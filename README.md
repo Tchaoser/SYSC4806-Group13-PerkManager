@@ -2,25 +2,25 @@ Project Status:
 [![Java CI with Maven](https://github.com/Tchaoser/SYSC4806-Group13-PerkManager/actions/workflows/maven.yml/badge.svg)](https://github.com/Tchaoser/SYSC4806-Group13-PerkManager/actions/workflows/maven.yml)
 
 Project Members:
-Kyle Foisy 101215573
-Peter Grose 101219562
-Sapthakeerthi Udayakumar 101289957
-Lucas Warburton 101276823
+Kyle Foisy 101215573  
+Peter Grose 101219562  
+Sapthakeerthi Udayakumar 101289957  
+Lucas Warburton 101276823  
 Aziz Hamad 101232108
 
 ---
 
 ## Project Overview
 
-**Perk Manager** allows users to create profiles, which will later be tied to their memberships (e.g., Air Miles, CAA, Visa). The system allows users to view or add perks. Perks may be discounts or benefits tied to specific memberships and products.
+**Perk Manager** allows users to create profiles, which may be tied to memberships (e.g., Air Miles, CAA, Visa). The system allows users to view or add perks. Perks may be discounts or benefits tied to specific memberships and products.
 
 **Current Implementation (Partial)**
 
 * Users can **register and log in**.
-* Logged-in users can **add new perks** and **view existing perks**.
+* Users can **add new perks** and **view existing perks**.
 * Backend services for **accounts, perks, memberships, and products** are in place.
 * Thymeleaf templates exist for **adding perks, listing perks, and basic navigation**.
-* Controllers and views for some features are still under development and will be expanded in future versions.
+* Controllers and views for several features are still under development and will be expanded in future versions.
 
 This version forms the foundation for personalized perk searches, voting, and filtering.
 
