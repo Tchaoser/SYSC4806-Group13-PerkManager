@@ -230,9 +230,12 @@ You **do not** edit property files to switch. You change the active Spring profi
 ## Database Schema
 <img width="314" height="519" alt="image" src="https://github.com/user-attachments/assets/69dcc21d-3d38-4618-94fd-76a08066a148" />
 
+## UML Class Diagram
+<img width="476" height="885" alt="model" src="https://github.com/user-attachments/assets/f50e3f87-8975-426a-84ee-78bea532eb0f" />
 
 
 ## Quick reminders / rationale
+
 
 * **Shared Aiven DB**: easy collaboration, everyone sees the same data. Fill only the Aiven password locally.
 * **Local Docker DB**: safe environment for experiments, start it with `docker-compose up -d`. The local
