@@ -11,6 +11,13 @@
         .row input[type="text"], .row input[type="date"], .row select { flex: 1; padding: 6px; }
         .actions { margin-top: 16px; display: flex; gap: 10px; }
         .error { background: #ffecec; color: #a40000; padding: 10px; border: 1px solid #f5b5b5; margin-bottom: 16px; }
+        .field-error {
+            color: #a40000;
+            font-size: 0.9em;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        .is-invalid { outline: 2px solid #a40000; }
         small.hint { color: #666; }
     </style>
 </head>
@@ -31,6 +38,9 @@
         <input id="benefit" name="benefit" type="text" required
                placeholder="e.g., 20% off annual plan"
                th:value="${param.benefit != null ? param.benefit[0] : ''}"/>
+        <div class="field-error"
+             th:if="${fieldErrors != null and fieldErrors.containsKey('benefit')}"
+             th:text="${fieldErrors.get('benefit')}"></div>
     </div>
 
 
@@ -41,10 +51,15 @@
             <option th:each="p : ${products}"
                     th:value="${p.id}"
                     th:text="${p.name + ' — ' + p.company}"
-                    th:selected="${param.productId != null and #numbers.parseLong(param.productId[0]) == p.id}">
+                    th:selected="${param.productId != null
+                          and param.productId[0] != ''
+                          and T(java.lang.Long).parseLong(param.productId[0]) == p.id}">
             </option>
 
         </select>
+        <div class="field-error"
+             th:if="${fieldErrors != null and fieldErrors.containsKey('productId')}"
+             th:text="${fieldErrors.get('productId')}"></div>
     </div>
 
 
@@ -55,9 +70,14 @@
             <option th:each="m : ${memberships}"
                     th:value="${m.id}"
                     th:text="${m.type + ' — ' + m.organizationName}"
-                    th:selected="${param.membershipId != null and #numbers.parseLong(param.membershipId[0]) == m.id}">
+                    th:selected="${param.membershipId != null
+                          and param.membershipId[0] != ''
+                          and T(java.lang.Long).parseLong(param.membershipId[0]) == m.id}">
             </option>
         </select>
+        <div class="field-error"
+             th:if="${fieldErrors != null and fieldErrors.containsKey('membershipId')}"
+             th:text="${fieldErrors.get('membershipId')}"></div>
     </div>
 
 
@@ -65,6 +85,9 @@
         <label for="region">Region</label>
         <input id="region" name="region" type="text" placeholder="e.g., Canada / Global"
                th:value="${param.region != null ? param.region[0] : ''}"/>
+        <div class="field-error"
+             th:if="${fieldErrors != null and fieldErrors.containsKey('region')}"
+             th:text="${fieldErrors.get('region')}"></div>
     </div>
 
 
@@ -73,6 +96,9 @@
         <input id="expiryDate" name="expiryDate" type="date"
                th:value="${param.expiryDate != null ? param.expiryDate[0] : ''}"/>
         <small class="hint">Leave empty if no expiry.</small>
+        <div class="field-error"
+             th:if="${fieldErrors != null and fieldErrors.containsKey('expiryDate')}"
+             th:text="${fieldErrors.get('expiryDate')}"></div>
     </div>
 
     <div class="actions">
@@ -83,19 +109,33 @@
 
 <script>
 
-    (function() {
+    (function () {
         const form = document.getElementById('addPerkForm');
         const expiry = document.getElementById('expiryDate');
         if (expiry) {
-            const today = new Date();
-            const y = today.getFullYear();
-            const m = String(today.getMonth() + 1).padStart(2, '0');
-            const d = String(today.getDate()).padStart(2, '0');
+            const t = new Date(), y = t.getFullYear(), m = String(t.getMonth()+1).padStart(2,'0'), d = String(t.getDate()).padStart(2,'0');
             expiry.min = `${y}-${m}-${d}`;
         }
-        form.addEventListener('submit', function (e) {
-            if (!form.checkValidity()) e.preventDefault();
+        const markValidity = (el) => {
+            const ok = el.validity.valid;
+            el.classList.toggle('is-invalid', !ok);
+            el.setAttribute('aria-invalid', String(!ok));
+            if (ok) el.setCustomValidity('');
+        };
+
+        form.addEventListener('input', (e) => {
+            if (e.target instanceof HTMLElement && 'validity' in e.target) markValidity(e.target);
         });
+
+        form.addEventListener('invalid', (e) => {
+            if (e.target instanceof HTMLElement) markValidity(e.target);
+        }, true);
+
+        form.addEventListener('submit', () => {
+            const firstBad = form.querySelector('.is-invalid');
+            if (firstBad) firstBad.focus();
+        });
+
     })();
 </script>
 

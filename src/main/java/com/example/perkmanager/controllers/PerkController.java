@@ -94,37 +94,68 @@ public class PerkController {
 
     // Create a perk using authenticated user
     @PostMapping("/add")
-    public String addPerk(@RequestParam("benefit") String benefit,
-                          @RequestParam("productId") Long productId,
-                          @RequestParam("membershipId") Long membershipId,
-                          @RequestParam(value = "region", required = false) String region,
-                          @RequestParam(value = "expiryDate", required = false) String expiryDate,
-                          @AuthenticationPrincipal UserDetails userDetails,
-                          Model model) {
+    public String addPerk(@RequestParam(required = false) Long productId,
+                                               @RequestParam(required = false) Long membershipId,
+                                               @RequestParam(required = false) String benefit,
+                                               @RequestParam(required = false) String region,
+                                               @RequestParam(required = false) String expiryDate,
+                                               @AuthenticationPrincipal UserDetails userDetails, Model model) {
+
+        Map<String, String> fieldErrors = new HashMap<>();
+        if (benefit == null || benefit.trim().isEmpty()) {
+            fieldErrors.put("benefit", "Benefit is required.");
+        }
+        if (productId == null) {
+            fieldErrors.put("productId", "Please select a product.");
+        }
+        if (membershipId == null) {
+            fieldErrors.put("membershipId", "Please select a membership.");
+        }
+        if (region == null || region.trim().isEmpty()) {
+            fieldErrors.put("region", "Region is required.");
+        }
+
+        Calendar cal = null;
+        if (expiryDate != null && !expiryDate.isEmpty()) {
+            try {
+                String[] parts = expiryDate.split("-");
+                cal = Calendar.getInstance();
+                cal.set(Integer.parseInt(parts[0]),
+                        Integer.parseInt(parts[1]) - 1,
+                        Integer.parseInt(parts[2]),
+                        0, 0, 0);
+                // ensure expiry is today or later
+                Calendar today = Calendar.getInstance();
+                today.set(Calendar.HOUR_OF_DAY, 0);
+                today.set(Calendar.MINUTE, 0);
+                today.set(Calendar.SECOND, 0);
+                today.set(Calendar.MILLISECOND, 0);
+                if (cal.before(today)) {
+                    fieldErrors.put("expiryDate", "Expiry date cannot be in the past.");
+                }
+            } catch (Exception parseEx) {
+                fieldErrors.put("expiryDate", "Invalid date.");
+            }
+        }
+
+        if (!fieldErrors.isEmpty()) {
+            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("memberships", membershipService.getAllMemberships());
+            model.addAttribute("fieldErrors", fieldErrors);
+            model.addAttribute("error", "Please correct the errors below.");
+            return "add-perk";
+        }
+
         try {
             if (userDetails == null) {
                 throw new RuntimeException("Please log in to add a perk.");
             }
-
             Account creator = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
-
             Product product = productService.findById(productId)
                     .orElseThrow(() -> new RuntimeException("Product not found"));
             Membership membership = membershipService.findById(membershipId)
                     .orElseThrow(() -> new RuntimeException("Membership not found"));
-
-            Calendar cal = null;
-            if (expiryDate != null && !expiryDate.isEmpty()) {
-                String[] parts = expiryDate.split("-");
-                cal = Calendar.getInstance();
-                cal.set(
-                        Integer.parseInt(parts[0]),
-                        Integer.parseInt(parts[1]) - 1,
-                        Integer.parseInt(parts[2]),
-                        0, 0, 0
-                );
-            }
 
             perkService.createPerk(creator, membership, product, benefit, cal, region);
             return "redirect:/perks";
@@ -136,6 +167,7 @@ public class PerkController {
             return "add-perk";
         }
     }
+
 
     // --- Voting endpoints (update counts immediately, then redirect back) ---
 
