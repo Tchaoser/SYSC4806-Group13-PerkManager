@@ -248,14 +248,15 @@ You **do not** edit property files to switch. You change the active Spring profi
 
 ## Installing and Running Jasmine Client Side Testing:
 1. Download and install Node.js and npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-2. Open a terminal and navigate to `src/main/resources/` in your project.
+2. Open a terminal (or cmd prompt) and navigate to `src/main/resources/` in your project.
 3. Run: npm test
-Any test failures will be displayed in the terminal.
+Any test failures will be displayed in the terminal (or cmd prompt).
 
 ## Creating Client-Side Tests:
 
 - Jasmine will run JS files in the directory specified by `spec_files` in `spec/support/jasmine.mjs`.
-- By default, in our setup, this points to `templates/**/*.js`.
+- By default, in our setup, this includes the templates directory: `templates/**/*.js`.
+- Multiple directories or specific files can be specified in 'spec_files'
 
 To create a test suite for a .js file, use:
 ```javascript
