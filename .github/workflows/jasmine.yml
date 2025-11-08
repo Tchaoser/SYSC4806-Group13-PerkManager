@@ -26,6 +26,10 @@ jobs:
       working-directory: ./src/main/resources
       run: npm install # Installs project dependencies
 
+  #Runs Jasmine Test
     - name: Run Jasmine Tests
       working-directory: ./src/main/resources
-      run: npx jasmine #Runs Jasmine Test
+      run: |
+        chmod +x npx
+        npx jasmine 
+        
