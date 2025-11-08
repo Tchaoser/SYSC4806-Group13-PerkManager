@@ -30,6 +30,5 @@ jobs:
     - name: Run Jasmine Tests
       working-directory: ./src/main/resources
       run: |
-        chmod +x npx jasmine
-        npx jasmine 
+        npm test
         
