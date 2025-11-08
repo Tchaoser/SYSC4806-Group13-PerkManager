@@ -33,6 +33,7 @@ jobs:
         node-version: '20' # Specifies the Node.js version to use
 
     - name: Install Dependencies
+      working-directory: ./src/main/resources
       run: npm install # Installs project dependencies
 
     - name: Run Jasmine Tests
