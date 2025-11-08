@@ -146,43 +146,6 @@ class PerkServiceTest {
         assertEquals("10% off", filtered.get(0).getBenefit());
     }
 
-    @Test
-    void getPerksSortedByRating_shouldSortDescending() {
-        Perk p1 = new Perk();
-        Perk p2 = new Perk();
-        Perk p3 = new Perk();
-
-        // simulate rating
-        p1.getUpvotedBy().add(new Account());
-        p1.getDownvotedBy().add(new Account()); // rating = 0
-        p2.getUpvotedBy().add(new Account()); // rating = 1
-        p3.getDownvotedBy().add(new Account()); // rating = -1
-
-        when(perkRepository.findAll()).thenReturn(Arrays.asList(p1, p2, p3));
-
-        List<Perk> sorted = perkService.getPerksSortedByRating();
-
-        assertEquals(p2, sorted.get(0)); // highest rating first
-    }
-
-    @Test
-    void getPerksSortedByExpiry_shouldSortSoonestFirst() {
-        Calendar soon = Calendar.getInstance();
-        soon.add(Calendar.DATE, 1);
-        Calendar later = Calendar.getInstance();
-        later.add(Calendar.DATE, 5);
-
-        Perk p1 = new Perk();
-        p1.setExpiryDate(later);
-        Perk p2 = new Perk();
-        p2.setExpiryDate(soon);
-
-        when(perkRepository.findAll()).thenReturn(Arrays.asList(p1, p2));
-
-        List<Perk> sorted = perkService.getPerksSortedByExpiry();
-
-        assertEquals(p2, sorted.get(0)); // soonest expiry first
-    }
 
     @Test
     void sortPerks_shouldSortByRatingAscendingAndDescending() {

@@ -116,21 +116,7 @@ public class PerkService {
         perkRepository.save(perk);
     }
 
-    // Get perks sorted by rating (upvotes - downvotes)
-    @Transactional(readOnly = true)
-    public List<Perk> getPerksSortedByRating() {
-        return perkRepository.findAll().stream()
-                .sorted(Comparator.comparingInt(Perk::getRating).reversed())
-                .collect(Collectors.toList());
-    }
 
-    // Get perks sorted by expiry date
-    @Transactional(readOnly = true)
-    public List<Perk> getPerksSortedByExpiry() {
-        return perkRepository.findAll().stream()
-                .sorted(Comparator.comparing(p -> p.getExpiryDate() != null ? p.getExpiryDate().getTime() : new Date(Long.MAX_VALUE)))
-                .collect(Collectors.toList());
-    }
 
     public List<Perk> sortPerks(List<Perk> perks, Optional<String> sortKey, Optional<String> direction) {
         if (sortKey.isEmpty()) return perks;
