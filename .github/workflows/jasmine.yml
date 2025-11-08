@@ -26,6 +26,10 @@ jobs:
       working-directory: ./src/main/resources
       run: npm install # Installs project dependencies
 
+    - name: Fix Jasmine Permissions
+      working-directory: ./src/main/resources
+      run: chmod +x ./node_modules/.bin/jasmine
+
   #Runs Jasmine Test
     - name: Run Jasmine Tests
       working-directory: ./src/main/resources
