@@ -28,4 +28,4 @@ jobs:
 
     - name: Run Jasmine Tests
       working-directory: ./src/main/resources
-      run: npm test #Runs Jasmine Test
+      run: npx jasmine #Runs Jasmine Test
