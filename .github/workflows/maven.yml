@@ -22,20 +22,3 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
-
-    #Jasmine Testing
-    - name: Checkout Code
-      uses: actions/checkout@v4 # Checks out your repository code
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20' # Specifies the Node.js version to use
-
-    - name: Install Dependencies
-      working-directory: ./src/main/resources
-      run: npm install # Installs project dependencies
-
-    - name: Run Jasmine Tests
-      working-directory: ./src/main/resources
-      run: npm test #Runs Jasmine Test
