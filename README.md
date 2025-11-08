@@ -116,6 +116,7 @@ perkmanager/
 * IntelliJ IDEA
 * Internet access (for shared Aiven DB)
 * **Docker** (only needed if you want a local DB)
+* Node.js and npm for Jasmine Testing
 
 ---
 
@@ -242,4 +243,36 @@ You **do not** edit property files to switch. You change the active Spring profi
   config is committed and uses `devpass`.
 * **Switching**: Use IntelliJ Run Configuration (`SPRING_PROFILES_ACTIVE=local`) to pick local; remove it (
   `SPRING_PROFILES_ACTIVE=`) to use shared. No edits to property files are required to switch.
+
+  ---
+
+## Installing and Running Jasmine Client Side Testing:
+1. Download NPM and Node.js: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm (Node installer works)
+2. Navigate to the src/resources directory in cmd prompt
+3. Enter "npm test"
+Any failures will be shown in the cmd prompt window
+
+## Creating Client Side Testing:
+Jasmine will automatically run and test js files in the ...resources/templates directory  
+To add a test path to the directory, add the directory path to "spec files" field in resources/spec.support/jasmine.mjs  
+  
+To create a test suite for a .js file, use:  
+```javascript
+describe("test suite description here", function {  
+  it("test case description here", function() {  
+    "Your tests here"
+  });  
+  it("test case description here", function() {  
+    "Your tests here"
+  });  
+  ...   
+})
+```
+
+### Example:
+
+![alt text](image.png)
+![alt text](image-1.png)
+
+---
 
