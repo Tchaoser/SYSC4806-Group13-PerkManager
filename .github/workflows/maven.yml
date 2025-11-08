@@ -11,7 +11,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    #Spring boot build
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -22,3 +22,18 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
+
+    #Jasmine Testing
+    - name: Checkout Code
+      uses: actions/checkout@v4 # Checks out your repository code
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Specifies the Node.js version to use
+
+    - name: Install Dependencies
+      run: npm install # Installs project dependencies
+
+    - name: Run Jasmine Tests
+      run: npm test #Runs Jasmine Test
