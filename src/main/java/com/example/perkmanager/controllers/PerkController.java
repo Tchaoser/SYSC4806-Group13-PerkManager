@@ -103,16 +103,13 @@ public class PerkController {
 
         Map<String, String> fieldErrors = new HashMap<>();
         if (benefit == null || benefit.trim().isEmpty()) {
-            fieldErrors.put("benefit", "Benefit is required.");
+            fieldErrors.put("benefit", "Benefit is required");
         }
         if (productId == null) {
-            fieldErrors.put("productId", "Please select a product.");
+            fieldErrors.put("productId", "Please select a product");
         }
         if (membershipId == null) {
-            fieldErrors.put("membershipId", "Please select a membership.");
-        }
-        if (region == null || region.trim().isEmpty()) {
-            fieldErrors.put("region", "Region is required.");
+            fieldErrors.put("membershipId", "Please select a membership");
         }
 
         Calendar cal = null;
@@ -142,7 +139,7 @@ public class PerkController {
             model.addAttribute("products", productService.getAllProducts());
             model.addAttribute("memberships", membershipService.getAllMemberships());
             model.addAttribute("fieldErrors", fieldErrors);
-            model.addAttribute("error", "Please correct the errors below.");
+            model.addAttribute("error", "Please complete all required fields");
             return "add-perk";
         }
 
