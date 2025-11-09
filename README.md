@@ -120,7 +120,7 @@ perkmanager/
 
 ---
 
-# PerkManager – Developer Database Setup (Windows)
+# PerkManager: Developer Database Setup (Windows)
 
 ## Prerequisites
 
@@ -176,7 +176,7 @@ spring.datasource.password=${DATABASE_PASSWORD}   # Enter the Aiven password
 
 ---
 
-## Optional — Local Docker Database (committed local config)
+## Optional: Local Docker Database (committed local config)
 
 **Purpose:** isolated testing / offline development.
 
@@ -238,6 +238,48 @@ You **do not** edit property files to switch. You change the active Spring profi
   set SPRING_PROFILES_ACTIVE=
   mvn spring-boot:run
   ```
+
+---
+
+## SQL Scripts: Developer Guide
+
+**Important:** Stop the Spring Boot application before running any SQL scripts. The shared Aiven database restricts superuser connections while the app is running.
+
+### Workflow
+
+1. **Create or rebuild schema**  
+   Use `V1__create_schema.sql` to create all tables from scratch. This file **drops any existing tables** and sets up the schema with constraints and indexes.
+
+2. **Insert base entities**  
+   Use `V2__insert_base_data.sql` to populate **memberships** and **products**. This is required for the app to function.
+
+3. **Load demo data**  
+   Use `demo_data.sql` to insert **demo accounts, perks, and relationships**. The passwords are bcrypt-hashed and compatible with Spring Security login.
+
+
+   **Demo account usernames and passwords (from `PasswordHashGen`):**
+
+    * `alice` → `password1`
+    * `bob` → `password2`
+    * `charlie` → `password3`
+    * `dana` → `password4`
+    * `evan` → `password5`
+
+### Optional Maintenance
+
+* `drop_all.sql`: Drops all tables entirely. Only needed if you want a complete wipe.
+* `reset_all.sql`: Clears all data but **keeps the schema** and resets ID sequences. Useful for resetting demo data without rebuilding the schema.
+
+> **Example workflow for day-to-day development:**
+>
+> 1. Stop the app.
+> 2. Run `reset_all.sql` (or skip if schema is new).
+> 3. Run `V2__insert_base_data.sql` + `demo_data.sql`.
+> 4. Start the app and log in with demo accounts.
+
+This ensures your database is in a consistent state for testing and development.
+
+Further SQL/database development would typically proceed by adding new migration files for schema changes or new data, rather than modifying existing ones, to keep versioning and reproducibility intact.
 
 ---
 ## Database Schema
