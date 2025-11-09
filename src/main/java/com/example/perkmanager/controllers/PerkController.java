@@ -95,11 +95,11 @@ public class PerkController {
     // Create a perk using authenticated user
     @PostMapping("/add")
     public String addPerk(@RequestParam(required = false) Long productId,
-                                               @RequestParam(required = false) Long membershipId,
-                                               @RequestParam(required = false) String benefit,
-                                               @RequestParam(required = false) String region,
-                                               @RequestParam(required = false) String expiryDate,
-                                               @AuthenticationPrincipal UserDetails userDetails, Model model) {
+                          @RequestParam(required = false) Long membershipId,
+                          @RequestParam(required = false) String benefit,
+                          @RequestParam(required = false) String region,
+                          @RequestParam(required = false) String expiryDate,
+                          @AuthenticationPrincipal UserDetails userDetails, Model model) {
 
         Map<String, String> fieldErrors = new HashMap<>();
         if (benefit == null || benefit.trim().isEmpty()) {
