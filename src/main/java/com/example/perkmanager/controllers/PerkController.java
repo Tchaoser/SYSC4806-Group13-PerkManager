@@ -65,7 +65,9 @@ public class PerkController {
             List<Perk> pageItems = perks.subList(from, to);
 
             model.addAttribute("perks", pageItems);
-            model.addAttribute("membershipType", membershipType.orElse(""));
+            String selectedMembershipType = membershipType.orElse("");
+            model.addAttribute("membershipType", selectedMembershipType);
+            model.addAttribute("membershipTypes", membershipService.getAllMembershipTypes());
             model.addAttribute("region", region.orElse(""));
             model.addAttribute("expiryOnly", expiryOnly.orElse(false));
             model.addAttribute("sort", sort.orElse(""));

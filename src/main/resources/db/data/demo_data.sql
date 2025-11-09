@@ -20,11 +20,11 @@ ON CONFLICT DO NOTHING;
 INSERT INTO perks (membership_id, product_id, benefit, expiry_date, region, creator_id) VALUES
                                                                                             (1, 5, '10% off flights with Air Miles', '2025-12-31 23:59:59', 'Canada', 1),
                                                                                             (2, 7, '15% off selected car rentals for CAA members', '2025-12-31 23:59:59', 'North America', 2),
-                                                                                            (3, 4, '5% cashback on groceries at Costco', '2025-06-30 23:59:59', 'Canada', 3),
-                                                                                            (4, 7, '$10 off dining with Visa', '2025-12-31 23:59:59', 'Global', 1),
-                                                                                            (5, 6, 'Room upgrade at partner hotels for Amex', '2025-12-31 23:59:59', 'Global', 3),
-                                                                                            (6, 1, '2-for-1 Tuesdays at participating cinemas (Scene+)', '2025-12-31 23:59:59', 'Canada', 4),
-                                                                                            (7, 5, 'Earn 200 bonus Aeroplan points on select flights', '2025-10-01 23:59:59', 'Global', 5)
+                                                                                            (3, 4, '5% cashback on groceries at Costco', '2025-11-02 23:59:59', 'Canada', 3),
+                                                                                            (4, 7, '$10 off dining with Visa', '2025-11-04 23:59:59', 'Global', 1),
+                                                                                            (5, 6, 'Room upgrade at partner hotels for Amex', '2025-11-06 23:59:59', 'Global', 3),
+                                                                                            (6, 1, '2-for-1 Tuesdays at participating cinemas (Scene+)', '2025-11-08 23:59:59', 'Canada', 4),
+                                                                                            (7, 5, 'Earn 200 bonus Aeroplan points on select flights', '2025-11-10 23:59:59', 'Global', 5)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO perk_upvotes (perk_id, account_id) VALUES
