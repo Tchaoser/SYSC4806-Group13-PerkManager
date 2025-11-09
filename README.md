@@ -49,49 +49,62 @@ perkmanager/
 │  │  │  │  └─ Perk.java                    # JPA entity: perk (description, votes, expiry)
 │  │  │  │
 │  │  │  ├─ repositories/
-│  │  │  │  ├─ UserRepository.java              # Spring Data JPA interface for User CRUD
-│  │  │  │  ├─ MembershipRepository.java        # JPA repo for Membership entity
-│  │  │  │  ├─ ProductRepository.java           # JPA repo for Product entity
-│  │  │  │  └─ PerkRepository.java              # JPA repo for Perk entity + custom queries
+│  │  │  │  ├─ UserRepository.java          # Spring Data JPA interface for User CRUD
+│  │  │  │  ├─ MembershipRepository.java    # JPA repo for Membership entity
+│  │  │  │  ├─ ProductRepository.java       # JPA repo for Product entity
+│  │  │  │  └─ PerkRepository.java          # JPA repo for Perk entity + custom queries
 │  │  │  │
-│  │  │  └─ services/
-│  │  │     ├─ UserService.java             # Handles profile logic and membership linking
-│  │  │     ├─ PerkService.java             # Core business logic for perks (posting, voting, expiry)
-│  │  │     ├─ MembershipService.java      	# Manages membership CRUD and validation
-│  │  │     └─ ProductService.java      	# Manages product CRUD and validation
+│  │  │  ├─ services/
+│  │  │  │  ├─ UserService.java             # Handles profile logic and membership linking
+│  │  │  │  ├─ PerkService.java             # Core business logic for perks (posting, voting, expiry)
+│  │  │  │  ├─ MembershipService.java       # Manages membership CRUD and validation
+│  │  │  │  └─ ProductService.java          # Manages product CRUD and validation
+│  │  │  │
+│  │  │  └─ utils/
+│  │  │     └─ PasswordHashGen.java         # Standalone utility to generate bcrypt hashes for demo accounts
 │  │  │
 │  │  ├─ resources/
+│  │  │  ├─ db/
+│  │  │  │  ├─ migrations/
+│  │  │  │  │  ├─ V1__create_schema.sql    # SQL migration: creates all tables
+│  │  │  │  │  └─ V2__insert_base_data.sql # SQL migration: inserts base reference data (memberships, products)
+│  │  │  │  ├─ data/
+│  │  │  │  │  └─ demo_data.sql            # Demo/staging data with bcrypt passwords and sample perks
+│  │  │  │  └─ maintenance/
+│  │  │  │     ├─ drop_all.sql             # Helper to drop all tables if you want a clean slate
+│  │  │  │     └─ reset_all.sql            # Helper to drop + re-run migrations + load demo data
+│  │  │  │
 │  │  │  ├─ templates/
 │  │  │  │  ├─ fragments/
-│  │  │  │  │  ├─ navbar.html           	# Reusable navbar component
-│  │  │  │  │  └─ footer.html               # Reusable footer component
-│  │  │  │  ├─ index.html                   # Homepage showing navigation options
-│  │  │  │  ├─ perks.html                   # Displays all perks (sortable by votes or expiry)
-│  │  │  │  ├─ add-perk.html                # Form for posting a new perk
-│  │  │  │  ├─ login.html                   # login page for existing users
-│  │  │  │  └─ signup.html                  # registration page for new users
+│  │  │  │  │  ├─ navbar.html              # Reusable navbar component
+│  │  │  │  │  └─ footer.html              # Reusable footer component
+│  │  │  │  ├─ index.html                  # Homepage showing navigation options
+│  │  │  │  ├─ perks.html                  # Displays all perks (sortable by votes or expiry)
+│  │  │  │  ├─ add-perk.html               # Form for posting a new perk
+│  │  │  │  ├─ login.html                  # Login page for existing users
+│  │  │  │  └─ signup.html                 # Registration page for new users
 │  │  │  │
-│  │  │  ├─ application.properties          # Base config (active profile, Thymeleaf settings)
-│  │  │  └─ application-local.properties    # Local dev settings 
+│  │  │  ├─ application.properties        # Base config (active profile, Thymeleaf settings)
+│  │  │  └─ application-local.properties  # Local dev settings 
 │  │
 │  └─ test/java/com/example/perkmanager/
 │     ├─ config/
-│     │  └─ SecurityConfigTest.java         # Tests authentication and access control setup
+│     │  └─ SecurityConfigTest.java       # Tests authentication and access control setup
 │     │
 │     ├─ controllers/
-│     │  └─  AccountControllerTest.java     # Verifies login, registration, and session routes
+│     │  └─ AccountControllerTest.java    # Verifies login, registration, and session routes
 │     │
 │     ├─ model/
-│     │  ├─ AccoutTest.java                 # Tests User entity fields, relationships, validation
-│     │  ├─ MembershipTest.java             # Tests Membership entity mapping and constraints
-│     │  ├─ ProductTest.java                # Tests Product entity persistence and associations
-│     │  └─ PerkTest.java                   # Tests Perk entity logic (expiry, voting count)
+│     │  ├─ AccoutTest.java               # Tests User entity fields, relationships, validation
+│     │  ├─ MembershipTest.java           # Tests Membership entity mapping and constraints
+│     │  ├─ ProductTest.java              # Tests Product entity persistence and associations
+│     │  └─ PerkTest.java                 # Tests Perk entity logic (expiry, voting count)
 │     │
 │     └─ services/
-│        ├─ AccountServiceTest.java         # Verifies account creation, login, and linking logic
-│        ├─ PerkServiceTest.java            # Tests business logic (votes, expiry filters)
-│        ├─ MembershipServiceTest.java      # Tests membership CRUD and validation
-│        └─ ProductServiceTest.java         # Tests product CRUD and validation
+│        ├─ AccountServiceTest.java       # Verifies account creation, login, and linking logic
+│        ├─ PerkServiceTest.java          # Tests business logic (votes, expiry filters)
+│        ├─ MembershipServiceTest.java    # Tests membership CRUD and validation
+│        └─ ProductServiceTest.java       # Tests product CRUD and validation
 │
 ├─ pom.xml              # Maven build file (Spring Boot, JPA, Thymeleaf, etc.)
 ├─ .gitignore           # Ignore build output, logs, local env files
@@ -99,10 +112,10 @@ perkmanager/
 │
 ├─ .github/
 │  └─ workflows/
-│     ├─ maven.yml			        # CI workflow: builds Java project using Maven on push/PR to main
-│     └─ main-perkmanager.yml       # CD workflow: builds JAR and deploys PerkManager to Azure Web App
+│     ├─ maven.yml       # CI workflow: builds Java project using Maven on push/PR to main
+│     └─ main-perkmanager.yml # CD workflow: builds JAR and deploys PerkManager to Azure Web App
 │
-└─ README.md                        # Project overview, setup, usage, and contribution guide
+└─ README.md            # Project overview, setup, usage, and contribution guide
 ```
 
 ---
