@@ -245,6 +245,8 @@ You **do not** edit property files to switch. You change the active Spring profi
 
 **Important:** Stop the Spring Boot application before running any SQL scripts. The shared Aiven database restricts superuser connections while the app is running.
 
+If you’re running the scripts in IntelliJ, you can either highlight the entire file and click the green Run button, or click the Run button first and then select the whole SQL file to execute.
+
 ### Workflow
 
 1. **Create or rebuild schema**  
