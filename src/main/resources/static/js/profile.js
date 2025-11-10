@@ -62,3 +62,10 @@ function showMsg(text) {
     el.textContent = text;
     setTimeout(() => el.textContent = '', 2000);
 }
+
+
+describe("profile.js Test Suite:", function() {
+    it("Test case:", function (){
+
+    });
+});

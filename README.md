@@ -255,7 +255,7 @@ Any test failures will be displayed in the terminal (or cmd prompt).
 ## Creating Client-Side Tests:
 
 - Jasmine will run JS files in the directory specified by `spec_files` in `spec/support/jasmine.mjs`.
-- By default, in our setup, this includes the templates directory: `templates/**/*.js`.
+- By default, in our setup, this includes the templates directory: `static.js/**/*.js`.
 - Multiple directories or specific files can be specified in 'spec_files'
 
 To create a test suite for a .js file, use:
