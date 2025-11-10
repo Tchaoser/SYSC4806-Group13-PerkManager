@@ -38,22 +38,25 @@ public class SecurityConfigTest {
 
     @Test
     void authenticationProvider() {
+        String testuser = "testuser";
+        String testpass = "pass";
+
         DaoAuthenticationProvider authenticationProvider = securityConfig.authenticationProvider(userDetailsService, securityConfig.passwordEncoder());
 
-        UserDetails user = User.withUsername("testuser")
-                .password(securityConfig.passwordEncoder().encode("pass"))
+        UserDetails user = User.withUsername(testuser)
+                .password(securityConfig.passwordEncoder().encode(testpass))
                 .roles("USER")
                 .build();
 
-        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(user);
+        when(userDetailsService.loadUserByUsername(testuser)).thenReturn(user);
 
         UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken("testuser", "pass");
+                new UsernamePasswordAuthenticationToken(testuser, testpass);
 
         Authentication result = authenticationProvider.authenticate(authToken);
 
         assertTrue(result.isAuthenticated());
-        assertEquals("testuser", result.getName());
+        assertEquals(testuser, result.getName());
     }
 
 

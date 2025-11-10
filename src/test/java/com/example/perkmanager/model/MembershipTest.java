@@ -12,38 +12,25 @@ class MembershipTest {
     }
 
     @Test
-    void getId() {
+    void getSetId() {
         membership.setId(2l);
         assertEquals(2l, membership.getId());
+        membership.setId(3l);
+        assertEquals(3l, membership.getId());
     }
 
     @Test
-    void setId() {
-        membership.setId(2l);
-        assertEquals(2l, membership.getId());
-    }
-
-    @Test
-    void getType() {
+    void getSetType() {
         assertEquals("Airline Loyalty Program", membership.getType());
-    }
-
-    @Test
-    void setType() {
         membership.setType("Store Membership");
         assertEquals("Store Membership", membership.getType());
         assertEquals("West Jet", membership.getOrganizationName());
         assertEquals("West Jet Rewards Member", membership.getDescription());
-
     }
 
     @Test
-    void getOrganizationName() {
+    void getSetOrganizationName() {
         assertEquals("West Jet", membership.getOrganizationName());
-    }
-
-    @Test
-    void setOrganizationName() {
         membership.setOrganizationName("Air Canada");
         assertEquals("Airline Loyalty Program", membership.getType());
         assertEquals("Air Canada", membership.getOrganizationName());
@@ -51,12 +38,8 @@ class MembershipTest {
     }
 
     @Test
-    void getDescription() {
+    void getSetDescription() {
         assertEquals("West Jet Rewards Member", membership.getDescription());
-    }
-
-    @Test
-    void setDescription() {
         membership.setDescription("Air Canada Rewards Member");
         assertEquals("Airline Loyalty Program", membership.getType());
         assertEquals("West Jet", membership.getOrganizationName());
