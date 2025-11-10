@@ -36,8 +36,7 @@ public class MembershipController {
     public String addMembership(
             @RequestParam String type,
             @RequestParam("organizationName") String organizationName,
-            @RequestParam String description
-    ) {
+            @RequestParam String description) {
         membershipService.createMembership(type, organizationName, description);
         return "redirect:/memberships";
     }
