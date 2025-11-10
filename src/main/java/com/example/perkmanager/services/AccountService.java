@@ -4,7 +4,6 @@ import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
 import com.example.perkmanager.model.Perk;
 import com.example.perkmanager.repositories.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +15,6 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-
-    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
