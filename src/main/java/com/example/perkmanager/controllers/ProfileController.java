@@ -37,40 +37,45 @@ public class ProfileController {
         Optional<Account> current = getCurrentAccount();
         model.addAttribute("isAuthenticated", current.isPresent());
         model.addAttribute("account", current.orElse(null));
-        model.addAttribute("memberships", current.map(Account::getMemberships).orElse(null));
-        model.addAttribute("allMemberships", membershipService.getAllMemberships());
+
+        var memberships = current.map(Account::getMemberships).orElseGet(java.util.Collections::emptySet);
+        var availableMemberships = membershipService.getAllMemberships().stream()
+                .filter(m -> memberships.stream().noneMatch(u -> u.getId().equals(m.getId())))
+                .collect(java.util.stream.Collectors.toSet());
+
+        model.addAttribute("memberships", memberships);
+        model.addAttribute("allMemberships", availableMemberships);
+
         return "profile";
     }
 
     //adding membership to current user
     @PostMapping("/memberships/add")
-    @ResponseBody
-    public ResponseEntity<?> addMembership(@RequestParam("membershipId") Long membershipId) {
+    public String addMembership(@RequestParam("membershipId") Long membershipId) {
         Optional<Account> current = getCurrentAccount();
         //security check
         if (current.isEmpty()) {
-            return ResponseEntity.status(401).body("Not authenticated");
+            return "redirect:/login";
         }
-        Membership membership = membershipService.findById(membershipId).orElseThrow(() -> new IllegalArgumentException("Membership not found"));
+        Membership membership = membershipService.findById(membershipId)
+                .orElseThrow(() -> new IllegalArgumentException("Membership not found"));
         accountService.addMembership(current.get(), membership);
-        return ResponseEntity.ok((payload(current.get()))); //ResponseEntity serializes and returns it as a JSON
+        return "redirect:/profile";
     }
-
 
     //removing a membership from a user
     @PostMapping("/memberships/remove")
-    @ResponseBody
-    public ResponseEntity<?> removeMembership(@RequestParam("membershipId") Long membershipId) {
+    public String removeMembership(@RequestParam("membershipId") Long membershipId) {
         Optional<Account> current = getCurrentAccount();
         //security check
         if (current.isEmpty()) {
-            return ResponseEntity.status(401).body("Not authenticated");
+            return "redirect:/login";
         }
-        Membership membership = membershipService.findById(membershipId).orElseThrow(() -> new IllegalArgumentException("Membership not found"));
+        Membership membership = membershipService.findById(membershipId)
+                .orElseThrow(() -> new IllegalArgumentException("Membership not found"));
         accountService.removeMembership(current.get(), membership);
-        return ResponseEntity.ok((payload(current.get())));//ResponseEntity serializes and returns it as a JSON
+        return "redirect:/profile";
     }
-
 
     //function which returns only authenticated account of user and returns empty for the unauthenticated
     private Optional<Account> getCurrentAccount() {
@@ -88,5 +93,4 @@ public class ProfileController {
         map.put("memberships", account.getMemberships());
         return map;
     }
-
 }
