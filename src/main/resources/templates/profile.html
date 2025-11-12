@@ -1,58 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head('User Profile')"></head>
+
 <body>
-
-<!-- Navbar -->
 <div th:replace="fragments/navbar :: navbar"></div>
+<div class="container full-width">
+    <h1>User Profile</h1>
 
-<h1>User Profile</h1>
-
-<!-- Guest view -->
-<div th:if="${isAuthenticated != true}">
-    <div class="alert alert-info">
+    <!-- Guest view -->
+    <div th:if="${isAuthenticated != true}" class="alert">
         You are viewing as guest.
-        <a href="/login">Login</a> or <a href="/signup">Sign up</a>.
+        <a th:href="@{/login}">Login</a> or <a th:href="@{/signup}">Sign up</a>.
+    </div>
+
+    <!-- Authenticated view -->
+    <div th:if="${isAuthenticated == true}">
+        <!-- User Info -->
+        <div class="perk-card">
+            <strong>Username:</strong> <span th:text="${account.username}">username</span>
+        </div>
+
+        <!-- Membership Section (Two Columns) -->
+        <div class="membership-section" style="display:flex; gap:20px; flex-wrap:wrap; margin-top:20px;">
+
+            <!-- Linked Memberships Column -->
+            <div style="flex:1; min-width:280px;">
+                <h2>Linked Memberships</h2>
+                <div th:if="${#lists.isEmpty(memberships)}">
+                    <div class="perk-card">No memberships linked.</div>
+                </div>
+                <div th:each="m : ${memberships}" class="perk-card" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <span th:text="${m.type}">Type</span> -
+                        <span th:text="${m.organizationName}">Organization</span>
+                    </div>
+                    <form th:action="@{/profile/memberships/remove}" method="post" style="margin:0;">
+                        <input type="hidden" name="membershipId" th:value="${m.id}" />
+                        <button class="btn-small" type="submit">Remove</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Membership Column -->
+            <div style="flex:1; min-width:280px;">
+                <h2>Add Membership</h2>
+                <form th:action="@{/profile/memberships/add}" method="post" class="row" style="flex-direction:column; gap:12px;">
+                    <select name="membershipId" class="row" style="flex:1;">
+                        <option th:each="m : ${allMemberships}" th:value="${m.id}" th:text="${m.type} + ' - ' + ${m.organizationName}"></option>
+                    </select>
+                    <div class="actions">
+                        <button type="submit" class="btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>
 
-<!-- Authenticated view -->
-<div th:if="${isAuthenticated == true}">
-
-    <!-- User info -->
-    <div>
-        <strong>Username:</strong> <span th:text="${account.username}">username</span>
-    </div>
-    <hr/>
-
-    <!-- Linked Memberships -->
-    <h2>Linked Memberships</h2>
-    <div th:if="${#lists.isEmpty(memberships)}">
-        No memberships linked.
-    </div>
-    <div th:each="m : ${memberships}">
-        <span th:text="${m.type}">Type</span> -
-        <span th:text="${m.organizationName}">Org</span>
-        <form th:action="@{/profile/memberships/remove}" method="post" style="display:inline;">
-            <input type="hidden" name="membershipId" th:value="${m.id}" />
-            <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
-        </form>
-    </div>
-    <hr/>
-
-    <!-- Add Membership -->
-    <h2>Add Membership</h2>
-    <form th:action="@{/profile/memberships/add}" method="post" style="display:flex; gap:6px; margin-bottom:1rem;">
-        <select name="membershipId" class="form-select">
-            <option th:each="m : ${allMemberships}" th:value="${m.id}" th:text="${m.type} + ' - ' + ${m.organizationName}"></option>
-        </select>
-        <button class="btn btn-primary" type="submit">Add</button>
-    </form>
-
-</div>
-
-<!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
-
 </body>
 </html>

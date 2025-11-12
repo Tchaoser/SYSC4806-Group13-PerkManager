@@ -1,123 +1,72 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head('Add Perk')"></head>
+
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <h1>Add a Perk</h1>
 
-<h1>Add a Perk</h1>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
 
+    <form th:action="@{/perks/add}" method="post" id="addPerkForm" novalidate>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-<div th:if="${error}" class="error" th:text="${error}"></div>
+        <div class="row">
+            <label for="benefit">Benefit <span style="color:#a40000">*</span></label>
+            <input id="benefit" name="benefit" type="text" required placeholder="e.g., 20% off annual plan"
+                   th:value="${param.benefit != null ? param.benefit[0] : ''}"/>
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('benefit')}"
+                 th:text="${fieldErrors.get('benefit')}"></div>
+        </div>
 
-<form class="form" th:action="@{/perks/add}" method="post" id="addPerkForm" novalidate>
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="row">
+            <label for="productId">Product <span style="color:#a40000">*</span></label>
+            <select id="productId" name="productId" required>
+                <option value="" disabled th:selected="${param.productId == null}">Select a product…</option>
+                <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name + ' — ' + p.company}"
+                        th:selected="${param.productId != null and param.productId[0] != '' and T(java.lang.Long).parseLong(param.productId[0]) == p.id}">
+                </option>
+            </select>
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('productId')}"
+                 th:text="${fieldErrors.get('productId')}"></div>
+        </div>
 
+        <div class="row">
+            <label for="membershipId">Membership <span style="color:#a40000">*</span></label>
+            <select id="membershipId" name="membershipId" required>
+                <option value="" disabled th:selected="${param.membershipId == null}">Select a membership…</option>
+                <option th:each="m : ${memberships}" th:value="${m.id}" th:text="${m.type + ' — ' + m.organizationName}"
+                        th:selected="${param.membershipId != null and param.membershipId[0] != '' and T(java.lang.Long).parseLong(param.membershipId[0]) == m.id}">
+                </option>
+            </select>
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('membershipId')}"
+                 th:text="${fieldErrors.get('membershipId')}"></div>
+        </div>
 
-    <div class="row">
-        <label for="benefit">Benefit <span style="color:#a40000">*</span></label>
-        <input id="benefit" name="benefit" type="text" required
-               placeholder="e.g., 20% off annual plan"
-               th:value="${param.benefit != null ? param.benefit[0] : ''}"/>
-        <div class="field-error"
-             th:if="${fieldErrors != null and fieldErrors.containsKey('benefit')}"
-             th:text="${fieldErrors.get('benefit')}"></div>
-    </div>
+        <div class="row">
+            <label for="region">Region</label>
+            <input id="region" name="region" type="text" placeholder="e.g., Canada / Global"
+                   th:value="${param.region != null ? param.region[0] : ''}"/>
+        </div>
 
+        <div class="row">
+            <label for="expiryDate">Expiry</label>
+            <input id="expiryDate" name="expiryDate" type="date"
+                   th:value="${param.expiryDate != null ? param.expiryDate[0] : ''}"/>
+            <small class="hint">Leave empty if no expiry.</small>
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('expiryDate')}"
+                 th:text="${fieldErrors.get('expiryDate')}"></div>
+        </div>
 
-    <div class="row">
-        <label for="productId">Product <span style="color:#a40000">*</span></label>
-        <select id="productId" name="productId" required>
-            <option value="" disabled th:selected="${param.productId == null}">Select a product…</option>
-            <option th:each="p : ${products}"
-                    th:value="${p.id}"
-                    th:text="${p.name + ' — ' + p.company}"
-                    th:selected="${param.productId != null
-                          and param.productId[0] != ''
-                          and T(java.lang.Long).parseLong(param.productId[0]) == p.id}">
-            </option>
-
-        </select>
-        <div class="field-error"
-             th:if="${fieldErrors != null and fieldErrors.containsKey('productId')}"
-             th:text="${fieldErrors.get('productId')}"></div>
-    </div>
-
-
-    <div class="row">
-        <label for="membershipId">Membership <span style="color:#a40000">*</span></label>
-        <select id="membershipId" name="membershipId" required>
-            <option value="" disabled th:selected="${param.membershipId == null}">Select a membership…</option>
-            <option th:each="m : ${memberships}"
-                    th:value="${m.id}"
-                    th:text="${m.type + ' — ' + m.organizationName}"
-                    th:selected="${param.membershipId != null
-                          and param.membershipId[0] != ''
-                          and T(java.lang.Long).parseLong(param.membershipId[0]) == m.id}">
-            </option>
-        </select>
-        <div class="field-error"
-             th:if="${fieldErrors != null and fieldErrors.containsKey('membershipId')}"
-             th:text="${fieldErrors.get('membershipId')}"></div>
-    </div>
-
-
-    <div class="row">
-        <label for="region">Region</label>
-        <input id="region" name="region" type="text"
-               placeholder="e.g., Canada / Global"
-               th:value="${param.region != null ? param.region[0] : ''}"/>
-    </div>
-
-
-    <div class="row">
-        <label for="expiryDate">Expiry</label>
-        <input id="expiryDate" name="expiryDate" type="date"
-               th:value="${param.expiryDate != null ? param.expiryDate[0] : ''}"/>
-        <small class="hint">Leave empty if no expiry.</small>
-        <div class="field-error"
-             th:if="${fieldErrors != null and fieldErrors.containsKey('expiryDate')}"
-             th:text="${fieldErrors.get('expiryDate')}"></div>
-    </div>
-
-    <div class="actions">
-        <button type="submit">Save Perk</button>
-        <a th:href="@{/perks}">Cancel</a>
-    </div>
-</form>
-
-<script>
-
-    (function () {
-        const form = document.getElementById('addPerkForm');
-        const expiry = document.getElementById('expiryDate');
-        if (expiry) {
-            const t = new Date(), y = t.getFullYear(), m = String(t.getMonth()+1).padStart(2,'0'), d = String(t.getDate()).padStart(2,'0');
-            expiry.min = `${y}-${m}-${d}`;
-        }
-        const markValidity = (el) => {
-            const ok = el.validity.valid;
-            el.classList.toggle('is-invalid', !ok);
-            el.setAttribute('aria-invalid', String(!ok));
-            if (ok) el.setCustomValidity('');
-        };
-
-        form.addEventListener('input', (e) => {
-            if (e.target instanceof HTMLElement && 'validity' in e.target) markValidity(e.target);
-        });
-
-        form.addEventListener('invalid', (e) => {
-            if (e.target instanceof HTMLElement) markValidity(e.target);
-        }, true);
-
-        form.addEventListener('submit', () => {
-            const firstBad = form.querySelector('.is-invalid');
-            if (firstBad) firstBad.focus();
-        });
-
-    })();
-</script>
-
-<div th:replace="~{fragments/footer :: footer}"></div>
-</body>
-</html>
+        <div class="actions">
+            <button type="submit">Save Perk</button>
+            <a th:href="@{/perks}">Cancel</a>
+        </div>
+    </form>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</div>

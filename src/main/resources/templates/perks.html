@@ -1,136 +1,126 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head('All Perks')"></head>
+
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container full-width">
+    <h1>Perks</h1>
 
-<h1>Perks</h1>
-<p><a th:href="@{/perks/add}">Add a Perk</a></p>
+    <div class="actions">
+        <a th:href="@{/perks/add}" class="btn-primary">Add a Perk</a>
+    </div>
 
-<p>
-    <a th:href="@{/perks(
-        sort='rating', direction='asc',
-        page=${page}, size=${size},
-        membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly}
-  )}">Rating ↑</a>
+    <form method="get" th:action="@{/perks}" class="filter-form">
+        <div class="filter-pair">
+            <label>Membership Type:</label>
+            <select name="membershipType">
+                <option value="">All</option>
+                <option th:each="type : ${membershipTypes}"
+                        th:value="${type}"
+                        th:text="${type}"
+                        th:selected="${type.equals(membershipType)}">
+                </option>
+            </select>
+        </div>
 
-    <a th:href="@{/perks(
-        sort='rating', direction='desc',
-        page=${page}, size=${size},
-        membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly}
-  )}">Rating ↓</a>
+        <div class="filter-pair">
+            <label>Region:</label>
+            <input type="text" name="region" th:value="${region}"/>
+        </div>
 
-    <a th:href="@{/perks(
-        sort='expiry', direction='asc',
-        page=${page}, size=${size},
-        membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly}
-  )}">Expiry ↑</a>
+        <div class="filter-pair">
+            <label>Expiry Only:</label>
+            <input type="checkbox" name="expiryOnly" th:checked="${expiryOnly}"/>
+        </div>
 
-    <a th:href="@{/perks(
-        sort='expiry', direction='desc',
-        page=${page}, size=${size},
-        membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly}
-  )}">Expiry ↓</a>
-</p>
-
-
-<form method="get" th:action="@{/perks}">
-    <label>Membership Type:</label>
-    <select name="membershipType">
-        <option value="">All</option>
-        <option th:each="type : ${membershipTypes}"
-                th:value="${type}"
-                th:text="${type}"
-                th:selected="${type.equals(membershipType)}">
-        </option>
-    </select>
-
-    <label>Region:</label>
-    <input type="text" name="region" th:value="${region}" />
-
-    <label>Expiry Only:</label>
-    <input type="checkbox" name="expiryOnly" th:checked="${expiryOnly}" />
-
-    <input type="hidden" name="sort" th:value="${sort}" />
-    <input type="hidden" name="direction" th:value="${direction}" />
-    <input type="hidden" name="page" value="0" />
-    <input type="hidden" name="size" th:value="${size}" />
-
-    <button type="submit">Filter</button>
-</form>
-
-<table>
-    <thead>
-    <tr>
-        <th>Benefit</th>
-        <th>Membership Type</th>
-        <th>Membership</th>
-        <th>Membership Organization</th>
-        <th>Product</th>
-        <th>Product Company</th>
-        <th>Product Description</th>
-        <th>Region</th>
-        <th>Expiry</th>
-        <th>Rating</th>
-        <th>Vote</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="perk : ${perks}">
-        <td th:text="${perk.benefit}"></td>
-        <td th:text="${perk.membership != null ? perk.membership.type : 'None'}"></td>
-        <td th:text="${perk.membership != null ? perk.membership.description : 'None'}"></td>
-        <td th:text="${perk.membership != null ? perk.membership.organizationName : 'None'}"></td>
-        <td th:text="${perk.product != null ? perk.product.name : 'None'}"></td>
-        <td th:text="${perk.product != null ? perk.product.company : 'None'}"></td>
-        <td th:text="${perk.product != null ? perk.product.description : ''}"></td>
-        <td th:text="${perk.region != null ? perk.region : 'Global'}"></td>
-        <td th:text="${perk.expiryDate != null ? #dates.format(perk.expiryDate.time, 'yyyy-MM-dd') : 'No Expiry'}"></td>
-        <td th:text="${perk.rating}"></td>
-        <td>
-            <div class="vote-forms">
-                <form th:action="@{|/perks/${perk.id}/upvote|}" method="post">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <button class="btn" type="submit">▲</button>
-                </form>
-                <form th:action="@{|/perks/${perk.id}/downvote|}" method="post">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <button class="btn" type="submit">▼</button>
-                </form>
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<div class="pager" th:if="${totalPages > 1}">
-    <span th:text="'Total: ' + ${totalPerks} + ' perks'"></span>
-    <br/>
-
-    <a th:if="${page > 0}"
-       th:href="@{/perks(page=${page - 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-        Prev
-    </a>
-    <span th:unless="${page > 0}">Prev</span>
-
-    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-    <a th:if="${i != page}"
-       th:text="${i + 1}"
-       th:href="@{/perks(page=${i}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-    </a>
-    <span th:if="${i == page}" th:text="|[${i + 1}]|"></span>
-  </span>
+        <input type="hidden" name="sort" th:value="${sort}"/>
+        <input type="hidden" name="direction" th:value="${direction}"/>
+        <input type="hidden" name="page" value="0"/>
+        <input type="hidden" name="size" th:value="${size}"/>
+        <div class="actions">
+            <button type="submit">Filter</button>
+        </div>
+    </form>
 
 
-    <a th:if="${page < totalPages - 1}"
-       th:href="@{/perks(page=${page + 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-        Next
-    </a>
-    <span th:unless="${page < totalPages - 1}">Next</span>
+    <table>
+        <thead>
+        <tr>
+            <th>Benefit</th>
+            <th>Membership Type</th>
+            <th>Membership</th>
+            <th>Membership Organization</th>
+            <th>Product</th>
+            <th>Product Company</th>
+            <th>Product Description</th>
+            <th>Region</th>
+            <th class="sortable">
+                Expiry<br>
+                <a th:href="@{/perks(sort='expiry', direction='asc', page=${page}, size=${size}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}" class="btn-small">↑</a>
+                <a th:href="@{/perks(sort='expiry', direction='desc', page=${page}, size=${size}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}" class="btn-small">↓</a>
+            </th>
+            <th class="sortable">
+                Rating<br>
+                <a th:href="@{/perks(sort='rating', direction='asc', page=${page}, size=${size}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}" class="btn-small">↑</a>
+                <a th:href="@{/perks(sort='rating', direction='desc', page=${page}, size=${size}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}" class="btn-small">↓</a>
+            </th>
+            <th>Vote</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="perk : ${perks}">
+            <td th:text="${perk.benefit}"></td>
+            <td th:text="${perk.membership != null ? perk.membership.type : 'None'}"></td>
+            <td th:text="${perk.membership != null ? perk.membership.description : 'None'}"></td>
+            <td th:text="${perk.membership != null ? perk.membership.organizationName : 'None'}"></td>
+            <td th:text="${perk.product != null ? perk.product.name : 'None'}"></td>
+            <td th:text="${perk.product != null ? perk.product.company : 'None'}"></td>
+            <td th:text="${perk.product != null ? perk.product.description : ''}"></td>
+            <td th:text="${perk.region != null ? perk.region : 'Global'}"></td>
+            <td th:text="${perk.expiryDate != null ? #dates.format(perk.expiryDate.time, 'yyyy-MM-dd') : 'No Expiry'}"></td>
+            <td th:text="${perk.rating}"></td>
+            <td>
+                <div class="vote-forms">
+                    <form class="vote-form"th:action="@{|/perks/${perk.id}/upvote|}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button class="btn" type="submit">▲</button>
+                    </form>
+                    <form class="vote-form" th:action="@{|/perks/${perk.id}/downvote|}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button class="btn" type="submit">▼</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pager" th:if="${totalPages > 1}">
+        <span th:text="'Total: ' + ${totalPerks} + ' perks'"></span>
+        <br/>
+
+        <a th:if="${page > 0}"
+           th:href="@{/perks(page=${page - 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
+            Prev
+        </a>
+
+        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:if="${i != page}"
+           th:text="${i + 1}"
+           th:href="@{/perks(page=${i}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
+        </a>
+        <span th:if="${i == page}" th:text="${i + 1}" class="current"></span>
+    </span>
+
+        <a th:if="${page < totalPages - 1}"
+           th:href="@{/perks(page=${page + 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
+            Next
+        </a>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
-
-<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
 

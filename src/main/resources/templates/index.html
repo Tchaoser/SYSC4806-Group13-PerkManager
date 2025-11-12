@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head('PerkManager Home')"></head>
+
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <h1>Welcome to PerkManager</h1>
+    <p>Discover popular perks from memberships and products.</p>
+    <div class="actions">
+        <a th:href="@{/perks}" class="btn-primary">View All Perks</a>
+    </div>
 
-<h1>Welcome to PerkManager</h1>
-<p>Discover popular perks from memberships and products.</p>
-<a th:href="@{/perks}">View All Perks</a>
-
-<!-- Top-Rated Perks Section -->
-<h2>Top-Rated Perks</h2>
-<div th:if="${#lists.isEmpty(featuredTopRated)}">
-    <p>No top-rated perks available.</p>
-</div>
-<div th:each="perk : ${featuredTopRated}">
-    <div>
+    <!-- Top-Rated Perks Section -->
+    <h2>Top-Rated Perks</h2>
+    <div th:if="${#lists.isEmpty(featuredTopRated)}">
+        <p>No top-rated perks available.</p>
+    </div>
+    <div th:each="perk : ${featuredTopRated}" class="perk-card">
         <strong th:text="${perk.benefit}">Perk Benefit</strong><br/>
         <span th:text="${perk.membership != null ? perk.membership.type : 'None'}">Membership Type</span> |
         <span th:text="${perk.product != null ? perk.product.name : 'None'}">Product</span><br/>
@@ -23,24 +25,23 @@
         </span><br/>
         Rating: <span th:text="${perk.rating}">0</span>
     </div>
-    <hr/>
-</div>
-<div>
-    <span th:if="${topPage > 0}">
-        <a th:href="@{/(topPage=${topPage - 1}, expPage=${expPage})}">Previous</a>
-    </span>
-    <span th:if="${topPage + 1 < topTotalPages}">
-        <a th:href="@{/(topPage=${topPage + 1}, expPage=${expPage})}">Next</a>
-    </span>
-</div>
 
-<!-- Soon-to-Expire Perks Section -->
-<h2>Soon-to-Expire Perks</h2>
-<div th:if="${#lists.isEmpty(featuredExpiring)}">
-    <p>No perks expiring soon.</p>
-</div>
-<div th:each="perk : ${featuredExpiring}">
-    <div>
+    <!-- Pagination for Top-Rated Perks -->
+    <div class="pager">
+        <span th:if="${topPage > 0}">
+            <a th:href="@{/(topPage=${topPage - 1}, expPage=${expPage})}">Previous</a>
+        </span>
+        <span th:if="${topPage + 1 < topTotalPages}">
+            <a th:href="@{/(topPage=${topPage + 1}, expPage=${expPage})}">Next</a>
+        </span>
+    </div>
+
+    <!-- Soon-to-Expire Perks Section -->
+    <h2>Soon-to-Expire Perks</h2>
+    <div th:if="${#lists.isEmpty(featuredExpiring)}">
+        <p>No perks expiring soon.</p>
+    </div>
+    <div th:each="perk : ${featuredExpiring}" class="perk-card">
         <strong th:text="${perk.benefit}">Perk Benefit</strong><br/>
         <span th:text="${perk.membership != null ? perk.membership.type : 'None'}">Membership Type</span> |
         <span th:text="${perk.product != null ? perk.product.name : 'None'}">Product</span><br/>
@@ -49,17 +50,17 @@
         </span><br/>
         Rating: <span th:text="${perk.rating}">0</span>
     </div>
-    <hr/>
-</div>
-<div>
-    <span th:if="${expPage > 0}">
-        <a th:href="@{/(topPage=${topPage}, expPage=${expPage - 1})}">Previous</a>
-    </span>
-    <span th:if="${expPage + 1 < expTotalPages}">
-        <a th:href="@{/(topPage=${topPage}, expPage=${expPage + 1})}">Next</a>
-    </span>
-</div>
 
+    <!-- Pagination for Expiring Perks -->
+    <div class="pager">
+        <span th:if="${expPage > 0}">
+            <a th:href="@{/(topPage=${topPage}, expPage=${expPage - 1})}">Previous</a>
+        </span>
+        <span th:if="${expPage + 1 < expTotalPages}">
+            <a th:href="@{/(topPage=${topPage}, expPage=${expPage + 1})}">Next</a>
+        </span>
+    </div>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
