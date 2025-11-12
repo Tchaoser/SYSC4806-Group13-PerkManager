@@ -1,13 +1,12 @@
 export default {
   spec_dir: "spec",
   spec_files: [
-      "../static/**/*.js",
+      "../static/js/**/*.js",
       "../templates/**/*.js"
 
   ],
   helpers: [
     "helpers/**/*.?(m)js",
-      "support/dom-setup.js"
   ],
   env: {
     stopSpecOnExpectationFailure: false,

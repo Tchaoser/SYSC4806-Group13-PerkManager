@@ -64,8 +64,8 @@ function showMsg(text) {
 }
 
 
-describe("profile.js Test Suite:", function() {
-    it("Test case:", function (){
-
-    });
-});
+// describe("profile.js Test Suite:", function() {
+//     it("Test case:", function (){
+//
+//     });
+// });
