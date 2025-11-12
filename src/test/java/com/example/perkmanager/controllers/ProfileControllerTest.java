@@ -4,105 +4,163 @@ import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
 import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
+import org.mockito.ArgumentCaptor;
+import org.springframework.ui.Model;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.DefaultCsrfToken;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
 
-@WebMvcTest(
-        controllers = ProfileController.class,
-        excludeAutoConfiguration = {
-                org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-                org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration.class
-        }
-)
-@AutoConfigureMockMvc(addFilters = false)
-@Import(ProfileControllerTest.TestSecurityConfig.class)
-class ProfileControllerTest {
+public class ProfileControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    private ProfileController profileController;
     private AccountService accountService;
-
-    @MockBean
     private MembershipService membershipService;
+    private Model model;
 
-    // ✅ Injects a fake CSRF token to prevent Thymeleaf "_csrf.token" errors
-    @TestConfiguration
-    static class TestSecurityConfig {
-        @Bean(name = "_csrf")
-        public CsrfToken csrfToken() {
-            return new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", "test-token");
-        }
-    }
+    @BeforeEach
+    void setup() {
+        accountService = mock(AccountService.class);
+        membershipService = mock(MembershipService.class);
+        model = mock(Model.class);
 
-
-    @Test
-    @DisplayName("POST /profile/memberships/add adds membership and returns JSON payload")
-    void postAddMembership() throws Exception {
-        Account acc = new Account();
-        acc.setUsername("Sap");
-        when(accountService.findByUsername("Sap")).thenReturn(Optional.of(acc));
-
-        Membership m = new Membership();
-        m.setId(Long.valueOf(1L));
-        when(membershipService.findById(Long.valueOf(1L))).thenReturn(Optional.of(m));
-
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken("Sap", "pass")
-        );
-
-        mockMvc.perform(post("/profile/memberships/add")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("membershipId", "1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-
-        Mockito.verify(accountService).addMembership(eq(acc), eq(m));
+        profileController = new ProfileController(accountService, membershipService);
+        // ensure no leftover auth between tests
+        SecurityContextHolder.clearContext();
     }
 
     @Test
-    @DisplayName("POST /profile/memberships/remove removes membership and returns JSON payload")
-    void postRemoveMembership() throws Exception {
+    @DisplayName("profile() returns profile view and shows guest when unauthenticated")
+    void profileAsGuest() {
+        // no authentication in SecurityContext => guest
+        SecurityContextHolder.clearContext();
+
+        String view = profileController.profile(model);
+        assertEquals("profile", view);
+
+        // verify model attributes for guest
+        verify(model).addAttribute("isAuthenticated", false);
+        verify(model).addAttribute("account", null);
+        // memberships and allMemberships get added as well (empty)
+        verify(model).addAttribute(eq("memberships"), any());
+        verify(model).addAttribute(eq("allMemberships"), any());
+    }
+
+    @Test
+    @DisplayName("profile() filters out already-linked memberships from allMemberships")
+    void profileFiltersLinkedMemberships() {
+        // arrange: account with one linked membership (id=1)
         Account acc = new Account();
-        acc.setUsername("Sap");
-        when(accountService.findByUsername("Sap")).thenReturn(Optional.of(acc));
+        acc.setUsername("alice");
 
-        Membership m = new Membership();
-        m.setId(Long.valueOf(2L));
-        when(membershipService.findById(Long.valueOf(2L))).thenReturn(Optional.of(m));
+        Membership linked = new Membership();
+        linked.setId(1L);
+        Set<Membership> linkedSet = new HashSet<>();
+        linkedSet.add(linked);
+        acc.getMemberships().addAll(linkedSet);
 
+        // all memberships contains linked (id=1) and another available (id=2)
+        Membership available = new Membership();
+        available.setId(2L);
+
+        when(accountService.findByUsername("alice")).thenReturn(Optional.of(acc));
+        when(membershipService.getAllMemberships())
+                .thenReturn(List.of(linked, available));
+
+        // set authentication so getCurrentAccount() will find 'alice'
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken("Sap", "pass")
+                new UsernamePasswordAuthenticationToken("alice", "ignored")
         );
 
-        mockMvc.perform(post("/profile/memberships/remove")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("membershipId", "2"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        // act
+        String view = profileController.profile(model);
 
-        Mockito.verify(accountService).removeMembership(eq(acc), eq(m));
+        // assert view
+        assertEquals("profile", view);
+
+        // capture what was put into model for "memberships" and "allMemberships"
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<Set> membershipsCaptor = ArgumentCaptor.forClass(Set.class);
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<Set> allMembershipsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        verify(model).addAttribute(eq("memberships"), membershipsCaptor.capture());
+        verify(model).addAttribute(eq("allMemberships"), allMembershipsCaptor.capture());
+
+        Set<Membership> membershipsInModel = membershipsCaptor.getValue();
+        Set<Membership> availableInModel = allMembershipsCaptor.getValue();
+
+        // the user's linked memberships should be present
+        assertTrue(membershipsInModel.contains(linked));
+        // availableInModel should contain only the membership not already linked
+        assertEquals(1, availableInModel.size());
+        assertTrue(availableInModel.contains(available));
+        assertFalse(availableInModel.contains(linked));
+    }
+
+    @Test
+    @DisplayName("addMembership() redirects to /login when unauthenticated")
+    void addMembershipRedirectsWhenGuest() {
+        SecurityContextHolder.clearContext();
+        String redirect = profileController.addMembership(5L);
+        assertEquals("redirect:/login", redirect);
+    }
+
+    @Test
+    @DisplayName("addMembership() calls AccountService.addMembership and redirects when authenticated")
+    void addMembershipCallsService() {
+        Account acc = new Account();
+        acc.setUsername("bob");
+        Membership m = new Membership();
+        m.setId(11L);
+
+        when(accountService.findByUsername("bob")).thenReturn(Optional.of(acc));
+        when(membershipService.findById(11L)).thenReturn(Optional.of(m));
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("bob", "pw")
+        );
+
+        String redirect = profileController.addMembership(11L);
+        assertEquals("redirect:/profile", redirect);
+        verify(accountService).addMembership(eq(acc), eq(m));
+    }
+
+    @Test
+    @DisplayName("removeMembership() redirects to /login when unauthenticated")
+    void removeMembershipRedirectsWhenGuest() {
+        SecurityContextHolder.clearContext();
+        String redirect = profileController.removeMembership(7L);
+        assertEquals("redirect:/login", redirect);
+    }
+
+    @Test
+    @DisplayName("removeMembership() calls AccountService.removeMembership and redirects when authenticated")
+    void removeMembershipCallsService() {
+        Account acc = new Account();
+        acc.setUsername("bob");
+        Membership m = new Membership();
+        m.setId(22L);
+
+        when(accountService.findByUsername("bob")).thenReturn(Optional.of(acc));
+        when(membershipService.findById(22L)).thenReturn(Optional.of(m));
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("bob", "pw")
+        );
+
+        String redirect = profileController.removeMembership(22L);
+        assertEquals("redirect:/profile", redirect);
+        verify(accountService).removeMembership(eq(acc), eq(m));
     }
 }
