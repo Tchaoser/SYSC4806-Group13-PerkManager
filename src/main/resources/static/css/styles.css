@@ -1,27 +1,394 @@
 /* ========================================
-   Forms (existing)
+   Reset & Base
    ======================================== */
-.form { max-width: 720px; margin: auto; }
-.row { margin-bottom: 12px; display: flex; gap: 12px; align-items: center; }
-.row label { width: 180px; font-weight: 600; }
-.row input[type="text"], .row input[type="date"], .row select { flex: 1; padding: 6px; }
-.actions { margin-top: 16px; display: flex; gap: 10px; }
-.error { background: #ffecec; color: #a40000; padding: 10px; border: 1px solid #f5b5b5; margin-bottom: 16px; }
-.field-error { color: #a40000; font-size: 0.9em; margin-left: 10px; white-space: nowrap; }
-.is-invalid { outline: 2px solid #a40000; }
-small.hint { color: #666; }
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-size: 1.8em;
+}
 
 /* ========================================
-   Table & Pager
+   Navbar
    ======================================== */
-table { border-collapse: collapse; width: 100%; }
-th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-th { background-color: #f2f2f2; }
+nav {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+}
 
-.pager a, .pager span { margin: 0 4px; }
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+nav a:hover {
+    background-color: #0056b3;
+}
+
+nav a:focus {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+}
+
+nav button {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid #000;
+    background-color: #fff;
+    color: #007bff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+nav button:hover {
+    background-color: #e0e0e0;
+}
+
+nav button:focus {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+}
+
+nav form {
+    display: inline; /* keep logout form on same line */
+    margin-left: 8px;
+}
+
+/* Mobile responsive navbar */
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav a, nav button {
+        margin-bottom: 6px;
+    }
+}
 
 /* ========================================
-   Vote Forms & Buttons
+   Footer (fixed, bottom-right)
    ======================================== */
-.vote-forms { display: flex; gap: 6px; }
-.btn { padding: 2px 6px; }
+footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: #f2f2f2;
+    color: #333;
+    border-top: 1px solid #ccc;
+    padding: 2px 8px;
+    border-radius: 4px 0 0 0;
+    white-space: nowrap;
+    z-index: 1000; /* ensure above other content */
+}
+
+footer p {
+    margin: 0;  /* remove default paragraph margin */
+}
+
+/* ========================================
+   Containers
+   ======================================== */
+.container {
+    max-width: 720px;
+    padding: 0 12px;
+    margin: 0;
+}
+
+.container.full-width {
+    max-width: 100%;
+}
+
+/* ========================================
+   Forms
+   ======================================== */
+form {
+    background: #fff;
+    padding: 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.filter-form {
+    background: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.filter-form .filter-pair {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-form .actions {
+    flex-basis: 100%;
+    margin-top: 0;
+}
+
+.vote-form {
+    padding: 0;
+}
+
+/* Row-based inputs */
+.row {
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.row label {
+    flex: 0 0 220px;
+    font-weight: 600;
+}
+
+.row input[type="text"],
+.row input[type="date"],
+.row input[type="password"],
+.row select {
+    flex: 1 1 auto;
+    padding: 8px 10px;
+    border: 1.5px solid #999;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border-color 0.2s, box-shadow 0.1s;
+}
+
+.row input:focus,
+.row select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+}
+
+.is-invalid {
+    border-color: #a40000;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(164,0,0,0.2);
+}
+
+/* ========================================
+   Buttons & Actions
+   ======================================== */
+.actions {
+    margin: 20px 0 16px 0;
+    display: flex;
+    gap: 12px;
+}
+
+.actions button,
+.actions a {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+}
+
+/* Primary buttons */
+.actions button,
+.actions a.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.actions button:hover,
+.actions a.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.actions button:focus,
+.actions a.btn-primary:focus {
+    outline: 2px solid #000;
+}
+
+/* Secondary buttons */
+.actions a:not(.btn-primary) {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.actions a:not(.btn-primary):hover {
+    background-color: #e0e0e0;
+}
+
+.btn-small {
+    padding: 2px 6px;
+    font-size: 0.85em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #000;
+    text-decoration: none;
+}
+
+.btn-small:hover {
+    background-color: #e0e0e0;
+}
+
+.vote-forms {
+    display: flex;
+    gap: 6px;
+}
+
+.btn {
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* ========================================
+   Errors & Hints
+   ======================================== */
+.error {
+    background: #ffecec;
+    color: #a40000;
+    padding: 10px;
+    border: 1px solid #f5b5b5;
+    margin-bottom: 16px;
+    border-radius: 4px;
+}
+
+.field-error {
+    color: #a40000;
+    font-size: 0.9em;
+    margin-left: 8px;
+}
+
+small.hint {
+    color: #666;
+    display: block;
+    margin-top: 4px;
+}
+
+/* ========================================
+   Tables
+   ======================================== */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 5px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+th.sortable {
+    white-space: nowrap;
+}
+
+/* ========================================
+   Pager
+   ======================================== */
+.pager {
+    margin: 16px 0;
+    text-align: left;
+    font-family: sans-serif;
+    font-size: 0.95em;
+}
+
+.pager a {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0 2px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    text-decoration: none;
+    color: #000;
+}
+
+.pager a:hover {
+    background-color: #e0e0e0;
+}
+
+.pager .current {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 4px;
+    border-radius: 2px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 600;
+}
+
+
+/* ========================================
+   Home page perk cards
+   ======================================== */
+.perk-card {
+    background: #fff;
+    padding: 12px 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 12px;
+}
+
+.perk-card strong {
+    font-size: 1.1em;
+}
+
+.perk-card span {
+    color: #555;
+}
+
+
+/* ========================================
+   Responsive adjustments
+   ======================================== */
+@media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .row label {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+}
