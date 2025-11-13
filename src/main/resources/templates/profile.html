@@ -33,7 +33,7 @@
                         <span th:text="${m.type}">Type</span> -
                         <span th:text="${m.organizationName}">Organization</span>
                     </div>
-                    <form th:action="@{/profile/memberships/remove}" method="post">
+                    <form class="flat-form" th:action="@{/profile/memberships/remove}" method="post">
                         <input type="hidden" name="membershipId" th:value="${m.id}" />
                         <button class="btn-small" type="submit">Remove</button>
                     </form>

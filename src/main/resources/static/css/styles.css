@@ -17,6 +17,27 @@ h1 {
 }
 
 /* ========================================
+   Font & Typography
+   ======================================== */
+html, body {
+    font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+}
+
+.username-highlight {
+    color: #ffeb3b;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* ========================================
    Navbar
    ======================================== */
 nav {
@@ -149,7 +170,7 @@ form {
     margin-top: 0;
 }
 
-.vote-form {
+.flat-form {
     padding: 0;
 }
 

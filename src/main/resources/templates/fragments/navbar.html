@@ -21,9 +21,9 @@
 
         <!-- Authenticated -->
         <span sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 12px;">
-            <span>Logged in as <span sec:authentication="name"></span></span>
+        <span>Logged in as <span class="username-highlight" sec:authentication="name"></span></span>
             <a th:href="@{/profile}">View Profile</a>
-            <form th:action="@{/logout}" method="post" style="margin:0;" class="vote-form">
+            <form th:action="@{/logout}" method="post" style="margin:0;" class="flat-form">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <button type="submit">Logout</button>
             </form>
