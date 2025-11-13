@@ -1,6 +1,8 @@
 package com.example.perkmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,10 +14,12 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     @Column(name = "username", unique = true, nullable = false) // Username associated with account
     private String username;
 
-    @Column(name = "password", nullable = false) //Password associated with account
+    @NotBlank
+    @Column(name = "password", nullable = false) // Password associated with account
     private String password;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true) // Perks created by this account
@@ -40,11 +44,11 @@ public class Account {
     public Set<Membership> getMemberships() { return memberships; }
     public void addMembership(Membership membership) { memberships.add(membership); }
     public void removeMembership(Membership membership) { memberships.remove(membership); }
+    public void setMemberships(Set<Membership> memberships) { this.memberships = memberships; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    //TODO: check for username uniqueness in database
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 

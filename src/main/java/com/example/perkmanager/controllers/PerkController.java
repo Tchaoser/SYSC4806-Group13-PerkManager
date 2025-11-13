@@ -55,7 +55,7 @@ public class PerkController {
             perks = perkService.sortPerks(perks, sort, direction);
             // Pagination
             int pageNum = Math.max(page.orElse(0), 0);
-            int pageSize = Math.max(size.orElse(10), 1);
+            int pageSize = Math.max(size.orElse(5), 1);
             int total = perks.size();
             int totalPages = (int) Math.ceil((double) total / pageSize);
             if (totalPages == 0) totalPages = 1;
