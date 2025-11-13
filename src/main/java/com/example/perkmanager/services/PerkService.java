@@ -11,29 +11,62 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing perk-related business logic.
+ * Handles CRUD operations, filtering, sorting, and voting functionality for perks.
+ * All operations are transactional to ensure data consistency.
+ *
+ * @author PerkManager Team
+ * @version 1.0
+ */
 @Service
 @Transactional
 public class PerkService {
 
     private final PerkRepository perkRepository;
 
+    /**
+     * Constructs a PerkService with the specified repository.
+     *
+     * @param perkRepository the repository for perk data access
+     */
     public PerkService(PerkRepository perkRepository) {
         this.perkRepository = perkRepository;
     }
 
-    // Fetch all perks
+    /**
+     * Retrieves all perks in the system.
+     *
+     * @return a list of all perks
+     */
     @Transactional(readOnly = true)
     public List<Perk> getAllPerks() {
         return perkRepository.findAll();
     }
 
-    // Fetch by ID
+    /**
+     * Finds a perk by its unique identifier.
+     *
+     * @param id the perk ID
+     * @return an Optional containing the perk if found, empty otherwise
+     */
     @Transactional(readOnly = true)
     public Optional<Perk> findById(Long id) {
         return perkRepository.findById(id);
     }
 
-    // Create a new perk
+    /**
+     * Creates a new perk with the specified details.
+     * Links the perk to its creator account before saving.
+     *
+     * @param creator the account that created the perk
+     * @param membership the membership required for this perk
+     * @param product the product this perk applies to
+     * @param benefit the description of the benefit offered
+     * @param expiryDate the expiry date of the perk (can be null)
+     * @param region the region where the perk applies (can be null)
+     * @return the newly created perk
+     */
     public Perk createPerk(Account creator, Membership membership, Product product, String benefit, Calendar expiryDate, String region) {
         Perk perk = new Perk();
         perk.setCreator(creator);
@@ -49,14 +82,18 @@ public class PerkService {
         return perkRepository.save(perk);
     }
 
-    //TODO: Consider moving all filtering and sorting logic to repository-level for scalability
     /**
-     * Filter perks optionally by:
-     * - membershipType: string (or null)
-     * - region: string (or null)
-     * - expiryOnly: boolean (or null)
-     * - userMemberships: Set<Membership> (for logged-in users)
+     * Filters perks based on optional criteria.
+     * Supports filtering by membership type, region, expiry status, and user memberships.
+     * All filters are optional and can be combined.
+     *
+     * @param membershipType optional filter by membership type (case-insensitive)
+     * @param region optional filter by region (case-insensitive substring match)
+     * @param expiryOnly if true, only returns perks with future expiry dates
+     * @param userMemberships optional set of user memberships to filter perks that match
+     * @return a filtered list of perks matching all specified criteria
      */
+    //TODO: Consider moving all filtering and sorting logic to repository-level for scalability
     @Transactional(readOnly = true)
     public List<Perk> filterPerks(Optional<String> membershipType,
                                   Optional<String> region,
@@ -88,7 +125,14 @@ public class PerkService {
                 .collect(Collectors.toList());
     }
 
-    // Upvote a perk
+    /**
+     * Upvotes a perk for the specified account.
+     * If the account had previously downvoted the perk, the downvote is removed first.
+     *
+     * @param perkId the ID of the perk to upvote
+     * @param account the account that is upvoting
+     * @throws NoSuchElementException if the perk with the given ID is not found
+     */
     public void upvotePerk(Long perkId, Account account) {
         Perk perk = perkRepository.findById(perkId)
                 .orElseThrow(() -> new NoSuchElementException("Perk not found"));
@@ -102,7 +146,14 @@ public class PerkService {
         perkRepository.save(perk);
     }
 
-    // Downvote a perk
+    /**
+     * Downvotes a perk for the specified account.
+     * If the account had previously upvoted the perk, the upvote is removed first.
+     *
+     * @param perkId the ID of the perk to downvote
+     * @param account the account that is downvoting
+     * @throws NoSuchElementException if the perk with the given ID is not found
+     */
     public void downvotePerk(Long perkId, Account account) {
         Perk perk = perkRepository.findById(perkId)
                 .orElseThrow(() -> new NoSuchElementException("Perk not found"));
@@ -116,8 +167,16 @@ public class PerkService {
         perkRepository.save(perk);
     }
 
-
-
+    /**
+     * Sorts a list of perks by the specified sort key and direction.
+     * Supported sort keys: "rating" (upvotes minus downvotes), "expiry" (expiry date).
+     * If an unknown sort key is provided, the list is returned unchanged.
+     *
+     * @param perks the list of perks to sort
+     * @param sortKey optional sort key ("rating" or "expiry")
+     * @param direction optional sort direction ("asc" or "desc", defaults to "asc")
+     * @return a sorted list of perks, or the original list if sort key is empty or unknown
+     */
     public List<Perk> sortPerks(List<Perk> perks, Optional<String> sortKey, Optional<String> direction) {
         if (sortKey.isEmpty()) return perks;
 

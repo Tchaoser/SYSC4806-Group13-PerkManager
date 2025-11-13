@@ -18,6 +18,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * Controller for handling perk-related operations.
+ * Manages the creation, listing, filtering, sorting, pagination, and voting on perks.
+ * Perks represent discounts or benefits tied to specific memberships and products.
+ *
+ * @author PerkManager Team
+ * @version 1.0
+ */
 @Controller
 @RequestMapping("/perks")
 public class PerkController {
@@ -27,6 +35,14 @@ public class PerkController {
     private final MembershipService membershipService;
     private final AccountService accountService;
 
+    /**
+     * Constructs a PerkController with the specified services.
+     *
+     * @param perkService the service for perk operations
+     * @param productService the service for product operations
+     * @param membershipService the service for membership operations
+     * @param accountService the service for account operations
+     */
     public PerkController(PerkService perkService,
                           ProductService productService,
                           MembershipService membershipService,
@@ -37,7 +53,21 @@ public class PerkController {
         this.accountService = accountService;
     }
 
-    // List all perks with sorting + filtering + pagination
+    /**
+     * Lists all perks with optional filtering, sorting, and pagination.
+     * Supports filtering by membership type, region, and expiry status.
+     * Supports sorting by various fields in ascending or descending order.
+     *
+     * @param membershipType optional filter by membership type
+     * @param region optional filter by region
+     * @param expiryOnly optional filter to show only expiring perks
+     * @param sort optional sort field name
+     * @param direction optional sort direction ("asc" or "desc")
+     * @param page optional page number (0-indexed)
+     * @param size optional page size
+     * @param model the Spring model for passing data to the view
+     * @return the name of the perks template
+     */
     @GetMapping
     public String listPerks(
             @RequestParam Optional<String> membershipType,
@@ -83,7 +113,13 @@ public class PerkController {
         }
     }
 
-    // Show form to add a new perk
+    /**
+     * Displays the form for adding a new perk.
+     * Provides lists of available products and memberships for selection.
+     *
+     * @param model the Spring model for passing data to the view
+     * @return the name of the add-perk template
+     */
     @GetMapping("/add")
     public String showAddPerkForm(Model model) {
         model.addAttribute("perk", new Perk());
@@ -92,7 +128,20 @@ public class PerkController {
         return "add-perk";
     }
 
-    // Create a perk using authenticated user
+    /**
+     * Handles the submission of the add perk form.
+     * Creates a new perk associated with the authenticated user, a product, and a membership.
+     * Validates required fields and expiry date before creation.
+     *
+     * @param productId the ID of the product associated with the perk
+     * @param membershipId the ID of the membership required for the perk
+     * @param benefit the description of the benefit offered by the perk
+     * @param region optional region where the perk applies
+     * @param expiryDate optional expiry date in YYYY-MM-DD format
+     * @param userDetails the authenticated user details
+     * @param model the Spring model for passing data to the view
+     * @return redirect to perks list on success, or add-perk template with errors on failure
+     */
     @PostMapping("/add")
     public String addPerk(@RequestParam(required = false) Long productId,
                                                @RequestParam(required = false) Long membershipId,
@@ -166,8 +215,14 @@ public class PerkController {
     }
 
 
-    // --- Voting endpoints (update counts immediately, then redirect back) ---
-
+    /**
+     * Handles upvoting a perk by the authenticated user.
+     * Updates the perk's upvote count and redirects back to the perks list.
+     *
+     * @param id the ID of the perk to upvote
+     * @param userDetails the authenticated user details
+     * @return redirect to login page if not authenticated, or redirect to perks list
+     */
     @PostMapping("/{id}/upvote")
     public String upvote(@PathVariable Long id,
                          @AuthenticationPrincipal UserDetails userDetails) {
@@ -185,6 +240,14 @@ public class PerkController {
         }
     }
 
+    /**
+     * Handles downvoting a perk by the authenticated user.
+     * Updates the perk's downvote count and redirects back to the perks list.
+     *
+     * @param id the ID of the perk to downvote
+     * @param userDetails the authenticated user details
+     * @return redirect to login page if not authenticated, or redirect to perks list
+     */
     @PostMapping("/{id}/downvote")
     public String downvote(@PathVariable Long id,
                            @AuthenticationPrincipal UserDetails userDetails) {
