@@ -62,7 +62,8 @@
 <!--footer-->
 <div th:replace="fragments/footer :: footer"></div>
 
-
-<script th:src="@{/js/profile.js}" type="text/javascript"></script>
+<script th:src="@{/js/profile.js}" type="module">
+    import { csrfHeaders, addMembership, removeMembership, updateMembershipList, showMsg} from "../static/js/profile.js";
+</script>
 </body>
 </html>

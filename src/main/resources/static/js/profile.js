@@ -1,4 +1,4 @@
-function csrfHeaders() {
+export function csrfHeaders() {
     const tokenEl = document.querySelector('meta[name="_csrf"]');
     const headerEl = document.querySelector('meta[name="_csrf_header"]');
     const h = new Headers();
@@ -9,7 +9,7 @@ function csrfHeaders() {
     return h;
 }
 
-function addMembership() {
+export function addMembership() {
     const select = document.getElementById('membership-select');
     const membershipId = select.value;
     fetch('/profile/memberships/add', {
@@ -21,7 +21,7 @@ function addMembership() {
         .catch(() => showMsg('Failed to add membership'));
 }
 
-function removeMembership(btn) {
+export function removeMembership(btn) {
     const membershipId = btn.getAttribute('data-id');
     fetch('/profile/memberships/remove', {
         method: 'POST',
@@ -32,7 +32,7 @@ function removeMembership(btn) {
         .catch(() => showMsg('Failed to remove membership'));
 }
 
-function updateMembershipList(payload) {
+export function updateMembershipList(payload) {
     const list = document.getElementById('linked-memberships');
     if (!list) return;
     list.innerHTML = '';
@@ -56,9 +56,11 @@ function updateMembershipList(payload) {
     showMsg('Updated successfully');
 }
 
-function showMsg(text) {
+export function showMsg(text) {
     const el = document.getElementById('msg');
     if (!el) return;
     el.textContent = text;
     setTimeout(() => el.textContent = '', 2000);
 }
+
+
