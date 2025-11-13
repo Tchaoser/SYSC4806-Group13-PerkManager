@@ -379,6 +379,43 @@ th.sortable {
 
 
 /* ========================================
+   Shared Home & Profile Layout
+   ======================================== */
+.perk-sections,
+.membership-section {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.perk-column,
+.membership-column {
+    flex: 1;
+    min-width: 280px;
+}
+
+.membership-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.membership-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Stack columns on small screens */
+@media (max-width: 700px) {
+    .perk-sections,
+    .membership-section {
+        flex-direction: column;
+    }
+}
+
+/* ========================================
    Responsive adjustments
    ======================================== */
 @media (max-width: 600px) {
