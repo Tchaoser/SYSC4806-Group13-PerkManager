@@ -96,6 +96,7 @@ public class PerkController {
 
             model.addAttribute("perks", pageItems);
             model.addAttribute("membershipType", membershipType.orElse(""));
+            model.addAttribute("membershipTypes", membershipService.getAllMembershipTypes());
             model.addAttribute("region", region.orElse(""));
             model.addAttribute("expiryOnly", expiryOnly.orElse(false));
             model.addAttribute("sort", sort.orElse(""));
@@ -144,11 +145,11 @@ public class PerkController {
      */
     @PostMapping("/add")
     public String addPerk(@RequestParam(required = false) Long productId,
-                                               @RequestParam(required = false) Long membershipId,
-                                               @RequestParam(required = false) String benefit,
-                                               @RequestParam(required = false) String region,
-                                               @RequestParam(required = false) String expiryDate,
-                                               @AuthenticationPrincipal UserDetails userDetails, Model model) {
+                          @RequestParam(required = false) Long membershipId,
+                          @RequestParam(required = false) String benefit,
+                          @RequestParam(required = false) String region,
+                          @RequestParam(required = false) String expiryDate,
+                          @AuthenticationPrincipal UserDetails userDetails, Model model) {
 
         Map<String, String> fieldErrors = new HashMap<>();
         if (benefit == null || benefit.trim().isEmpty()) {
