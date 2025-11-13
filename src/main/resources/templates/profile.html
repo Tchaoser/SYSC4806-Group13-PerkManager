@@ -20,21 +20,20 @@
             <strong>Username:</strong> <span th:text="${account.username}">username</span>
         </div>
 
-        <!-- Membership Section (Two Columns) -->
-        <div class="membership-section" style="display:flex; gap:20px; flex-wrap:wrap; margin-top:20px;">
-
+        <!-- Membership Section -->
+        <div class="membership-section">
             <!-- Linked Memberships Column -->
-            <div style="flex:1; min-width:280px;">
+            <div class="membership-column">
                 <h2>Linked Memberships</h2>
                 <div th:if="${#lists.isEmpty(memberships)}">
                     <div class="perk-card">No memberships linked.</div>
                 </div>
-                <div th:each="m : ${memberships}" class="perk-card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div th:each="m : ${memberships}" class="perk-card membership-item">
                     <div>
                         <span th:text="${m.type}">Type</span> -
                         <span th:text="${m.organizationName}">Organization</span>
                     </div>
-                    <form th:action="@{/profile/memberships/remove}" method="post" style="margin:0;">
+                    <form th:action="@{/profile/memberships/remove}" method="post">
                         <input type="hidden" name="membershipId" th:value="${m.id}" />
                         <button class="btn-small" type="submit">Remove</button>
                     </form>
@@ -42,10 +41,10 @@
             </div>
 
             <!-- Add Membership Column -->
-            <div style="flex:1; min-width:280px;">
+            <div class="membership-column">
                 <h2>Add Membership</h2>
-                <form th:action="@{/profile/memberships/add}" method="post" class="row" style="flex-direction:column; gap:12px;">
-                    <select name="membershipId" class="row" style="flex:1;">
+                <form th:action="@{/profile/memberships/add}" method="post" class="membership-form">
+                    <select name="membershipId">
                         <option th:each="m : ${allMemberships}" th:value="${m.id}" th:text="${m.type} + ' - ' + ${m.organizationName}"></option>
                     </select>
                     <div class="actions">
@@ -53,7 +52,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
