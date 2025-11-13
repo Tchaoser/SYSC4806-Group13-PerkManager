@@ -10,7 +10,7 @@ import java.util.Set;
  * A perk is a discount or benefit tied to a specific membership and product.
  * Perks can have optional expiry dates and regions, and can be upvoted or downvoted by users.
  *
- * @author PerkManager Team
+ * @author Peter
  * @version 1.0
  */
 @Entity

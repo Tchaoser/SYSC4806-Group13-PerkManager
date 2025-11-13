@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller for handling membership-related operations.
  * Manages the creation and listing of memberships (e.g., Air Miles, CAA, Visa).
  *
- * @author PerkManager Team
+ * @author Aziz
  * @version 1.0
  */
 @Controller

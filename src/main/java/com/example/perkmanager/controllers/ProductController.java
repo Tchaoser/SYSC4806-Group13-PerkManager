@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * Controller for handling product-related operations.
  * Manages the creation and listing of products or services that can be associated with perks.
  *
- * @author PerkManager Team
+ * @author Aziz
  * @version 1.0
  */
 @Controller

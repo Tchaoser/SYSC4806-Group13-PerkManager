@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Provides CRUD operations for perk management.
  * Extends JpaRepository to inherit standard database operations.
  *
- * @author PerkManager Team
+ * @author Peter
  * @version 1.0
  */
 @Repository

@@ -8,7 +8,7 @@ import jakarta.persistence.*;
  * Examples include credit cards (Visa, Mastercard), loyalty programs (Air Miles, CAA),
  * and organization memberships (WestJet Rewards, Cineplex).
  *
- * @author PerkManager Team
+ * @author Peter
  * @version 1.0
  */
 @Entity

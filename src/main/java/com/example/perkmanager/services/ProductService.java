@@ -13,7 +13,7 @@ import java.util.Optional;
  * Handles CRUD operations for products that can be associated with perks.
  * All operations are transactional to ensure data consistency.
  *
- * @author PerkManager Team
+ * @author Peter
  * @version 1.0
  */
 @Service

@@ -23,7 +23,7 @@ import java.util.*;
  * Manages the creation, listing, filtering, sorting, pagination, and voting on perks.
  * Perks represent discounts or benefits tied to specific memberships and products.
  *
- * @author PerkManager Team
+ * @author Peter, Aziz
  * @version 1.0
  */
 @Controller

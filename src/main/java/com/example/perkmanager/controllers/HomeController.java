@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Controller for handling the homepage and root route of the Perk Manager application.
  * Serves as the entry point for users accessing the application.
  *
- * @author PerkManager Team
+ * @author Peter
  * @version 1.0
  */
 @Controller

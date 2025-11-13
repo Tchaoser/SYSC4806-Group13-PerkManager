@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * <p>The Perk Manager application allows users to create profiles, associate memberships,
  * and manage perks (discounts or benefits) tied to specific memberships and products.
  *
- * @author PerkManager Team
+ * @author Peter
  * @version 1.0
  */
 @SpringBootApplication

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * Loads user account information from the database for authentication purposes.
  * Converts Account entities to Spring Security UserDetails objects.
  *
- * @author PerkManager Team
+ * @author Lucas
  * @version 1.0
  */
 @Service
