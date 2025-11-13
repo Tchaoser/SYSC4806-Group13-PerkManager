@@ -16,8 +16,6 @@ import java.util.Optional;
  * Handles account creation, authentication, and linking accounts to perks and memberships.
  * All operations are transactional to ensure data consistency.
  *
- * @author Peter
- * @version 1.0
  */
 @Service
 @Transactional

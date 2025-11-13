@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
  * Handles CRUD operations, filtering, sorting, and voting functionality for perks.
  * All operations are transactional to ensure data consistency.
  *
- * @author Peter
- * @version 1.0
  */
 @Service
 @Transactional

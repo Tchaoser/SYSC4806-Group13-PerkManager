@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
  * Controller for handling account-related operations including user registration and login.
  * Manages the signup and login pages for the Perk Manager application.
  *
- * @author Lucas
- * @version 1.0
  */
 @Controller
 public class AccountController{

@@ -7,8 +7,6 @@ import jakarta.persistence.*;
  * Products can be associated with perks and represent items or services
  * that users can receive benefits for (e.g., flights, movies, consumer goods).
  *
- * @author Peter
- * @version 1.0
  */
 @Entity
 @Table(name = "products")

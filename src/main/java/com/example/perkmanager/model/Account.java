@@ -9,8 +9,6 @@ import java.util.Set;
  * Each account has a unique username, password, and can be associated with multiple memberships.
  * Accounts can create perks, upvote/downvote perks, and manage their membership associations.
  *
- * @author Peter
- * @version 1.0
  */
 @Entity
 @Table(name = "accounts")

@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
  * Provides CRUD operations for product management.
  * Extends JpaRepository to inherit standard database operations.
  *
- * @author Peter
- * @version 1.0
  */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {

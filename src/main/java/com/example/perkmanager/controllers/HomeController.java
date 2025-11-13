@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
  *     <li>Top-rated perks (sorted by rating descending, then by expiry date ascending).</li>
  *     <li>Soon-to-expire perks (sorted by expiry date ascending, then by rating descending).</li>
  * </ul>
- * @author Peter
- * @version 1.0
  */
 @Controller
 public class HomeController {

@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
  * Handles CRUD operations for memberships and provides utility methods for membership management.
  * All operations are transactional to ensure data consistency.
  *
- * @author Peter
- * @version 1.0
  */
 @Service
 @Transactional

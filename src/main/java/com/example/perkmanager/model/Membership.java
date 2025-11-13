@@ -8,8 +8,6 @@ import jakarta.persistence.*;
  * Examples include credit cards (Visa, Mastercard), loyalty programs (Air Miles, CAA),
  * and organization memberships (WestJet Rewards, Cineplex).
  *
- * @author Peter
- * @version 1.0
  */
 @Entity
 @Table(name = "memberships")
