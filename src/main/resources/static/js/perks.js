@@ -25,15 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const handleVote = async (type) => {
             if (!loggedIn) return alert("You must be logged in to vote");
 
-            // Save old state in case of failure
             const oldVote = currentVote;
             const oldRating = parseInt(ratingCell.textContent);
 
-            // Optimistically update currentVote
             if (type === "upvote") currentVote = currentVote === 1 ? 0 : 1;
             else if (type === "downvote") currentVote = currentVote === -1 ? 0 : -1;
 
-            // Update rating and buttons immediately
             let newRating;
             if (currentVote === 1) newRating = baseRating + 1;
             else if (currentVote === -1) newRating = baseRating - 1;
@@ -56,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (err) {
                 console.error(err);
                 alert("Voting failed. Reverting...");
-                // Revert to old state
                 currentVote = oldVote;
                 ratingCell.textContent = oldRating;
                 updateButtons();
