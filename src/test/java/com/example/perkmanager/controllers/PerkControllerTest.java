@@ -51,7 +51,7 @@ public class PerkControllerTest {
         String view = perkController.listPerks(
                 Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), null,
                 model
         );
 
@@ -119,30 +119,30 @@ public class PerkControllerTest {
     }
 
     @Test
-    void upvote() {
+    void toggleUpvote() {
         Account account = new Account();
         when(accountService.findByUsername(anyString())).thenReturn(Optional.of(account));
 
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("user");
 
-        String view = perkController.upvote(1L, userDetails);
+        String view = perkController.toggleUpvote(1L, userDetails);
 
         assertEquals("redirect:/perks", view);
-        verify(perkService).upvotePerk(1L, account);
+        verify(perkService).toggleUpvotePerk(1L, account);
     }
 
     @Test
-    void downvote() {
+    void toggleDownvote() {
         Account account = new Account();
         when(accountService.findByUsername(anyString())).thenReturn(Optional.of(account));
 
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("user");
 
-        String view = perkController.downvote(1L, userDetails);
+        String view = perkController.toggleDownvote(1L, userDetails);
 
         assertEquals("redirect:/perks", view);
-        verify(perkService).downvotePerk(1L, account);
+        verify(perkService).toggleDownvotePerk(1L, account);
     }
 }
