@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -195,7 +196,9 @@ public class PerkController {
 
     @PostMapping("/{id}/upvote")
     public String toggleUpvote(@PathVariable Long id,
-                         @AuthenticationPrincipal UserDetails userDetails) {
+                               @RequestParam(required = false, defaultValue = "0") int page,
+                               @AuthenticationPrincipal UserDetails userDetails,
+                               RedirectAttributes redirectAttributes) {
         try {
             if (userDetails == null) {
                 return "redirect:/login";
@@ -203,6 +206,7 @@ public class PerkController {
             Account account = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
             perkService.toggleUpvotePerk(id, account);
+            redirectAttributes.addAttribute("page", page);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,7 +216,9 @@ public class PerkController {
 
     @PostMapping("/{id}/downvote")
     public String toggleDownvote(@PathVariable Long id,
-                           @AuthenticationPrincipal UserDetails userDetails) {
+                                 @RequestParam(required = false, defaultValue = "0") int page,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 RedirectAttributes redirectAttributes) {
         try {
             if (userDetails == null) {
                 return "redirect:/login";
@@ -220,6 +226,7 @@ public class PerkController {
             Account account = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
             perkService.toggleDownvotePerk(id, account);
+            redirectAttributes.addAttribute("page", page);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();

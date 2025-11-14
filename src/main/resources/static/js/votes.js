@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+function initVotes() {
     document.querySelectorAll(".vote-forms").forEach(container => {
         const loggedIn = container.dataset.loggedIn === "true";
         const voteState = parseInt(container.dataset.voteState) || 0;
@@ -12,9 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const ratingCell = container.closest("tr").querySelector("td:nth-child(10)");
         const displayedRating = parseInt(ratingCell.textContent);
-
         const baseRating = displayedRating - voteState;
-
         let currentVote = voteState;
 
         const updateButtons = () => {
@@ -71,4 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateButtons();
     });
-});
+}
+
+// Run on initial page load
+document.addEventListener("DOMContentLoaded", initVotes);

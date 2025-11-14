@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,7 @@ public class PerkControllerTest {
     private ProductService productService;
     private AccountService accountService;
     private Model model;
+    private RedirectAttributes redirectAttributes;
 
     @BeforeEach
     void setup() {
@@ -37,6 +40,7 @@ public class PerkControllerTest {
         accountService = mock(AccountService.class);
         perkController = new PerkController(perkService, productService, membershipService, accountService);
         model = mock(Model.class);
+        redirectAttributes = new RedirectAttributesModelMap();
     }
 
     @Test
@@ -126,8 +130,9 @@ public class PerkControllerTest {
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("user");
 
-        String view = perkController.toggleUpvote(1L, userDetails);
+        String view = perkController.toggleUpvote(1L, 1, userDetails, redirectAttributes);
 
+        assertEquals("1", redirectAttributes.getAttribute("page"));
         assertEquals("redirect:/perks", view);
         verify(perkService).toggleUpvotePerk(1L, account);
     }
@@ -140,8 +145,9 @@ public class PerkControllerTest {
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("user");
 
-        String view = perkController.toggleDownvote(1L, userDetails);
+        String view = perkController.toggleDownvote(1L, 1, userDetails, redirectAttributes);
 
+        assertEquals("1", redirectAttributes.getAttribute("page"));
         assertEquals("redirect:/perks", view);
         verify(perkService).toggleDownvotePerk(1L, account);
     }
