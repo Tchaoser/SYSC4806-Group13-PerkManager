@@ -1,6 +1,10 @@
 package com.example.perkmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,25 +17,30 @@ public class Perk {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     @Column(name = "benefit", nullable = false) //The benefit offered by the perk. Ex: 10% next flight
     private String benefit;
 
+    @FutureOrPresent(message = "Date must not have already passed")
     @Column(name = "expiry_date", nullable = true) //The date the perk expires on (Optional)
     private Calendar expiryDate;
 
     @Column(name = "region", nullable = true) //The region the perk applies to  (Optional). Multiple regions should be listed in the same string
     private String region;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "membership_id")
+    @JoinColumn(name = "membership_id", nullable = false)
     private Membership membership;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "creator_id")
+    @JoinColumn(name = "creator_id", nullable = false)
     private Account creator;
 
     // Accounts who upvoted

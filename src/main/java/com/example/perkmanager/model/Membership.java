@@ -1,6 +1,7 @@
 package com.example.perkmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "memberships")
@@ -10,13 +11,16 @@ public class Membership {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "type") //What type of membership it is. Ex: Credit card, Air Miles, etc
+    @NotBlank
+    @Column(name = "type", nullable = false) //What type of membership it is. Ex: Credit card, Air Miles, etc
     private String type;
 
-    @Column(name = "org_name") //The Company or Organization associated with the membership. Ex: RBC, WestJet, Cineplex, etc
+    @NotBlank
+    @Column(name = "org_name", nullable = false) //The Company or Organization associated with the membership. Ex: RBC, WestJet, Cineplex, etc
     private String organizationName;
 
-    @Column(name = "description") //The Name/Description of the membership. Ex: West Jet Rewards Member
+    @NotBlank
+    @Column(name = "description", nullable = false) //The Name/Description of the membership. Ex: West Jet Rewards Member
     private String description;
 
     public Membership() {}

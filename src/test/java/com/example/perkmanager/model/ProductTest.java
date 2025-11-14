@@ -14,24 +14,16 @@ class ProductTest {
     }
 
     @Test
-    void getId() {
+    void getSetId() {
         product1.setId(1l);
         assertEquals(product1.getId(), 1l);
-    }
-
-    @Test
-    void setId() {
         product1.setId(2l);
         assertEquals(product1.getId(), 2l);
     }
 
     @Test
-    void getName() {
+    void getSetName() {
         assertEquals("Tylenol", product1.getName());
-    }
-
-    @Test
-    void setName() {
         product1.setName("Advil");
         assertEquals("Advil", product1.getName());
         assertEquals("Medicine", product1.getDescription());
@@ -39,26 +31,17 @@ class ProductTest {
     }
 
     @Test
-    void getDescription() {
+    void getSetDescription() {
         assertEquals("Medicine", product1.getDescription());
-    }
-
-    @Test
-    void setDescription() {
         product1.setDescription("Pain Relief");
         assertEquals("Tylenol", product1.getName());
         assertEquals("Pain Relief", product1.getDescription());
         assertEquals("Kenvue", product1.getCompany());
-
     }
 
     @Test
-    void getCompany() {
+    void getSetCompany() {
         assertEquals("Kenvue", product1.getCompany());
-    }
-
-    @Test
-    void setCompany() {
         product1.setCompany("Pfizer");
         assertEquals("Tylenol", product1.getName());
         assertEquals("Medicine", product1.getDescription());
