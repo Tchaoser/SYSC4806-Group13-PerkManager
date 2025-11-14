@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Sign Up - PerkManager</title>
-</head>
+<head th:replace="fragments/head :: head('Sign Up - PerkManager')"></head>
+
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <h1>Create an Account</h1>
 
-<h1>Create an Account</h1>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
 
-<div th:if="${error}" style="color: red;">
-    <p th:text="${error}"></p>
+    <form th:action="@{/signup}" method="post">
+        <div class="row">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="row">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="actions">
+            <button type="submit">Register</button>
+        </div>
+    </form>
+
+    <div th:if="${param.error}">
+        <p style="color:red;">An account with that username already exists.</p>
+    </div>
 </div>
-
-<form th:action="@{/signup}" method="post">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Register</button>
-</form>
-
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

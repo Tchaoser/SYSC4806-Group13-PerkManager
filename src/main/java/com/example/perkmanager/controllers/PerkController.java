@@ -55,7 +55,7 @@ public class PerkController {
             perks = perkService.sortPerks(perks, sort, direction);
             // Pagination
             int pageNum = Math.max(page.orElse(0), 0);
-            int pageSize = Math.max(size.orElse(10), 1);
+            int pageSize = Math.max(size.orElse(5), 1);
             int total = perks.size();
             int totalPages = (int) Math.ceil((double) total / pageSize);
             if (totalPages == 0) totalPages = 1;
@@ -66,6 +66,7 @@ public class PerkController {
 
             model.addAttribute("perks", pageItems);
             model.addAttribute("membershipType", membershipType.orElse(""));
+            model.addAttribute("membershipTypes", membershipService.getAllMembershipTypes());
             model.addAttribute("region", region.orElse(""));
             model.addAttribute("expiryOnly", expiryOnly.orElse(false));
             model.addAttribute("sort", sort.orElse(""));

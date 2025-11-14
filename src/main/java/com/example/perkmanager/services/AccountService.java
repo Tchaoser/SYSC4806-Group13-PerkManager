@@ -53,4 +53,10 @@ public class AccountService {
         account.addMembership(membership);
         accountRepository.save(account);
     }
+
+    //remove an account, required for profile to work
+    public void removeMembership(Account account, Membership membership) {
+        account.removeMembership(membership);
+        accountRepository.save(account);
+    }
 }
