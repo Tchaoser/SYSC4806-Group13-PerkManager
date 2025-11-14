@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Add Membership</title>
-</head>
+<head th:replace="fragments/head :: head('Add Membership')"></head>
+
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-
+<div class="container">
 <h1>Add Membership</h1>
 
-<form th:action="@{/memberships/add}" method="post">
-    <label>Type:</label>
-    <input type="text" name="type" required /><br/>
+    <form th:action="@{/memberships/add}" method="post">
+        <div class="row">
+            <label>Type <span style="color:#a40000">*</span></label>
+            <input type="text" name="type" required/>
+        </div>
 
-    <label>Organization Name:</label>
-    <input type="text" name="organizationName" required /><br/>
+        <div class="row">
+            <label>Organization Name <span style="color:#a40000">*</span></label>
+            <input type="text" name="organizationName" required/>
+        </div>
 
-    <label>Description:</label>
-    <input type="text" name="description" required /><br/>
+        <div class="row">
+            <label>Description</label>
+            <input type="text" name="description"/>
+        </div>
 
-    <button type="submit">Save Membership</button>
-</form>
-
-<div th:replace="~{fragments/footer :: footer}"></div>
-</body>
-</html>
+        <div class="actions">
+            <button type="submit">Save Membership</button>
+            <a th:href="@{/memberships}">Cancel</a>
+        </div>
+    </form>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</div>
