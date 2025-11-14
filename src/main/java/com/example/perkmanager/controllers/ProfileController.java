@@ -1,17 +1,13 @@
 package com.example.perkmanager.controllers;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
 import com.example.perkmanager.model.Perk;
-import com.example.perkmanager.model.Product;
 import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import com.example.perkmanager.services.PerkService;
-import com.example.perkmanager.services.ProductService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +22,12 @@ import java.util.Optional;
 public class ProfileController {
     private final AccountService accountService;
     private final MembershipService membershipService;
+    private final PerkService perkService;
 
-    public ProfileController(AccountService accountService, MembershipService membershipService) {
+    public ProfileController(AccountService accountService, MembershipService membershipService, PerkService perkService) {
         this.accountService = accountService;
         this.membershipService = membershipService;
+        this.perkService = perkService;
     }
 
     @GetMapping
@@ -46,6 +44,15 @@ public class ProfileController {
         model.addAttribute("memberships", memberships);
         model.addAttribute("allMemberships", availableMemberships);
 
+        var perks = current.map(Account::getSavedPerks)
+                .orElseGet(java.util.Collections::emptySet);
+
+        var availablePerks = perkService.getAllPerks().stream()
+                .filter(p -> perks.stream().noneMatch(sp -> sp.getId().equals(p.getId())))
+                .collect(java.util.stream.Collectors.toSet());
+
+        model.addAttribute("perks", perks);
+        model.addAttribute("allPerks", availablePerks);
         return "profile";
     }
 
@@ -77,6 +84,36 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
+    // Perk endpoints
+    @PostMapping("/perks/add")
+    public String addPerk(@RequestParam("perkId") Long perkId) {
+        Optional<Account> current = getCurrentAccount();
+        if (current.isEmpty()) {
+            return "redirect:/login";
+        }
+
+        Perk perk = perkService.findById(perkId)
+                .orElseThrow(() -> new IllegalArgumentException("Perk not found"));
+
+        accountService.addPerkToProfile(current.get(), perk);
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/perks/remove")
+    public String removePerk(@RequestParam("perkId") Long perkId) {
+        Optional<Account> current = getCurrentAccount();
+        if (current.isEmpty()) {
+            return "redirect:/login";
+        }
+
+        Perk perk = perkService.findById(perkId)
+                .orElseThrow(() -> new IllegalArgumentException("Perk not found"));
+
+        accountService.removePerkFromProfile(current.get(), perk);
+        return "redirect:/profile";
+    }
+
+
     //function which returns only authenticated account of user and returns empty for the unauthenticated
     private Optional<Account> getCurrentAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -91,6 +128,7 @@ public class ProfileController {
         Map<String, Object> map = new HashMap<>();
         map.put("username", account.getUsername());
         map.put("memberships", account.getMemberships());
+        map.put("perks", account.getSavedPerks());
         return map;
     }
 }
