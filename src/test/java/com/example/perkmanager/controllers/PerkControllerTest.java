@@ -58,7 +58,7 @@ public class PerkControllerTest {
         assertEquals("perks", view);
         verify(model).addAttribute("perks", perkList);
         verify(model).addAttribute("page", 0);
-        verify(model).addAttribute("size", 10);
+        verify(model).addAttribute("size", 5);
         verify(model).addAttribute("totalPages", 1);
         verify(model).addAttribute("totalPerks", perkList.size());
     }
