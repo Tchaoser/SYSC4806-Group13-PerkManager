@@ -1,0 +1,37 @@
+name: Jasmine Testing Verification
+
+on:
+  push:
+    branches: [ Jest-Testing ]
+  pull_request:
+    branches: [ Jest-Testing ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    #Spring boot build
+    steps:
+    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4 # Checks out your repository code
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Specifies the Node.js version to use
+
+    - name: Install Dependencies
+      working-directory: ./src/main/resources
+      run: npm install # Installs project dependencies
+
+    - name: Fix Jest Permissions
+      working-directory: ./src/main/resources
+      run: chmod +x ./node_modules/.bin/jest
+
+  #Runs Jasmine Test
+    - name: Run Jest Tests
+      working-directory: ./src/main/resources
+      run: |
+        npm test
