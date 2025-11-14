@@ -49,49 +49,62 @@ perkmanager/
 │  │  │  │  └─ Perk.java                    # JPA entity: perk (description, votes, expiry)
 │  │  │  │
 │  │  │  ├─ repositories/
-│  │  │  │  ├─ UserRepository.java              # Spring Data JPA interface for User CRUD
-│  │  │  │  ├─ MembershipRepository.java        # JPA repo for Membership entity
-│  │  │  │  ├─ ProductRepository.java           # JPA repo for Product entity
-│  │  │  │  └─ PerkRepository.java              # JPA repo for Perk entity + custom queries
+│  │  │  │  ├─ UserRepository.java          # Spring Data JPA interface for User CRUD
+│  │  │  │  ├─ MembershipRepository.java    # JPA repo for Membership entity
+│  │  │  │  ├─ ProductRepository.java       # JPA repo for Product entity
+│  │  │  │  └─ PerkRepository.java          # JPA repo for Perk entity + custom queries
 │  │  │  │
-│  │  │  └─ services/
-│  │  │     ├─ UserService.java             # Handles profile logic and membership linking
-│  │  │     ├─ PerkService.java             # Core business logic for perks (posting, voting, expiry)
-│  │  │     ├─ MembershipService.java      	# Manages membership CRUD and validation
-│  │  │     └─ ProductService.java      	# Manages product CRUD and validation
+│  │  │  ├─ services/
+│  │  │  │  ├─ UserService.java             # Handles profile logic and membership linking
+│  │  │  │  ├─ PerkService.java             # Core business logic for perks (posting, voting, expiry)
+│  │  │  │  ├─ MembershipService.java       # Manages membership CRUD and validation
+│  │  │  │  └─ ProductService.java          # Manages product CRUD and validation
+│  │  │  │
+│  │  │  └─ utils/
+│  │  │     └─ PasswordHashGen.java         # Standalone utility to generate bcrypt hashes for demo accounts
 │  │  │
 │  │  ├─ resources/
+│  │  │  ├─ db/
+│  │  │  │  ├─ migrations/
+│  │  │  │  │  ├─ V1__create_schema.sql    # SQL migration: creates all tables
+│  │  │  │  │  └─ V2__insert_base_data.sql # SQL migration: inserts base reference data (memberships, products)
+│  │  │  │  ├─ data/
+│  │  │  │  │  └─ demo_data.sql            # Demo/staging data with bcrypt passwords and sample perks
+│  │  │  │  └─ maintenance/
+│  │  │  │     ├─ drop_all.sql             # Helper to drop all tables if you want a clean slate
+│  │  │  │     └─ reset_all.sql            # Helper to drop + re-run migrations + load demo data
+│  │  │  │
 │  │  │  ├─ templates/
 │  │  │  │  ├─ fragments/
-│  │  │  │  │  ├─ navbar.html           	# Reusable navbar component
-│  │  │  │  │  └─ footer.html               # Reusable footer component
-│  │  │  │  ├─ index.html                   # Homepage showing navigation options
-│  │  │  │  ├─ perks.html                   # Displays all perks (sortable by votes or expiry)
-│  │  │  │  ├─ add-perk.html                # Form for posting a new perk
-│  │  │  │  ├─ login.html                   # login page for existing users
-│  │  │  │  └─ signup.html                  # registration page for new users
+│  │  │  │  │  ├─ navbar.html              # Reusable navbar component
+│  │  │  │  │  └─ footer.html              # Reusable footer component
+│  │  │  │  ├─ index.html                  # Homepage showing navigation options
+│  │  │  │  ├─ perks.html                  # Displays all perks (sortable by votes or expiry)
+│  │  │  │  ├─ add-perk.html               # Form for posting a new perk
+│  │  │  │  ├─ login.html                  # Login page for existing users
+│  │  │  │  └─ signup.html                 # Registration page for new users
 │  │  │  │
-│  │  │  ├─ application.properties          # Base config (active profile, Thymeleaf settings)
-│  │  │  └─ application-local.properties    # Local dev settings 
+│  │  │  ├─ application.properties        # Base config (active profile, Thymeleaf settings)
+│  │  │  └─ application-local.properties  # Local dev settings 
 │  │
 │  └─ test/java/com/example/perkmanager/
 │     ├─ config/
-│     │  └─ SecurityConfigTest.java         # Tests authentication and access control setup
+│     │  └─ SecurityConfigTest.java       # Tests authentication and access control setup
 │     │
 │     ├─ controllers/
-│     │  └─  AccountControllerTest.java     # Verifies login, registration, and session routes
+│     │  └─ AccountControllerTest.java    # Verifies login, registration, and session routes
 │     │
 │     ├─ model/
-│     │  ├─ AccoutTest.java                 # Tests User entity fields, relationships, validation
-│     │  ├─ MembershipTest.java             # Tests Membership entity mapping and constraints
-│     │  ├─ ProductTest.java                # Tests Product entity persistence and associations
-│     │  └─ PerkTest.java                   # Tests Perk entity logic (expiry, voting count)
+│     │  ├─ AccoutTest.java               # Tests User entity fields, relationships, validation
+│     │  ├─ MembershipTest.java           # Tests Membership entity mapping and constraints
+│     │  ├─ ProductTest.java              # Tests Product entity persistence and associations
+│     │  └─ PerkTest.java                 # Tests Perk entity logic (expiry, voting count)
 │     │
 │     └─ services/
-│        ├─ AccountServiceTest.java         # Verifies account creation, login, and linking logic
-│        ├─ PerkServiceTest.java            # Tests business logic (votes, expiry filters)
-│        ├─ MembershipServiceTest.java      # Tests membership CRUD and validation
-│        └─ ProductServiceTest.java         # Tests product CRUD and validation
+│        ├─ AccountServiceTest.java       # Verifies account creation, login, and linking logic
+│        ├─ PerkServiceTest.java          # Tests business logic (votes, expiry filters)
+│        ├─ MembershipServiceTest.java    # Tests membership CRUD and validation
+│        └─ ProductServiceTest.java       # Tests product CRUD and validation
 │
 ├─ pom.xml              # Maven build file (Spring Boot, JPA, Thymeleaf, etc.)
 ├─ .gitignore           # Ignore build output, logs, local env files
@@ -99,15 +112,15 @@ perkmanager/
 │
 ├─ .github/
 │  └─ workflows/
-│     ├─ maven.yml			        # CI workflow: builds Java project using Maven on push/PR to main
-│     └─ main-perkmanager.yml       # CD workflow: builds JAR and deploys PerkManager to Azure Web App
+│     ├─ maven.yml       # CI workflow: builds Java project using Maven on push/PR to main
+│     └─ main-perkmanager.yml # CD workflow: builds JAR and deploys PerkManager to Azure Web App
 │
-└─ README.md                        # Project overview, setup, usage, and contribution guide
+└─ README.md            # Project overview, setup, usage, and contribution guide
 ```
 
 ---
 
-# PerkManager – Developer Database Setup (Windows)
+# PerkManager: Developer Database Setup (Windows)
 
 ## Prerequisites
 
@@ -116,6 +129,7 @@ perkmanager/
 * IntelliJ IDEA
 * Internet access (for shared Aiven DB)
 * **Docker** (only needed if you want a local DB)
+* Node.js and npm for Jasmine Testing
 
 ---
 
@@ -163,7 +177,7 @@ spring.datasource.password=${DATABASE_PASSWORD}   # Enter the Aiven password
 
 ---
 
-## Optional — Local Docker Database (committed local config)
+## Optional: Local Docker Database (committed local config)
 
 **Purpose:** isolated testing / offline development.
 
@@ -227,6 +241,50 @@ You **do not** edit property files to switch. You change the active Spring profi
   ```
 
 ---
+
+## SQL Scripts: Developer Guide
+
+**Important:** Stop the Spring Boot application before running any SQL scripts. The shared Aiven database restricts superuser connections while the app is running.
+
+If you’re running the scripts in IntelliJ, you can either highlight the entire file and click the green Run button, or click the Run button first and then select the whole SQL file to execute.
+
+### Workflow
+
+1. **Create or rebuild schema**  
+   Use `V1__create_schema.sql` to create all tables from scratch. This file **drops any existing tables** and sets up the schema with constraints and indexes.
+
+2. **Insert base entities**  
+   Use `V2__insert_base_data.sql` to populate **memberships** and **products**. This is required for the app to function.
+
+3. **Load demo data**  
+   Use `demo_data.sql` to insert **demo accounts, perks, and relationships**. The passwords are bcrypt-hashed and compatible with Spring Security login.
+
+
+   **Demo account usernames and passwords (from `PasswordHashGen`):**
+
+    * `alice` → `password1`
+    * `bob` → `password2`
+    * `charlie` → `password3`
+    * `dana` → `password4`
+    * `evan` → `password5`
+
+### Optional Maintenance
+
+* `drop_all.sql`: Drops all tables entirely. Only needed if you want a complete wipe.
+* `reset_all.sql`: Clears all data but **keeps the schema** and resets ID sequences. Useful for resetting demo data without rebuilding the schema.
+
+> **Example workflow for day-to-day development:**
+>
+> 1. Stop the app.
+> 2. Run `reset_all.sql` (or skip if schema is new).
+> 3. Run `V2__insert_base_data.sql` + `demo_data.sql`.
+> 4. Start the app and log in with demo accounts.
+
+This ensures your database is in a consistent state for testing and development.
+
+Further SQL/database development would typically proceed by adding new migration files for schema changes or new data, rather than modifying existing ones, to keep versioning and reproducibility intact.
+
+---
 ## Database Schema
 <img width="314" height="519" alt="image" src="https://github.com/user-attachments/assets/69dcc21d-3d38-4618-94fd-76a08066a148" />
 
@@ -242,4 +300,36 @@ You **do not** edit property files to switch. You change the active Spring profi
   config is committed and uses `devpass`.
 * **Switching**: Use IntelliJ Run Configuration (`SPRING_PROFILES_ACTIVE=local`) to pick local; remove it (
   `SPRING_PROFILES_ACTIVE=`) to use shared. No edits to property files are required to switch.
+
+  ---
+
+## Installing and Running Jasmine Client Side Testing:
+1. Download and install Node.js and npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+2. Open a terminal (or cmd prompt) and navigate to `src/main/resources/` in your project.
+3. Run: npm test
+Any test failures will be displayed in the terminal (or cmd prompt).
+
+## Creating Client-Side Tests:
+
+- Jasmine will run JS files in the directory specified by `spec_files` in `spec/support/jasmine.mjs`.
+- By default, in our setup, this includes the templates directory: `templates/**/*.js`.
+- Multiple directories or specific files can be specified in 'spec_files'
+
+To create a test suite for a .js file, use:
+```javascript
+describe("test suite description here", function() {  
+it("test case description here", function() {  
+ // Your test code here
+});  
+it("another test case description", function() {  
+ // More test code here
+});  
+```
+
+### Example:
+
+![alt text](image.png)
+![alt text](image-1.png)
+
+---
 
