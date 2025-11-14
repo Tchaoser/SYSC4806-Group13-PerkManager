@@ -108,30 +108,23 @@
     <div class="pager" th:if="${totalPages > 1}">
         <span th:text="'Total: ' + ${totalPerks} + ' perks'"></span>
         <br/>
-
-        <a th:if="${page > 0}"
-           th:href="@{/perks(page=${page - 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-            Prev
-        </a>
-
+        <a th:if="${page > 0}" th:href="@{/perks(page=${page - 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">Prev</a>
         <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:if="${i != page}"
-           th:text="${i + 1}"
-           th:href="@{/perks(page=${i}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-        </a>
-        <span th:if="${i == page}" th:text="${i + 1}" class="current"></span>
-    </span>
-
-        <a th:if="${page < totalPages - 1}"
-           th:href="@{/perks(page=${page + 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-            Next
-        </a>
+            <a th:if="${i != page}" th:text="${i + 1}" th:href="@{/perks(page=${i}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}"></a>
+            <span th:if="${i == page}" th:text="${i + 1}" class="current"></span>
+        </span>
+        <a th:if="${page < totalPages - 1}" th:href="@{/perks(page=${page + 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">Next</a>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
-<script src="/js/votes.js"></script>
-<script src="/js/perks-table.js"></script>
+
+<script th:src="@{/js/votes.js}"></script>
+<script th:src="@{/js/perks-table.js}"></script>
+<script th:src="@{/js/sorting.js}"></script>
+<script th:inline="javascript">
+    window.ALL_PERKS = /*[[${perksJson}]]*/ [];
+</script>
 </body>
 </html>
 
