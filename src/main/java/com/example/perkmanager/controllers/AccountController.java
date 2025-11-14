@@ -22,7 +22,7 @@ public class AccountController{
     @PostMapping("/signup")
     public String signup(@RequestParam String username,
                          @RequestParam String password,
-                         Model model){
+                         Model model) {
         try {
             accountService.createAccount(username, password);
             return "redirect:/login";

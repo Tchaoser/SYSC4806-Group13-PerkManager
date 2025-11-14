@@ -116,8 +116,6 @@ public class PerkService {
         perkRepository.save(perk);
     }
 
-
-
     public List<Perk> sortPerks(List<Perk> perks, Optional<String> sortKey, Optional<String> direction) {
         if (sortKey.isEmpty()) return perks;
 
