@@ -34,6 +34,9 @@ function initVotes() {
             else if (currentVote === -1) newRating = baseRating - 1;
             else newRating = baseRating;
 
+            upBtn.disabled = true;
+            downBtn.disabled = true;
+
             ratingCell.textContent = newRating;
             updateButtons();
 
@@ -54,6 +57,9 @@ function initVotes() {
                 currentVote = oldVote;
                 ratingCell.textContent = oldRating;
                 updateButtons();
+            } finally {
+                upBtn.disabled = false;
+                downBtn.disabled = false;
             }
         };
 

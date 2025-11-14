@@ -10,6 +10,7 @@ import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import com.example.perkmanager.services.PerkService;
 import com.example.perkmanager.services.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -99,6 +100,52 @@ public class PerkController {
             model.addAttribute("size", pageSize);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("totalPerks", total);
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            int finalPageNum = pageNum;
+            List<Map<String, Object>> perksJsonList = perks.stream().map(p -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", p.getId());
+                map.put("benefit", p.getBenefit());
+                map.put("rating", p.getRating());
+                map.put("expiryDate", p.getExpiryDate() != null ? p.getExpiryDate().getTime() : null);
+                map.put("region", p.getRegion());
+
+                if (p.getMembership() != null) {
+                    map.put("membership", Map.of(
+                            "type", p.getMembership().getType(),
+                            "description", p.getMembership().getDescription(),
+                            "organizationName", p.getMembership().getOrganizationName()
+                    ));
+                }
+
+                if (p.getProduct() != null) {
+                    map.put("product", Map.of(
+                            "name", p.getProduct().getName(),
+                            "company", p.getProduct().getCompany(),
+                            "description", p.getProduct().getDescription()
+                    ));
+                }
+
+                int voteState = 0;
+                if (currentUser != null) {
+                    if (p.getUpvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = 1;
+                    else if (p.getDownvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = -1;
+                }
+                map.put("voteState", voteState);
+                map.put("csrfParam", "_csrf");
+                map.put("csrfToken", model.getAttribute("_csrf") != null ? ((org.springframework.security.web.csrf.CsrfToken) model.getAttribute("_csrf")).getToken() : "");
+                map.put("csrfHeader", model.getAttribute("_csrf") != null ? ((org.springframework.security.web.csrf.CsrfToken) model.getAttribute("_csrf")).getHeaderName() : "");
+                map.put("page", finalPageNum);
+                map.put("isAuthenticated", currentUser != null);
+
+                return map;
+            }).collect(Collectors.toList());
+
+            String perksJson = mapper.writeValueAsString(perksJsonList);
+            model.addAttribute("perksJson", perksJson);
+
 
             return "perks";
         } catch (Exception e) {
