@@ -88,14 +88,17 @@
                               data-vote-state=${voteStates[perk.id]}">
                     <form class="vote-form" th:action="@{/perks/{id}/upvote(id=${perk.id})}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="page" th:value="${page}"/>
                         <button class="btn-small upvote" type="submit"
                                 th:classappend="${voteStates[perk.id] == 1} ? ' voted' : ''">▲</button>
                     </form>
                     <form class="vote-form" th:action="@{/perks/{id}/downvote(id=${perk.id})}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="page" th:value="${page}"/>
                         <button class="btn-small downvote" type="submit"
                                 th:classappend="${voteStates[perk.id] == -1} ? ' voted' : ''">▼</button>
                     </form>
+
                 </div>
             </td>
         </tr>
@@ -127,7 +130,8 @@
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
-<script src="/js/perks.js"></script>
+<script src="/js/votes.js"></script>
+<script src="/js/perks-table.js"></script>
 </body>
 </html>
 
