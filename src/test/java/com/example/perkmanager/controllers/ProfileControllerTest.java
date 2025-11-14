@@ -4,6 +4,7 @@ import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
 import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
+import com.example.perkmanager.services.PerkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,15 +27,17 @@ public class ProfileControllerTest {
     private ProfileController profileController;
     private AccountService accountService;
     private MembershipService membershipService;
+    private PerkService perkService;
     private Model model;
 
     @BeforeEach
     void setup() {
         accountService = mock(AccountService.class);
         membershipService = mock(MembershipService.class);
+        perkService = mock(PerkService.class);
         model = mock(Model.class);
 
-        profileController = new ProfileController(accountService, membershipService);
+        profileController = new ProfileController(accountService, membershipService, perkService);
         // ensure no leftover auth between tests
         SecurityContextHolder.clearContext();
     }
@@ -54,6 +57,9 @@ public class ProfileControllerTest {
         // memberships and allMemberships get added as well (empty)
         verify(model).addAttribute(eq("memberships"), any());
         verify(model).addAttribute(eq("allMemberships"), any());
+        verify(model).addAttribute(eq("perks"), any());
+        verify(model).addAttribute(eq("allPerks"), any());
+
     }
 
     @Test
