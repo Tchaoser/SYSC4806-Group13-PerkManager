@@ -5,31 +5,44 @@ jest
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.resolve(path.basename(__dirname), '../templates/profile.html'), 'utf8');
+
 const $ = require("jquery");
 global.$ = global.jQuery = $;
-require("jest-fetch-mock").enableMocks()
-
-const profile = require("../js/profile");
-const csrfHeaders = profile.csrfHeaders;
-const addMembership = profile.addMembership;
-const updateMembershipList = profile.updateMembershipList;
 
 
-describe("Test Suite for profile.js", () => {
+describe("Test Suite for profile.html: ", () => {
     beforeEach(() => {
         document.documentElement.innerHTML = html;
     });
 
-    test("Test ajax call for addMembership", () => {
-        const select = document.getElementById('membership-select')
-        select.value = 1;
-        const ajaxSpy = jest.spyOn($, 'ajax');
-        addMembership();
-        expect(ajaxSpy).toBeCalledWith({
-            url: "test",
-            type: "POST",
-            headers: csrfHeaders(),
-            body: new URLSearchParams(1)
-        })
+    test("Test contents of Guest View", () => {
+        const guestView = document.getElementById("guest_view");
+        expect(guestView).toBeTruthy()
+        expect(guestView.innerHTML).toContain("You are viewing as guest.");
+        expect(guestView.innerHTML).toContain("<a th:href=\"@{/login}\">Login</a> or <a th:href=\"@{/signup}\">Sign up</a>.");
     });
+
+    test("Test contents of User Info", () => {
+        //Check User Info contents are correct
+        const userInfo = document.getElementById("user_info");
+        expect(userInfo).toBeTruthy()
+        expect(userInfo.innerHTML).toContain("<strong>Username:</strong> <span th:text=\"${account.username}\">username</span>");
+
+        //Check User Info Contents exist in authenticated div
+        const authenticated = document.getElementById("authenticated");
+        expect(authenticated.innerHTML).toContain(userInfo.outerHTML)
+    });
+
+    test("Test header exists", () => {
+        expect(document.documentElement.innerHTML).toContain("<head th:replace=\"fragments/head :: head('User Profile')\"></head>");
+    });
+
+    test("Test navbar exists", () => {
+        expect(document.documentElement.innerHTML).toContain("<head th:replace=\"fragments/head :: head('User Profile')\"></head>");
+    });
+
+    test("Test footer exists", () => {
+        expect(document.documentElement.innerHTML).toContain("<head th:replace=\"fragments/head :: head('User Profile')\"></head>");
+    });
+
 });
