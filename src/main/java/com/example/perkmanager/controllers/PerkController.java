@@ -12,11 +12,13 @@ import com.example.perkmanager.services.PerkService;
 import com.example.perkmanager.services.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/perks")
@@ -47,12 +49,19 @@ public class PerkController {
             @RequestParam Optional<String> direction,
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size,
+            @AuthenticationPrincipal UserDetails userDetails,
             Model model) {
+
         try {
-            // Base filtered list
+            final Account currentUser = (userDetails != null)
+                    ? accountService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+                    : null;
+
+
             List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
-            // Sorting
             perks = perkService.sortPerks(perks, sort, direction);
+
             // Pagination
             int pageNum = Math.max(page.orElse(0), 0);
             int pageSize = Math.max(size.orElse(5), 1);
@@ -65,6 +74,20 @@ public class PerkController {
             List<Perk> pageItems = perks.subList(from, to);
 
             model.addAttribute("perks", pageItems);
+
+            Map<Long, Integer> voteStates = new HashMap<>();
+            if (currentUser != null) {
+                for (Perk p : pageItems) {
+                    int voteState = 0;
+                    if (p.getUpvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = 1;
+                    else if (p.getDownvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = -1;
+                    voteStates.put(p.getId(), voteState);
+                }
+            }
+            model.addAttribute("voteStates", voteStates);
+            model.addAttribute("isAuthenticated", currentUser != null);
+
+
             model.addAttribute("membershipType", membershipType.orElse(""));
             model.addAttribute("membershipTypes", membershipService.getAllMembershipTypes());
             model.addAttribute("region", region.orElse(""));
@@ -83,6 +106,7 @@ public class PerkController {
             return "perks";
         }
     }
+
 
     // Show form to add a new perk
     @GetMapping("/add")
@@ -170,7 +194,7 @@ public class PerkController {
     // --- Voting endpoints (update counts immediately, then redirect back) ---
 
     @PostMapping("/{id}/upvote")
-    public String upvote(@PathVariable Long id,
+    public String toggleUpvote(@PathVariable Long id,
                          @AuthenticationPrincipal UserDetails userDetails) {
         try {
             if (userDetails == null) {
@@ -178,7 +202,7 @@ public class PerkController {
             }
             Account account = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
-            perkService.upvotePerk(id, account);
+            perkService.toggleUpvotePerk(id, account);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,7 +211,7 @@ public class PerkController {
     }
 
     @PostMapping("/{id}/downvote")
-    public String downvote(@PathVariable Long id,
+    public String toggleDownvote(@PathVariable Long id,
                            @AuthenticationPrincipal UserDetails userDetails) {
         try {
             if (userDetails == null) {
@@ -195,7 +219,7 @@ public class PerkController {
             }
             Account account = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
-            perkService.downvotePerk(id, account);
+            perkService.toggleDownvotePerk(id, account);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();
