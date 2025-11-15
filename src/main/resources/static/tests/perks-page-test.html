@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="_csrf" content="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+    <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
+    <title>All Perks</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+
+    <!-- Site-wide CSS -->
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<html>
+<body>
+<nav style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; background-color:#007bff; color:#fff; font-weight:600;">
+    <!-- Left side links -->
+    <div id = "left_side" style="display: flex; gap: 12px;">
+        <a href="/">Home</a>
+        <a href="/perks">Perks</a>
+        <a href="/memberships">Memberships</a>
+        <a href="/products">Products</a>
+    </div>
+
+    <!-- Right side links -->
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+        <!-- Unauthenticated -->
+
+
+        <!-- Authenticated -->
+        <span id = "authorized" style="display: flex; align-items: center; gap: 12px;">
+        <span>Logged in as <span class="username-highlight">testuser567</span></span>
+            <a href="/profile">View Profile</a>
+            <form action="/logout" method="post" style="margin:0;" class="flat-form"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <button type="submit">Logout</button>
+            </form>
+        </span>
+    </div>
+</nav>
+<hr/>
+</body>
+</html>
+<div class="container full-width">
+    <h1>Perks</h1>
+
+    <div class="actions">
+        <a href="/perks/add" class="btn-primary">Add a Perk</a>
+    </div>
+
+    <form method="get" action="/perks" class="filter-form">
+        <div class="filter-pair">
+            <label>Membership Type:</label>
+            <select name="membershipType">
+                <option value="">All</option>
+                <option value="Association">Association</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Frequent Flyer">Frequent Flyer</option>
+                <option value="Loyalty Program">Loyalty Program</option>
+                <option value="Wholesale Club">Wholesale Club</option>
+                <option value="test type">test type</option>
+            </select>
+        </div>
+
+        <div class="filter-pair">
+            <label>Region:</label>
+            <input type="text" name="region" value=""/>
+        </div>
+
+        <div class="filter-pair">
+            <label>Expiry Only:</label>
+            <input type="checkbox" name="expiryOnly"/>
+        </div>
+
+        <input type="hidden" name="sort" value=""/>
+        <input type="hidden" name="direction" value="asc"/>
+        <input type="hidden" name="page" value="0"/>
+        <input type="hidden" name="size" value="5"/>
+        <div class="actions">
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>Benefit</th>
+            <th>Membership Type</th>
+            <th>Membership</th>
+            <th>Membership Organization</th>
+            <th>Product</th>
+            <th>Product Company</th>
+            <th>Product Description</th>
+            <th>Region</th>
+            <th class="sortable">
+                Expiry<br>
+                <a href="/perks?sort=expiry&amp;direction=asc&amp;page=0&amp;size=5&amp;membershipType=&amp;region=&amp;expiryOnly=false" class="btn-small">↑</a>
+                <a href="/perks?sort=expiry&amp;direction=desc&amp;page=0&amp;size=5&amp;membershipType=&amp;region=&amp;expiryOnly=false" class="btn-small">↓</a>
+            </th>
+            <th class="sortable">
+                Rating<br>
+                <a href="/perks?sort=rating&amp;direction=asc&amp;page=0&amp;size=5&amp;membershipType=&amp;region=&amp;expiryOnly=false" class="btn-small">↑</a>
+                <a href="/perks?sort=rating&amp;direction=desc&amp;page=0&amp;size=5&amp;membershipType=&amp;region=&amp;expiryOnly=false" class="btn-small">↓</a>
+            </th>
+            <th>Vote</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>10% off flights with Air Miles</td>
+            <td>Loyalty Program</td>
+            <td>Shoppers Optimum Rewards Member</td>
+            <td>Shoppers Drug Mart</td>
+            <td>Air Canada Flight</td>
+            <td>Air Canada</td>
+            <td>Airline flight ticket</td>
+            <td>Canada</td>
+            <td>2025-12-31</td>
+            <td>5</td>
+            <td>
+                <div class="vote-forms" data-perk-id="1" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="1">
+                    <form class="flat-form" action="/perks/1/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small upvote  voted" type="submit">▲</button>
+                    </form>
+                    <form class="flat-form" action="/perks/1/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small downvote" type="submit">▼</button>
+                    </form>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>15% off selected car rentals for CAA members</td>
+            <td>Association</td>
+            <td>CAA Membership benefits and roadside assistance</td>
+            <td>CAA</td>
+            <td>Uber Ride</td>
+            <td>Uber Technologies</td>
+            <td>Rideshare service booking</td>
+            <td>North America</td>
+            <td>2025-12-31</td>
+            <td>5</td>
+            <td>
+                <div class="vote-forms" data-perk-id="2" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="1">
+                    <form class="flat-form" action="/perks/2/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small upvote  voted" type="submit">▲</button>
+                    </form>
+                    <form class="flat-form" action="/perks/2/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small downvote" type="submit">▼</button>
+                    </form>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>5% cashback on groceries at Costco</td>
+            <td>Wholesale Club</td>
+            <td>Costco Executive Membership</td>
+            <td>Costco</td>
+            <td>Coca-Cola 12-pack</td>
+            <td>Coca-Cola</td>
+            <td>12-pack of Coca-Cola cans</td>
+            <td>Canada</td>
+            <td>2025-11-02</td>
+            <td id = "rating">0</td>
+            <td>
+                <div class="vote-forms" data-perk-id="3" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="0">
+                    <form class="flat-form" action="/perks/3/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button  id = "upvote_button" class="btn-small upvote" type="submit">▲</button>
+                    </form>
+                    <form class="flat-form" action="/perks/3/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button id = "downvote_button" class="btn-small downvote" type="submit">▼</button>
+                    </form>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>$10 off dining with Visa</td>
+            <td>Credit Card</td>
+            <td>Visa Infinite Card Member</td>
+            <td>Visa</td>
+            <td>Uber Ride</td>
+            <td>Uber Technologies</td>
+            <td>Rideshare service booking</td>
+            <td>Global</td>
+            <td>2025-11-04</td>
+            <td>1</td>
+            <td>
+                <div class="vote-forms" data-perk-id="4" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="0">
+                    <form class="flat-form" action="/perks/4/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small upvote" type="submit">▲</button>
+                    </form>
+                    <form class="flat-form" action="/perks/4/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small downvote" type="submit">▼</button>
+                    </form>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Room upgrade at partner hotels for Amex</td>
+            <td>Credit Card</td>
+            <td>Amex Gold Card Benefits</td>
+            <td>American Express</td>
+            <td>Hilton Hotel Stay</td>
+            <td>Hilton Hotels</td>
+            <td>1-night stay at a Hilton hotel</td>
+            <td>Global</td>
+            <td>2025-11-06</td>
+            <td>0</td>
+            <td>
+                <div class="vote-forms" data-perk-id="5" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="0">
+                    <form class="flat-form" action="/perks/5/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small upvote" type="submit">▲</button>
+                    </form>
+                    <form class="flat-form" action="/perks/5/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class="btn-small downvote" type="submit">▼</button>
+                    </form>
+
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pager">
+        <span>Total: 11 perks</span>
+        <br/>
+
+        <span>
+
+            <span class="current">1</span>
+        </span><span>
+            <a href="/perks?page=1&amp;size=5&amp;sort=&amp;direction=asc&amp;membershipType=&amp;region=&amp;expiryOnly=false">2</a>
+
+        </span><span>
+            <a href="/perks?page=2&amp;size=5&amp;sort=&amp;direction=asc&amp;membershipType=&amp;region=&amp;expiryOnly=false">3</a>
+
+        </span>
+        <a href="/perks?page=1&amp;size=5&amp;sort=&amp;direction=asc&amp;membershipType=&amp;region=&amp;expiryOnly=false">Next</a>
+    </div>
+
+    <html>
+    <body>
+    <hr/>
+    <footer>
+        <p>PerkManager &copy; 2025</p>
+    </footer>
+    </body>
+    </html>
+</div>
+
+<script src="/js/votes.js" type = "module"></script>
+<script src="/js/perks-table.js" type = "module"></script>
+<script type = "module">
+    window.ALL_PERKS = "[{\"product\":{\"name\":\"Air Canada Flight\",\"company\":\"Air Canada\",\"description\":\"Airline flight ticket\"},\"voteState\":1,\"rating\":5,\"membership\":{\"organizationName\":\"Shoppers Drug Mart\",\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\"},\"isAuthenticated\":true,\"benefit\":\"10% off flights with Air Miles\",\"csrfParam\":\"_csrf\",\"expiryDate\":1767243599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":1,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"Uber Ride\",\"company\":\"Uber Technologies\",\"description\":\"Rideshare service booking\"},\"voteState\":1,\"rating\":5,\"membership\":{\"organizationName\":\"CAA\",\"type\":\"Association\",\"description\":\"CAA Membership benefits and roadside assistance\"},\"isAuthenticated\":true,\"benefit\":\"15% off selected car rentals for CAA members\",\"csrfParam\":\"_csrf\",\"expiryDate\":1767243599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":2,\"page\":0,\"region\":\"North America\"},{\"product\":{\"name\":\"Coca-Cola 12-pack\",\"company\":\"Coca-Cola\",\"description\":\"12-pack of Coca-Cola cans\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"Costco\",\"type\":\"Wholesale Club\",\"description\":\"Costco Executive Membership\"},\"isAuthenticated\":true,\"benefit\":\"5% cashback on groceries at Costco\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762145999000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":3,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"Uber Ride\",\"company\":\"Uber Technologies\",\"description\":\"Rideshare service booking\"},\"voteState\":0,\"rating\":1,\"membership\":{\"organizationName\":\"Visa\",\"type\":\"Credit Card\",\"description\":\"Visa Infinite Card Member\"},\"isAuthenticated\":true,\"benefit\":\"$10 off dining with Visa\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762318799000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":4,\"page\":0,\"region\":\"Global\"},{\"product\":{\"name\":\"Hilton Hotel Stay\",\"company\":\"Hilton Hotels\",\"description\":\"1-night stay at a Hilton hotel\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"American Express\",\"type\":\"Credit Card\",\"description\":\"Amex Gold Card Benefits\"},\"isAuthenticated\":true,\"benefit\":\"Room upgrade at partner hotels for Amex\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762491599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":5,\"page\":0,\"region\":\"Global\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":4,\"membership\":{\"organizationName\":\"Cineplex\",\"type\":\"Entertainment\",\"description\":\"Scene+ Rewards Program Member\"},\"isAuthenticated\":true,\"benefit\":\"2-for-1 Tuesdays at participating cinemas (Scene+)\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762664399000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":6,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"Air Canada Flight\",\"company\":\"Air Canada\",\"description\":\"Airline flight ticket\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"Air Canada\",\"type\":\"Frequent Flyer\",\"description\":\"Aeroplan Loyalty Member\"},\"isAuthenticated\":true,\"benefit\":\"Earn 200 bonus Aeroplan points on select flights\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762837199000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":7,\"page\":0,\"region\":\"Global\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":1,\"membership\":{\"organizationName\":\"Shoppers Drug Mart\",\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\"},\"isAuthenticated\":true,\"benefit\":\"javascripttest\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":702,\"page\":0,\"region\":\"\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":1,\"membership\":{\"organizationName\":\"Shoppers Drug Mart\",\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\"},\"isAuthenticated\":true,\"benefit\":\"javascripttest2\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762837200040,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":752,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"CAA\",\"type\":\"Association\",\"description\":\"CAA Membership benefits and roadside assistance\"},\"isAuthenticated\":true,\"benefit\":\"test perk\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":802,\"page\":0,\"region\":\"\"},{\"product\":{\"name\":\"iPhone 15\",\"company\":\"Apple\",\"description\":\"Latest Apple smartphone\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"test org\",\"type\":\"test type\",\"description\":\"test desc\"},\"isAuthenticated\":true,\"benefit\":\"200% off iPhone 15\",\"csrfParam\":\"_csrf\",\"expiryDate\":1764392400950,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":852,\"page\":0,\"region\":\"Global\"}]";
+</script>
+</body>
+</html>
