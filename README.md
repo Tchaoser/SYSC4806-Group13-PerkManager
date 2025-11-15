@@ -79,6 +79,12 @@ perkmanager/
 │  │  │  │  └─ js/
 │  │  │  │  │  ├─ perks-table.js           # Updates displayed perks table
 │  │  │  │  │  └─ votes.js                 # Handles perk upvoting/downvoting
+│  │  │  │  └─ tests/
+│  │  │  │  │  ├─ footer.test.js           # Tests footer.html elements
+│  │  │  │  │  └─ navbar.test.js           # Tests navbar.html elements
+│  │  │  │  │  └─ profile.test.js          # Tests profile.html elements
+│  │  │  │  │  └─ votes.test.js            # Tests votes.js functionality
+│  │  │  │  │  └─ perks-page-test.html     # Captured page for votes.test.js
 │  │  │  ├─ templates/
 │  │  │  │  ├─ fragments/
 │  │  │  │  │  ├─ head.html                # Reusable head component
@@ -335,14 +341,15 @@ Note: Some tests can be run directly in intellij. For tests that require jQuery 
 
 To create a test suite for a .js file, use:
 ```javascript
-describe("test suite description here", function() {  
-beforeEach(() => {
+describe("test suite description here", function() {
+    beforeEach(() => {
         //Setup code here
     });
 
-test("Verify contents of footer", () => {
-  expect("some actual value").to//Some condition specified by jest relative to expected value
-    
+    test("Verify contents of footer", () => {
+        expect("some actual value").to//Some condition specified by jest relative to expected value
+
+    });
 });
 ```
 
