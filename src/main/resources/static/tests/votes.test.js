@@ -13,8 +13,7 @@ const initVotes = require("../js/votes.js");
 
 
 
-describe("Test Suite for navbar.html: ", () => {
-    let fetchSpyer;
+describe("Test Suite for successful upvotes and downvotes: ", () => {
     let upvote_button;
     let downvote_button;
     let perk_rating;
@@ -24,8 +23,6 @@ describe("Test Suite for navbar.html: ", () => {
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
         });
-
-        fetchSpyer = jest.spyOn(global, 'fetch')
 
         initVotes();
 
@@ -49,7 +46,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -72,7 +69,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -90,7 +87,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -113,7 +110,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -136,7 +133,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -154,7 +151,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -177,7 +174,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -195,7 +192,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -218,7 +215,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -236,7 +233,7 @@ describe("Test Suite for navbar.html: ", () => {
             {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa",
+                    "X-CSRF-TOKEN": "test-token",
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 credentials: "same-origin"
@@ -245,3 +242,4 @@ describe("Test Suite for navbar.html: ", () => {
     });
 
 });
+

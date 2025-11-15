@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="_csrf" content="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+    <meta name="_csrf" content="test-token"/>
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <title>All Perks</title>
 
@@ -35,8 +35,8 @@
         <span id = "authorized" style="display: flex; align-items: center; gap: 12px;">
         <span>Logged in as <span class="username-highlight">testuser567</span></span>
             <a href="/profile">View Profile</a>
-            <form action="/logout" method="post" style="margin:0;" class="flat-form"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+            <form action="/logout" method="post" style="margin:0;" class="flat-form"><input type="hidden" name="_csrf" value="test-token"/>
+                <input type="hidden" name="_csrf" value="test-token"/>
                 <button type="submit">Logout</button>
             </form>
         </span>
@@ -124,14 +124,14 @@
             <td>2025-12-31</td>
             <td>5</td>
             <td>
-                <div class="vote-forms" data-perk-id="1" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="1">
-                    <form class="flat-form" action="/perks/1/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <div class="vote-forms" data-perk-id="1" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="1">
+                    <form class="flat-form" action="/perks/1/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small upvote  voted" type="submit">▲</button>
                     </form>
-                    <form class="flat-form" action="/perks/1/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                    <form class="flat-form" action="/perks/1/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small downvote" type="submit">▼</button>
                     </form>
@@ -151,14 +151,14 @@
             <td>2025-12-31</td>
             <td>5</td>
             <td>
-                <div class="vote-forms" data-perk-id="2" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="1">
-                    <form class="flat-form" action="/perks/2/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <div class="vote-forms" data-perk-id="2" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="1">
+                    <form class="flat-form" action="/perks/2/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small upvote  voted" type="submit">▲</button>
                     </form>
-                    <form class="flat-form" action="/perks/2/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                    <form class="flat-form" action="/perks/2/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small downvote" type="submit">▼</button>
                     </form>
@@ -178,14 +178,14 @@
             <td>2025-11-02</td>
             <td id = "rating">0</td>
             <td>
-                <div class="vote-forms" data-perk-id="3" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="0">
-                    <form class="flat-form" action="/perks/3/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <div class="vote-forms" data-perk-id="3" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="0">
+                    <form class="flat-form" action="/perks/3/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button  id = "upvote_button" class="btn-small upvote" type="submit">▲</button>
                     </form>
-                    <form class="flat-form" action="/perks/3/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                    <form class="flat-form" action="/perks/3/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button id = "downvote_button" class="btn-small downvote" type="submit">▼</button>
                     </form>
@@ -205,14 +205,14 @@
             <td>2025-11-04</td>
             <td>1</td>
             <td>
-                <div class="vote-forms" data-perk-id="4" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="0">
-                    <form class="flat-form" action="/perks/4/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <div class="vote-forms" data-perk-id="4" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="0">
+                    <form class="flat-form" action="/perks/4/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small upvote" type="submit">▲</button>
                     </form>
-                    <form class="flat-form" action="/perks/4/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                    <form class="flat-form" action="/perks/4/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small downvote" type="submit">▼</button>
                     </form>
@@ -232,14 +232,14 @@
             <td>2025-11-06</td>
             <td>0</td>
             <td>
-                <div class="vote-forms" data-perk-id="5" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa" data-vote-state="0">
-                    <form class="flat-form" action="/perks/5/upvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                <div class="vote-forms" data-perk-id="5" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="0">
+                    <form class="flat-form" action="/perks/5/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small upvote" type="submit">▲</button>
                     </form>
-                    <form class="flat-form" action="/perks/5/downvote" method="post"><input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
-                        <input type="hidden" name="_csrf" value="S4kSVxRKzIxYoeCxWWDeKbI2wmbErNkKsTvF5OfmUhGxQnsqer0gYCB4r711xdHQOE3qSIoD7wTyz70niQ_204LQaiCCdEMa"/>
+                    <form class="flat-form" action="/perks/5/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
                         <button class="btn-small downvote" type="submit">▼</button>
                     </form>
