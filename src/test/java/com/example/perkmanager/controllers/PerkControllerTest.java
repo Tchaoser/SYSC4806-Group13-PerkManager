@@ -59,8 +59,6 @@ public class PerkControllerTest {
                 model
         );
 
-        System.out.println(view);
-
         assertEquals("perks", view);
         verify(model).addAttribute("perks", perkList);
         verify(model).addAttribute("page", 0);
