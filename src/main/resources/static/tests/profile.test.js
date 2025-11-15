@@ -38,11 +38,11 @@ describe("Test Suite for profile.html: ", () => {
     });
 
     test("Test navbar exists", () => {
-        expect(document.documentElement.innerHTML).toContain("<head th:replace=\"fragments/head :: head('User Profile')\"></head>");
+        expect(document.documentElement.innerHTML).toContain("<div th:replace=\"fragments/navbar :: navbar\"></div>");
     });
 
     test("Test footer exists", () => {
-        expect(document.documentElement.innerHTML).toContain("<head th:replace=\"fragments/head :: head('User Profile')\"></head>");
+        expect(document.documentElement.innerHTML).toContain("<div th:replace=\"fragments/footer :: footer\"></div>");
     });
 
 });
