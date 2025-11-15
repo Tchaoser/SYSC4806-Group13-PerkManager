@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head('All Perks')"></head>
-
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container full-width">
@@ -81,15 +80,25 @@
             <td th:text="${perk.expiryDate != null ? #dates.format(perk.expiryDate.time, 'yyyy-MM-dd') : 'No Expiry'}"></td>
             <td th:text="${perk.rating}"></td>
             <td>
-                <div class="vote-forms">
-                    <form class="flat-form"th:action="@{|/perks/${perk.id}/upvote|}" method="post">
+                <div class="vote-forms"
+                     th:attr="data-perk-id=${perk.id},
+                              data-logged-in=${isAuthenticated},
+                              data-csrf-header=${_csrf.headerName},
+                              data-csrf-token=${_csrf.token},
+                              data-vote-state=${voteStates[perk.id]}">
+                    <form class="flat-form" th:action="@{/perks/{id}/upvote(id=${perk.id})}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <button class="btn-small" type="submit">▲</button>
+                        <input type="hidden" name="page" th:value="${page}"/>
+                        <button class="btn-small upvote" type="submit"
+                                th:classappend="${voteStates[perk.id] == 1} ? ' voted' : ''">▲</button>
                     </form>
-                    <form class="flat-form" th:action="@{|/perks/${perk.id}/downvote|}" method="post">
+                    <form class="flat-form" th:action="@{/perks/{id}/downvote(id=${perk.id})}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <button class="btn-small" type="submit">▼</button>
+                        <input type="hidden" name="page" th:value="${page}"/>
+                        <button class="btn-small downvote" type="submit"
+                                th:classappend="${voteStates[perk.id] == -1} ? ' voted' : ''">▼</button>
                     </form>
+
                 </div>
             </td>
         </tr>
@@ -99,28 +108,22 @@
     <div class="pager" th:if="${totalPages > 1}">
         <span th:text="'Total: ' + ${totalPerks} + ' perks'"></span>
         <br/>
-
-        <a th:if="${page > 0}"
-           th:href="@{/perks(page=${page - 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-            Prev
-        </a>
-
+        <a th:if="${page > 0}" th:href="@{/perks(page=${page - 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">Prev</a>
         <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:if="${i != page}"
-           th:text="${i + 1}"
-           th:href="@{/perks(page=${i}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-        </a>
-        <span th:if="${i == page}" th:text="${i + 1}" class="current"></span>
-    </span>
-
-        <a th:if="${page < totalPages - 1}"
-           th:href="@{/perks(page=${page + 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">
-            Next
-        </a>
+            <a th:if="${i != page}" th:text="${i + 1}" th:href="@{/perks(page=${i}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}"></a>
+            <span th:if="${i == page}" th:text="${i + 1}" class="current"></span>
+        </span>
+        <a th:if="${page < totalPages - 1}" th:href="@{/perks(page=${page + 1}, size=${size}, sort=${sort}, direction=${direction}, membershipType=${membershipType}, region=${region}, expiryOnly=${expiryOnly})}">Next</a>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
+
+<script th:src="@{/js/votes.js}"></script>
+<script th:src="@{/js/perks-table.js}"></script>
+<script th:inline="javascript">
+    window.ALL_PERKS = /*[[${perksJson}]]*/ [];
+</script>
 </body>
 </html>
 

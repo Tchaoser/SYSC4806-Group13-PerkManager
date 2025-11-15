@@ -89,29 +89,31 @@ public class PerkService {
     }
 
     // Upvote a perk
-    public void upvotePerk(Long perkId, Account account) {
+    public void toggleUpvotePerk(Long perkId, Account account) {
         Perk perk = perkRepository.findById(perkId)
                 .orElseThrow(() -> new NoSuchElementException("Perk not found"));
 
-        // Remove from downvotes if exists
-        perk.getDownvotedBy().remove(account);
-
-        // Add to upvotes
-        perk.getUpvotedBy().add(account);
+        if (perk.getUpvotedBy().contains(account)) {
+            perk.getUpvotedBy().remove(account);
+        } else {
+            perk.getUpvotedBy().add(account);
+            perk.getDownvotedBy().remove(account);
+        }
 
         perkRepository.save(perk);
     }
 
     // Downvote a perk
-    public void downvotePerk(Long perkId, Account account) {
+    public void toggleDownvotePerk(Long perkId, Account account) {
         Perk perk = perkRepository.findById(perkId)
                 .orElseThrow(() -> new NoSuchElementException("Perk not found"));
 
-        // Remove from upvotes if exists
-        perk.getUpvotedBy().remove(account);
-
-        // Add to downvotes
-        perk.getDownvotedBy().add(account);
+        if (perk.getDownvotedBy().contains(account)) {
+            perk.getDownvotedBy().remove(account);
+        } else {
+            perk.getDownvotedBy().add(account);
+            perk.getUpvotedBy().remove(account);
+        }
 
         perkRepository.save(perk);
     }

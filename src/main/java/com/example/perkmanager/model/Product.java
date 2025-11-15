@@ -15,7 +15,8 @@ public class Product {
     @Column(name = "name", nullable = false) //The name of the product. Ex: KitKat
     private String name;
 
-    @Column(name = "description", nullable = true) //Optional: Description of the product
+    @NotBlank
+    @Column(name = "description", nullable = false) //Optional: Description of the product
     private String description;
 
     @NotBlank
