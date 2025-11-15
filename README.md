@@ -73,14 +73,25 @@ perkmanager/
 │  │  │  │  └─ maintenance/
 │  │  │  │     ├─ drop_all.sql             # Helper to drop all tables if you want a clean slate
 │  │  │  │     └─ reset_all.sql            # Helper to drop + re-run migrations + load demo data
-│  │  │  │
+│  │  │  ├─ static/
+│  │  │  │  ├─ css/
+│  │  │  │  │  └─ styles.css               # File for global styling
+│  │  │  │  └─ js/
+│  │  │  │  │  ├─ perks-table.js           # Updates displayed perks table
+│  │  │  │  │  └─ votes.js                 # Handles perk upvoting/downvoting
 │  │  │  ├─ templates/
 │  │  │  │  ├─ fragments/
+│  │  │  │  │  ├─ head.html                # Reusable head component
 │  │  │  │  │  ├─ navbar.html              # Reusable navbar component
 │  │  │  │  │  └─ footer.html              # Reusable footer component
+│  │  │  │  ├─ add-membership.html         # Page for creating new Memberships
+│  │  │  │  ├─ add-perk.html               # Page for creating new Perks
+│  │  │  │  ├─ add-product.html            # Page for creating new Products
 │  │  │  │  ├─ index.html                  # Homepage showing navigation options
 │  │  │  │  ├─ perks.html                  # Displays all perks (sortable by votes or expiry)
-│  │  │  │  ├─ add-perk.html               # Form for posting a new perk
+│  │  │  │  ├─ memberships.html            # Displays all memberships
+│  │  │  │  ├─ products.html               # Displays all products
+│  │  │  │  ├─ profiles.html               # Displays the user's profile
 │  │  │  │  ├─ login.html                  # Login page for existing users
 │  │  │  │  └─ signup.html                 # Registration page for new users
 │  │  │  │
@@ -93,6 +104,11 @@ perkmanager/
 │     │
 │     ├─ controllers/
 │     │  └─ AccountControllerTest.java    # Verifies login, registration, and session routes
+│     │  └─ HomeControllerTest.java       # Verifies home page logic, featured top-rated and expiring perks
+│     │  └─ MembershipControllerTest.java # Verifies membership listing, add form, and creation
+│     │  └─ PerkControllerTest.java       # Verifies listing, adding, voting, and form handling for perks
+│     │  └─ ProductControllerTest.java    # Verifies product listing, add form, and creation
+│     │  └─ ProfileControllerTest.java    # Verifies user profile view, membership add/remove, and guest handling
 │     │
 │     ├─ model/
 │     │  ├─ AccoutTest.java               # Tests User entity fields, relationships, validation
