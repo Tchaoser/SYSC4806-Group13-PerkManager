@@ -31,6 +31,10 @@ describe("Test Suite for successful upvotes and downvotes: ", () => {
         perk_rating = $("#rating");
     });
 
+    afterEach(() => {
+        jest.resetAllMocks();
+    })
+
     test("Test Click Upvote", () => {
         //Test the perk is what we expect it to be
         expect(perk_rating.text()).toBe("0")
