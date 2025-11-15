@@ -65,14 +65,14 @@ class PerkServiceTest {
     }
 
     @Test
-    void upvotePerk_shouldAddUpvoteAndRemoveDownvote() {
+    void toggleUpvotePerk_shouldAddUpvoteAndRemoveDownvote() {
         Account user = new Account();
         Perk perk = new Perk();
         perk.getDownvotedBy().add(user);
 
         when(perkRepository.findById(1L)).thenReturn(Optional.of(perk));
 
-        perkService.upvotePerk(1L, user);
+        perkService.toggleUpvotePerk(1L, user);
 
         assertTrue(perk.getUpvotedBy().contains(user));
         assertFalse(perk.getDownvotedBy().contains(user));
@@ -80,14 +80,14 @@ class PerkServiceTest {
     }
 
     @Test
-    void downvotePerk_shouldAddDownvoteAndRemoveUpvote() {
+    void toggleDownvotePerk_shouldAddDownvoteAndRemoveUpvote() {
         Account user = new Account();
         Perk perk = new Perk();
         perk.getUpvotedBy().add(user);
 
         when(perkRepository.findById(1L)).thenReturn(Optional.of(perk));
 
-        perkService.downvotePerk(1L, user);
+        perkService.toggleDownvotePerk(1L, user);
 
         assertTrue(perk.getDownvotedBy().contains(user));
         assertFalse(perk.getUpvotedBy().contains(user));

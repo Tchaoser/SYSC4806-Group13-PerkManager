@@ -1,6 +1,7 @@
 package com.example.perkmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "products")
@@ -10,12 +11,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     @Column(name = "name", nullable = false) //The name of the product. Ex: KitKat
     private String name;
 
-    @Column(name = "description", nullable = true) //Optional: Description of the product
+    @NotBlank
+    @Column(name = "description", nullable = false) //Optional: Description of the product
     private String description;
 
+    @NotBlank
     @Column(name = "company", nullable = false) //The company the product is associated with. Ex: Nestle
     private String company;
 

@@ -10,13 +10,17 @@ import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import com.example.perkmanager.services.PerkService;
 import com.example.perkmanager.services.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/perks")
@@ -47,12 +51,19 @@ public class PerkController {
             @RequestParam Optional<String> direction,
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<Integer> size,
+            @AuthenticationPrincipal UserDetails userDetails,
             Model model) {
+
         try {
-            // Base filtered list
+            final Account currentUser = (userDetails != null)
+                    ? accountService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+                    : null;
+
+
             List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
-            // Sorting
             perks = perkService.sortPerks(perks, sort, direction);
+
             // Pagination
             int pageNum = Math.max(page.orElse(0), 0);
             int pageSize = Math.max(size.orElse(5), 1);
@@ -65,6 +76,20 @@ public class PerkController {
             List<Perk> pageItems = perks.subList(from, to);
 
             model.addAttribute("perks", pageItems);
+
+            Map<Long, Integer> voteStates = new HashMap<>();
+            if (currentUser != null) {
+                for (Perk p : pageItems) {
+                    int voteState = 0;
+                    if (p.getUpvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = 1;
+                    else if (p.getDownvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = -1;
+                    voteStates.put(p.getId(), voteState);
+                }
+            }
+            model.addAttribute("voteStates", voteStates);
+            model.addAttribute("isAuthenticated", currentUser != null);
+
+
             model.addAttribute("membershipType", membershipType.orElse(""));
             model.addAttribute("membershipTypes", membershipService.getAllMembershipTypes());
             model.addAttribute("region", region.orElse(""));
@@ -76,6 +101,52 @@ public class PerkController {
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("totalPerks", total);
 
+            ObjectMapper mapper = new ObjectMapper();
+
+            int finalPageNum = pageNum;
+            List<Map<String, Object>> perksJsonList = perks.stream().map(p -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", p.getId());
+                map.put("benefit", p.getBenefit());
+                map.put("rating", p.getRating());
+                map.put("expiryDate", p.getExpiryDate() != null ? p.getExpiryDate().getTime() : null);
+                map.put("region", p.getRegion());
+
+                if (p.getMembership() != null) {
+                    map.put("membership", Map.of(
+                            "type", p.getMembership().getType(),
+                            "description", p.getMembership().getDescription(),
+                            "organizationName", p.getMembership().getOrganizationName()
+                    ));
+                }
+
+                if (p.getProduct() != null) {
+                    map.put("product", Map.of(
+                            "name", p.getProduct().getName(),
+                            "company", p.getProduct().getCompany(),
+                            "description", p.getProduct().getDescription()
+                    ));
+                }
+
+                int voteState = 0;
+                if (currentUser != null) {
+                    if (p.getUpvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = 1;
+                    else if (p.getDownvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = -1;
+                }
+                map.put("voteState", voteState);
+                map.put("csrfParam", "_csrf");
+                map.put("csrfToken", model.getAttribute("_csrf") != null ? ((org.springframework.security.web.csrf.CsrfToken) model.getAttribute("_csrf")).getToken() : "");
+                map.put("csrfHeader", model.getAttribute("_csrf") != null ? ((org.springframework.security.web.csrf.CsrfToken) model.getAttribute("_csrf")).getHeaderName() : "");
+                map.put("page", finalPageNum);
+                map.put("isAuthenticated", currentUser != null);
+
+                return map;
+            }).collect(Collectors.toList());
+
+            String perksJson = mapper.writeValueAsString(perksJsonList);
+            model.addAttribute("perksJson", perksJson);
+
+
             return "perks";
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,6 +154,7 @@ public class PerkController {
             return "perks";
         }
     }
+
 
     // Show form to add a new perk
     @GetMapping("/add")
@@ -170,15 +242,18 @@ public class PerkController {
     // --- Voting endpoints (update counts immediately, then redirect back) ---
 
     @PostMapping("/{id}/upvote")
-    public String upvote(@PathVariable Long id,
-                         @AuthenticationPrincipal UserDetails userDetails) {
+    public String toggleUpvote(@PathVariable Long id,
+                               @RequestParam(required = false, defaultValue = "0") int page,
+                               @AuthenticationPrincipal UserDetails userDetails,
+                               RedirectAttributes redirectAttributes) {
         try {
             if (userDetails == null) {
                 return "redirect:/login";
             }
             Account account = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
-            perkService.upvotePerk(id, account);
+            perkService.toggleUpvotePerk(id, account);
+            redirectAttributes.addAttribute("page", page);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,15 +262,18 @@ public class PerkController {
     }
 
     @PostMapping("/{id}/downvote")
-    public String downvote(@PathVariable Long id,
-                           @AuthenticationPrincipal UserDetails userDetails) {
+    public String toggleDownvote(@PathVariable Long id,
+                                 @RequestParam(required = false, defaultValue = "0") int page,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 RedirectAttributes redirectAttributes) {
         try {
             if (userDetails == null) {
                 return "redirect:/login";
             }
             Account account = accountService.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
-            perkService.downvotePerk(id, account);
+            perkService.toggleDownvotePerk(id, account);
+            redirectAttributes.addAttribute("page", page);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();

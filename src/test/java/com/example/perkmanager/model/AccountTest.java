@@ -48,26 +48,34 @@ class AccountTest {
     }
 
     @Test
-    void setPassword() {
+    void getSetPassword() {
         account.setPassword("123457");
         assertEquals("123457", account.getPassword());
+        account.setPassword("1234567");
+        assertEquals("1234567", account.getPassword());
     }
 
     @Test
-    void setPerks() {
+    void getSetPerks() {
         Set<Perk> perks = new HashSet<>();
         Perk p = new Perk();
         perks.add(p);
         account.setPerks(perks);
         assertEquals(perks, account.getPerks());
+        Set<Perk> emptyPerks = new HashSet<>();
+        account.setPerks(emptyPerks);
+        assertEquals(0, account.getPerks().size());
     }
 
     @Test
-    void addPerk() {
+    void addRemovePerk() {
         assertEquals(0, account.getPerks().size());
         Perk perk = new Perk();
+        assertFalse(account.getPerks().contains(perk));
         account.addPerk(perk);
         assertTrue(account.getPerks().contains(perk));
+        account.removePerk(perk);
+        assertFalse(account.getPerks().contains(perk));
     }
 
     @Test
