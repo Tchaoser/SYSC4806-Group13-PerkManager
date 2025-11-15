@@ -53,6 +53,42 @@
                 </form>
             </div>
         </div>
+        <div class="membership-section">
+            <div class="membership-column">
+                <h2>Linked Perks</h2>
+                <div th:if="${#lists.isEmpty(perks)}">
+                    <div class="perk-card">No perks linked.</div>
+                </div>
+                <div th:each="p : ${perks}" class="perk-card membership-item">
+                    <div>
+                        <span th:text="${p.benefit}">Benefit</span>
+                        <span th:if="${p.membership != null}">
+                            -
+                            <span th:text="${p.membership.organizationName}">Organization</span>
+                        </span>
+                    </div>
+                    <form class="flat-form" th:action="@{/profile/perks/remove}" method="post">
+                        <input type="hidden" name="perkId" th:value="${p.id}" />
+                        <button class="btn-small" type="submit">Remove</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="membership-column">
+                <h2>Add Perk</h2>
+                <form th:action="@{/profile/perks/add}" method="post" class="membership-form">
+                    <select name="perkId">
+                        <option th:each="p : ${allPerks}"
+                                th:value="${p.id}"
+                                th:text="${p.benefit}">
+                        </option>
+                    </select>
+                    <div class="actions">
+                        <button type="submit" class="btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
