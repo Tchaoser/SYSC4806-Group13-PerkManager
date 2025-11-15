@@ -25,9 +25,10 @@ jobs:
       working-directory: ./src/main/resources
       run: npm install # Installs project dependencies
 
+  #Allows linux kernel to execute jest
     - name: Fix Jest Permissions
       working-directory: ./src/main/resources
-      run: chmod +x ./node_modules/.bin/jest
+      run: chmod +x ./node_modules/.bin/jest 
 
   #Runs Jest Test
     - name: Run Jest Tests
