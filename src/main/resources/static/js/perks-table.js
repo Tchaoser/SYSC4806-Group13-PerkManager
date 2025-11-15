@@ -3,6 +3,7 @@ var pagerDiv;
 var cache;
 var getCacheKey;
 var inFlightFetch = null;
+var module;
 
 function setEventListeners() {
     document.addEventListener("DOMContentLoaded", () => {
@@ -126,3 +127,14 @@ function bindTableLinks() {
 }
 
 setEventListeners();
+
+if (typeof module === 'object') {
+    module.exports = {
+        bindTableLinks: bindTableLinks,
+        setEventListeners: setEventListeners,
+        preLoadNextPage: preLoadNextPage,
+        fetchTable: fetchTable,
+        updateTable: updateTable
+    }
+}
+
