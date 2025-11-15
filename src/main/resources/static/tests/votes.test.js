@@ -37,12 +37,12 @@ describe("Test Suite for successful upvotes and downvotes: ", () => {
 
     test("Test Click Upvote", () => {
         //Test the perk is what we expect it to be
-        expect(perk_rating.text()).toBe("0")
+        expect(perk_rating.text()).toBe("0");
 
         upvote_button.click(); //simulate picking the upvote button
 
         //Test the UI updates
-        expect(perk_rating.text()).toBe("1")
+        expect(perk_rating.text()).toBe("1");
 
         //Test we made the correct fetch call
         expect(fetch).toHaveBeenCalledWith(
