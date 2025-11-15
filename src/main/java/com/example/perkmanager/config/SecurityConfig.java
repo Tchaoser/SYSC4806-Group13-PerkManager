@@ -17,6 +17,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/perks/add").authenticated() //require logged in to create perks
+                        .requestMatchers("/perks/*").permitAll() //avoid csrf issues with js
                         .anyRequest().permitAll() //allow access to all other urls
                 )
                 .formLogin(form -> form
