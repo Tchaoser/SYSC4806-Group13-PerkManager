@@ -1,50 +1,46 @@
 package com.example.perkmanager.controllers;
 
-import com.example.perkmanager.model.Account;
-import com.example.perkmanager.repositories.AccountRepository;
 import com.example.perkmanager.services.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-
 
 class AccountControllerTest {
 
     private AccountController accountController;
-    private AccountRepository accountRepository;
     private AccountService accountService;
     private Model model;
 
     @BeforeEach
     void setup() {
-        accountRepository = mock(AccountRepository.class);
-        accountService = new AccountService(accountRepository, new BCryptPasswordEncoder());
+        accountService = mock(AccountService.class);
         accountController = new AccountController(accountService);
         model = mock(Model.class);
-
-        when(accountRepository.save(any(Account.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test
     void displaySignup() {
-        assertEquals("signup", accountController.displaySignup(model));
+        String view = accountController.displaySignup(model);
+        assertEquals("signup", view);
     }
 
     @Test
     void signup() {
-        assertEquals("redirect:/login",  accountController.signup("testuser", "pass", model));
-        verify(accountRepository, times(1)).save(any(Account.class));
+        String username = "testuser";
+        String password = "pass";
+
+        String view = accountController.signup(username, password, model);
+
+        assertEquals("redirect:/login", view);
+        verify(accountService, times(1)).createAccount(username, password);
     }
 
     @Test
     void displayLogin() {
-        assertEquals("login", accountController.displayLogin(model));
+        String view = accountController.displayLogin(model);
+        assertEquals("login", view);
     }
-
 }

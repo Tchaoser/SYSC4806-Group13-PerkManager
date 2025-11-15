@@ -35,8 +35,7 @@ public class ProductController {
     public String addProduct(
             @RequestParam String name,
             @RequestParam String company,
-            @RequestParam String description
-    ) {
+            @RequestParam String description) {
         productService.createProduct(name, company, description);
         return "redirect:/products";
     }

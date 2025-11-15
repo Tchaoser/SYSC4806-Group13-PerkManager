@@ -283,6 +283,17 @@ form {
     gap: 6px;
 }
 
+/* Voting buttons */
+.btn-small.upvote.voted {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-small.downvote.voted {
+    background-color: #F44336;
+    color: white;
+}
+
 /* ========================================
    Errors & Hints
    ======================================== */
