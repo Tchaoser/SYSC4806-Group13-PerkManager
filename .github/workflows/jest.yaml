@@ -11,7 +11,6 @@ jobs:
   verify:
 
     runs-on: ubuntu-latest
-    #Spring boot build
     steps:
     - uses: actions/checkout@v4
     - name: Checkout Code
