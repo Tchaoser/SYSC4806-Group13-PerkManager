@@ -72,3 +72,5 @@ function initVotes() {
 }
 
 document.addEventListener("DOMContentLoaded", initVotes);
+
+module.exports = initVotes;

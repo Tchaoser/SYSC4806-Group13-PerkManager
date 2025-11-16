@@ -4,7 +4,7 @@
 <body>
 <nav style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; background-color:#007bff; color:#fff; font-weight:600;">
     <!-- Left side links -->
-    <div style="display: flex; gap: 12px;">
+    <div id = "left_side" style="display: flex; gap: 12px;">
         <a th:href="@{/}">Home</a>
         <a th:href="@{/perks}">Perks</a>
         <a th:href="@{/memberships}">Memberships</a>
@@ -14,13 +14,13 @@
     <!-- Right side links -->
     <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
         <!-- Unauthenticated -->
-        <span sec:authorize="!isAuthenticated()">
+        <span id = "not_authorized" sec:authorize="!isAuthenticated()">
             <a th:href="@{/login}">Login</a>
             <a th:href="@{/signup}">Sign Up</a>
         </span>
 
         <!-- Authenticated -->
-        <span sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 12px;">
+        <span id = "authorized" sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 12px;">
         <span>Logged in as <span class="username-highlight" sec:authentication="name"></span></span>
             <a th:href="@{/profile}">View Profile</a>
             <form th:action="@{/logout}" method="post" style="margin:0;" class="flat-form">

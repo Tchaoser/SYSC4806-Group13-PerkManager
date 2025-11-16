@@ -79,6 +79,12 @@ perkmanager/
 │  │  │  │  └─ js/
 │  │  │  │  │  ├─ perks-table.js           # Updates displayed perks table
 │  │  │  │  │  └─ votes.js                 # Handles perk upvoting/downvoting
+│  │  │  │  └─ tests/
+│  │  │  │  │  ├─ footer.test.js           # Tests footer.html elements
+│  │  │  │  │  └─ navbar.test.js           # Tests navbar.html elements
+│  │  │  │  │  └─ profile.test.js          # Tests profile.html elements
+│  │  │  │  │  └─ votes.test.js            # Tests votes.js functionality
+│  │  │  │  │  └─ perks-page-test.html     # Captured page for votes.test.js
 │  │  │  ├─ templates/
 │  │  │  │  ├─ fragments/
 │  │  │  │  │  ├─ head.html                # Reusable head component
@@ -319,33 +325,36 @@ Further SQL/database development would typically proceed by adding new migration
 
   ---
 
-## Installing and Running Jasmine Client Side Testing:
+## Installing and Running Jest Client Side Testing:
 1. Download and install Node.js and npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 2. Open a terminal (or cmd prompt) and navigate to `src/main/resources/` in your project.
 3. Run: npm test
+
 Any test failures will be displayed in the terminal (or cmd prompt).
+
+Note: Some tests can be run directly in intellij. For tests that require jQuery or DOM, set run with parameter: --env=jsdom
+![alt text](image.png)
 
 ## Creating Client-Side Tests:
 
-- Jasmine will run JS files in the directory specified by `spec_files` in `spec/support/jasmine.mjs`.
-- By default, in our setup, this includes the templates directory: `templates/**/*.js`.
-- Multiple directories or specific files can be specified in 'spec_files'
+- Jest will run any JS files within the given directory if they have <name>.test.js and they have describe() or test() in them.
 
 To create a test suite for a .js file, use:
 ```javascript
-describe("test suite description here", function() {  
-it("test case description here", function() {  
- // Your test code here
-});  
-it("another test case description", function() {  
- // More test code here
-});  
+describe("test suite description here", function() {
+    beforeEach(() => {
+        //Setup code here
+    });
+
+    test("Verify contents of footer", () => {
+        expect("some actual value").to//Some condition specified by jest relative to expected value
+
+    });
+});
 ```
 
 ### Example:
-
-![alt text](image.png)
 ![alt text](image-1.png)
-
+![alt text](image-2.png)
 ---
 
