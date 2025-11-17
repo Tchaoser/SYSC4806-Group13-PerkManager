@@ -8,15 +8,15 @@
     <h1>User Profile</h1>
 
     <!-- Guest view -->
-    <div th:if="${isAuthenticated != true}" class="alert">
+    <div id = "guest_view" th:if="${isAuthenticated != true}" class="alert">
         You are viewing as guest.
         <a th:href="@{/login}">Login</a> or <a th:href="@{/signup}">Sign up</a>.
     </div>
 
     <!-- Authenticated view -->
-    <div th:if="${isAuthenticated == true}">
+    <div id = "authenticated" th:if="${isAuthenticated == true}">
         <!-- User Info -->
-        <div class="perk-card">
+        <div id = "user_info" class="perk-card">
             <strong>Username:</strong> <span th:text="${account.username}">username</span>
         </div>
 
