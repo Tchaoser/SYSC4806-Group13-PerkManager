@@ -402,7 +402,7 @@ th.sortable {
    Shared Home & Profile Layout
    ======================================== */
 .perk-sections,
-.membership-section {
+.profile-section {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
@@ -410,7 +410,7 @@ th.sortable {
 }
 
 .perk-column,
-.membership-column {
+.profile-column {
     flex: 1;
     min-width: 280px;
 }
@@ -421,7 +421,7 @@ th.sortable {
     align-items: center;
 }
 
-.membership-form {
+.profile-form {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -430,7 +430,7 @@ th.sortable {
 /* Stack columns on small screens */
 @media (max-width: 700px) {
     .perk-sections,
-    .membership-section {
+    .profile-section {
         flex-direction: column;
     }
 }

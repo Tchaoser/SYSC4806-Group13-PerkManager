@@ -7,6 +7,7 @@ import com.example.perkmanager.repositories.AccountRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.perkmanager.model.Perk;
 
 import java.util.Optional;
 
@@ -57,6 +58,16 @@ public class AccountService {
     //remove an account, required for profile to work
     public void removeMembership(Account account, Membership membership) {
         account.removeMembership(membership);
+        accountRepository.save(account);
+    }
+
+    public void addPerkToProfile(Account account, Perk perk) {
+        account.addPerkToProfile(perk);
+        accountRepository.save(account);
+    }
+
+    public void removePerkFromProfile(Account account, Perk perk) {
+        account.removePerkFromProfile(perk);
         accountRepository.save(account);
     }
 }
