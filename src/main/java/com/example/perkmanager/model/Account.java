@@ -39,6 +39,14 @@ public class Account {
     )
     private Set<Membership> memberships = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "account_saved_perks",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "perk_id")
+    )
+    private Set<Perk> savedPerks = new HashSet<>();
+
     public Account() {}
 
     public Set<Membership> getMemberships() { return memberships; }
@@ -73,4 +81,14 @@ public class Account {
     }
 
 
+    public Set<Perk> getSavedPerks() { return savedPerks; }
+    public void setSavedPerks(Set<Perk> savedPerks) { this.savedPerks = savedPerks; }
+
+    public void addPerkToProfile(Perk perk) {
+        savedPerks.add(perk);
+    }
+
+    public void removePerkFromProfile(Perk perk) {
+        savedPerks.remove(perk);
+    }
 }
