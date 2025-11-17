@@ -21,14 +21,14 @@
         </div>
 
         <!-- Membership Section -->
-        <div class="membership-section">
+        <div class="profile-section">
             <!-- Linked Memberships Column -->
-            <div class="membership-column">
+            <div class="profile-column">
                 <h2>Linked Memberships</h2>
                 <div th:if="${#lists.isEmpty(memberships)}">
                     <div class="perk-card">No memberships linked.</div>
                 </div>
-                <div th:each="m : ${memberships}" class="perk-card membership-item">
+                <div th:each="m : ${memberships}" class="perk-card profile-item">
                     <div>
                         <span th:text="${m.type}">Type</span> -
                         <span th:text="${m.organizationName}">Organization</span>
@@ -41,11 +41,15 @@
             </div>
 
             <!-- Add Membership Column -->
-            <div class="membership-column">
+            <div class="profile-column">
                 <h2>Add Membership</h2>
-                <form th:action="@{/profile/memberships/add}" method="post" class="membership-form">
-                    <select name="membershipId">
-                        <option th:each="m : ${allMemberships}" th:value="${m.id}" th:text="${m.type} + ' - ' + ${m.organizationName}"></option>
+                <form th:action="@{/profile/memberships/add}" method="post" class="profile-form">
+                    <select name="membershipId" required>
+                        <option value="" disabled selected>-- Select a membership --</option>
+                        <option th:each="m : ${allMemberships}"
+                                th:value="${m.id}"
+                                th:text="${m.type} + ' - ' + ${m.organizationName}">
+                        </option>
                     </select>
                     <div class="actions">
                         <button type="submit" class="btn-primary">Add</button>
@@ -53,13 +57,14 @@
                 </form>
             </div>
         </div>
-        <div class="membership-section">
-            <div class="membership-column">
+        <!-- Perk Section -->
+        <div class="profile-section">
+            <div class="profile-column">
                 <h2>Linked Perks</h2>
                 <div th:if="${#lists.isEmpty(perks)}">
                     <div class="perk-card">No perks linked.</div>
                 </div>
-                <div th:each="p : ${perks}" class="perk-card membership-item">
+                <div th:each="p : ${perks}" class="perk-card profile-item">
                     <div>
                         <span th:text="${p.benefit}">Benefit</span>
                         <span th:if="${p.membership != null}">
@@ -74,10 +79,11 @@
                 </div>
             </div>
 
-            <div class="membership-column">
+            <div class="profile-column">
                 <h2>Add Perk</h2>
-                <form th:action="@{/profile/perks/add}" method="post" class="membership-form">
-                    <select name="perkId">
+                <form th:action="@{/profile/perks/add}" method="post" class="profile-form">
+                    <select name="perkId" required>
+                        <option value="" disabled selected>-- Select a perk --</option>
                         <option th:each="p : ${allPerks}"
                                 th:value="${p.id}"
                                 th:text="${p.benefit}">
