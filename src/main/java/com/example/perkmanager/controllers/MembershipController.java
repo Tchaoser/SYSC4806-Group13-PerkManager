@@ -41,26 +41,40 @@ public class MembershipController {
             @RequestParam(required = false) String description,
             Model model) {
 
+        // Trim inputs (avoid null pointer by checking null)
+        String typeTrim = (type != null) ? type.trim() : null;
+        String orgTrim = (organizationName != null) ? organizationName.trim() : null;
+        String descTrim = (description != null) ? description.trim() : null;
+
         Map<String, String> fieldErrors = new HashMap<>();
-        if (type == null || type.trim().isEmpty()) {
+
+        // Required checks (kept) and max length checks
+        if (typeTrim == null || typeTrim.isEmpty()) {
             fieldErrors.put("type", "Type is required");
+        } else if (typeTrim.length() > 100) {
+            fieldErrors.put("type", "Type must be at most 100 characters");
         }
-        if (organizationName == null || organizationName.trim().isEmpty()) {
+
+        if (orgTrim == null || orgTrim.isEmpty()) {
             fieldErrors.put("organizationName", "Organization name is required");
+        } else if (orgTrim.length() > 100) {
+            fieldErrors.put("organizationName", "Organization name must be at most 100 characters");
         }
-        if (description == null || description.trim().isEmpty()) {
+
+        if (descTrim == null || descTrim.isEmpty()) {
             fieldErrors.put("description", "Description is required");
+        } else if (descTrim.length() > 500) {
+            fieldErrors.put("description", "Description must be at most 500 characters");
         }
 
         if (!fieldErrors.isEmpty()) {
             model.addAttribute("fieldErrors", fieldErrors);
-            model.addAttribute("error", "Please complete all required fields");
-            // keep the membership object for potential binding (optional)
+            model.addAttribute("error", "Please fix the errors below");
             model.addAttribute("membership", new Membership());
             return "add-membership";
         }
 
-        membershipService.createMembership(type.trim(), organizationName.trim(), description.trim());
+        membershipService.createMembership(typeTrim, orgTrim, descTrim);
         return "redirect:/memberships";
     }
 }

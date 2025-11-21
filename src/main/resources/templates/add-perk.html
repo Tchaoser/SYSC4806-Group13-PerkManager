@@ -51,6 +51,9 @@
             <label for="region">Region</label>
             <input id="region" name="region" type="text" placeholder="e.g., Canada / Global"
                    th:value="${param.region != null ? param.region[0] : ''}"/>
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('region')}"
+                 th:text="${fieldErrors.get('region')}"></div>
         </div>
 
         <div class="row">
