@@ -49,9 +49,9 @@ public class ProductControllerTest {
         String company = "Test Company";
         String description = "Test Description";
 
-        String view = productController.addProduct(name, company, description);
+        String view = productController.addProduct(name, company, description, model);
 
         assertEquals("redirect:/products", view);
-        verify(productService).createProduct(name, company, description);
+        verify(productService, times(1)).createProduct(name, company, description);
     }
 }
