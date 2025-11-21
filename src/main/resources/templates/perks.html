@@ -46,6 +46,7 @@
     <table>
         <thead>
         <tr>
+            <th>Save</th>
             <th>Benefit</th>
             <th>Membership Type</th>
             <th>Membership</th>
@@ -69,6 +70,22 @@
         </thead>
         <tbody>
         <tr th:each="perk : ${perks}">
+            <td>
+                <div class="perk-save-forms"
+                     th:attr="data-perk-id=${perk.id},
+                              data-logged-in=${isAuthenticated},
+                              data-csrf-header=${_csrf.headerName},
+                              data-csrf-token=${_csrf.token},
+                              data-vote-state=${voteStates[perk.id]}">
+                    <form class="flat-form" th:action="@{/perks/{id}/save(id=${perk.id})}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="page" th:value="${page}"/>
+                        <button class = "btn-small save-perk"  th:classappend="${saveStates[perk.id] == 1} ? ' saved' : ''"type="submit">
+                            ★
+                        </button>
+                    </form>
+                </div>
+            </td>
             <td th:text="${perk.benefit}"></td>
             <td th:text="${perk.membership != null ? perk.membership.type : 'None'}"></td>
             <td th:text="${perk.membership != null ? perk.membership.description : 'None'}"></td>

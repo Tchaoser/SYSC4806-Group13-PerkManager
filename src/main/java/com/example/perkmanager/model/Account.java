@@ -72,6 +72,15 @@ public class Account {
     public void addPerk(Perk perk) { perks.add(perk); }
     public boolean removePerk(Perk perk) { return perks.remove(perk); }
 
+    public boolean hasPerk(Long id) {
+        boolean hasPerk = false;
+        for (Perk perk : this.savedPerks) {
+            if (perk.getId().equals(id)) {
+                hasPerk = true;
+            }
+        }
+        return hasPerk;}
+
     public Perk removePerkById(Long id) {
         return perks.stream()
                 .filter(p -> p.getId().equals(id))

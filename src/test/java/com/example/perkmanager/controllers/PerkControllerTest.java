@@ -151,4 +151,30 @@ public class PerkControllerTest {
         assertEquals("redirect:/perks", view);
         verify(perkService).toggleDownvotePerk(1L, account);
     }
+
+    @Test
+    void toggleSavePerk() {
+        Account account = new Account();
+        when(accountService.findByUsername(anyString())).thenReturn(Optional.of(account));
+
+        Perk perk = new Perk();
+        perk.setId(1L);
+        when(perkService.findById(1L)).thenReturn(Optional.of(perk));
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("user");
+
+        String view = perkController.toggleSavePerk(1L, 1, userDetails, redirectAttributes);
+
+        assertEquals("1", redirectAttributes.getAttribute("page"));
+        assertEquals("redirect:/perks", view);
+        verify(accountService).addPerkToProfile(account, perk);
+
+        account.addPerkToProfile(perk);
+
+        view = perkController.toggleSavePerk(1L, 1, userDetails, redirectAttributes);
+        assertEquals("1", redirectAttributes.getAttribute("page"));
+        assertEquals("redirect:/perks", view);
+        verify(accountService).removePerkFromProfile(account, perk);
+    }
 }

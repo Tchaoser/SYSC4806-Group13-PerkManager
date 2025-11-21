@@ -73,4 +73,6 @@ function initVotes() {
 
 document.addEventListener("DOMContentLoaded", initVotes);
 
-module.exports = initVotes;
+if (typeof module === 'object') {
+    module.exports = initVotes;
+}
