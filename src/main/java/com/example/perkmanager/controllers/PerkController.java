@@ -77,15 +77,25 @@ public class PerkController {
 
             model.addAttribute("perks", pageItems);
 
+            Map<Long, Integer> saveStates = new HashMap<>();
             Map<Long, Integer> voteStates = new HashMap<>();
             if (currentUser != null) {
+
                 for (Perk p : pageItems) {
+                    //Handle save states
+                    if (currentUser.hasPerk(p.getId())) {
+                        saveStates.put(p.getId(), 1);
+                    } else {
+                        saveStates.put(p.getId(), 0);
+                    }
+                    //Handle vote states
                     int voteState = 0;
                     if (p.getUpvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = 1;
                     else if (p.getDownvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = -1;
                     voteStates.put(p.getId(), voteState);
                 }
             }
+            model.addAttribute("saveStates", saveStates);
             model.addAttribute("voteStates", voteStates);
             model.addAttribute("isAuthenticated", currentUser != null);
 
@@ -127,12 +137,17 @@ public class PerkController {
                             "description", p.getProduct().getDescription()
                     ));
                 }
+                int saveState = 0;
+                if (currentUser != null) {
+                    if (currentUser.hasPerk(p.getId())) saveState = 1;
+                }
 
                 int voteState = 0;
                 if (currentUser != null) {
                     if (p.getUpvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = 1;
                     else if (p.getDownvotedBy().stream().anyMatch(u -> u.getId().equals(currentUser.getId()))) voteState = -1;
                 }
+                map.put("saveState", saveState);
                 map.put("voteState", voteState);
                 map.put("csrfParam", "_csrf");
                 map.put("csrfToken", model.getAttribute("_csrf") != null ? ((org.springframework.security.web.csrf.CsrfToken) model.getAttribute("_csrf")).getToken() : "");
@@ -281,6 +296,43 @@ public class PerkController {
         }
     }
 
+
+    /**
+     * Used to save perks to user profile from the perks search page.
+     *
+     * @param id The is of the perk to be added.
+     * @param page The page of the search the user is currently on.
+     * @param userDetails The information of the user.
+     * @param redirectAttributes Any other attributes needed to redirect user to the page they are currently on.
+     * @return The html package to redirect the user to.
+     */
+    @PostMapping("/{id}/save")
+    public String toggleSavePerk(@PathVariable Long id,
+                          @RequestParam(required = false, defaultValue = "0") int page,
+                          @AuthenticationPrincipal UserDetails userDetails,
+                          RedirectAttributes redirectAttributes) {
+        try {
+            if (userDetails == null) {
+                return "redirect:/login";
+            }
+            Account account = accountService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Authenticated account not found"));
+            Perk perk = perkService.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Perk not found"));
+
+            if (account.hasPerk(id)){
+                accountService.removePerkFromProfile(account, perk);
+            } else {
+                accountService.addPerkToProfile(account, perk);
+            }
+
+            redirectAttributes.addAttribute("page", page);
+            return "redirect:/perks";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/perks";
+        }
+    }
     // TODO: add edit/delete
 }
 

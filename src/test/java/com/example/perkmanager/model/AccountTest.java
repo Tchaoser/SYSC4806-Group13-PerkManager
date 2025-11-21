@@ -95,4 +95,12 @@ class AccountTest {
         assertEquals(perk, removed);
         assertEquals(0, account.getPerks().size());
     }
+
+    @Test
+    void hasPerk() {
+        Perk perk = new Perk();
+        perk.setId(1L);
+        account.addPerkToProfile(perk);
+        assertTrue(account.hasPerk(perk.getId()));
+    }
 }
