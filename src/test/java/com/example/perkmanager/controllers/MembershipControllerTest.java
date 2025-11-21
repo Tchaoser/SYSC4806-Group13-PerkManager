@@ -32,7 +32,7 @@ public class MembershipControllerTest {
         String type = "test type";
         String org = "test organization";
 
-        String view = membershipController.addMembership(type, org, description);
+        String view = membershipController.addMembership(type, org, description, model);
 
         assertEquals("redirect:/memberships", view);
         verify(membershipService, times(1)).createMembership(type, org, description);

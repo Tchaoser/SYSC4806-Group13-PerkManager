@@ -5,22 +5,38 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-<h1>Add Membership</h1>
+    <h1>Add Membership</h1>
 
-    <form th:action="@{/memberships/add}" method="post">
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <form th:action="@{/memberships/add}" method="post" novalidate>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
         <div class="row">
-            <label>Type <span style="color:#a40000">*</span></label>
-            <input type="text" name="type" required/>
+            <label for="type">Type <span style="color:#a40000">*</span></label>
+            <input id="type" type="text" name="type" required
+                   th:value="${param.type != null ? param.type[0] : ''}" />
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('type')}"
+                 th:text="${fieldErrors.get('type')}"></div>
         </div>
 
         <div class="row">
-            <label>Organization Name <span style="color:#a40000">*</span></label>
-            <input type="text" name="organizationName" required/>
+            <label for="organizationName">Organization Name <span style="color:#a40000">*</span></label>
+            <input id="organizationName" type="text" name="organizationName" required
+                   th:value="${param.organizationName != null ? param.organizationName[0] : ''}" />
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('organizationName')}"
+                 th:text="${fieldErrors.get('organizationName')}"></div>
         </div>
 
         <div class="row">
-            <label>Description <span style="color:#a40000">*</span></label>
-            <input type="text" name="description" required/>
+            <label for="description">Description <span style="color:#a40000">*</span></label>
+            <input id="description" type="text" name="description" required
+                   th:value="${param.description != null ? param.description[0] : ''}" />
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('description')}"
+                 th:text="${fieldErrors.get('description')}"></div>
         </div>
 
         <div class="actions">
@@ -30,3 +46,5 @@
     </form>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
+</body>
+</html>
