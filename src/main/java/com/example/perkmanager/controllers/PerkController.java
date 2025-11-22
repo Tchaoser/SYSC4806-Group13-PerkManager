@@ -190,14 +190,26 @@ public class PerkController {
                           @AuthenticationPrincipal UserDetails userDetails, Model model) {
 
         Map<String, String> fieldErrors = new HashMap<>();
-        if (benefit == null || benefit.trim().isEmpty()) {
+
+        // Trim text inputs
+        String benefitTrim = (benefit != null) ? benefit.trim() : null;
+        String regionTrim = (region != null) ? region.trim() : null;
+
+        if (benefitTrim == null || benefitTrim.isEmpty()) {
             fieldErrors.put("benefit", "Benefit is required");
+        } else if (benefitTrim.length() > 200) {
+            fieldErrors.put("benefit", "Benefit must be at most 200 characters");
         }
+
         if (productId == null) {
             fieldErrors.put("productId", "Please select a product");
         }
         if (membershipId == null) {
             fieldErrors.put("membershipId", "Please select a membership");
+        }
+
+        if (regionTrim != null && !regionTrim.isEmpty() && regionTrim.length() > 100) {
+            fieldErrors.put("region", "Region must be at most 100 characters");
         }
 
         Calendar cal = null;
@@ -227,7 +239,7 @@ public class PerkController {
             model.addAttribute("products", productService.getAllProducts());
             model.addAttribute("memberships", membershipService.getAllMemberships());
             model.addAttribute("fieldErrors", fieldErrors);
-            model.addAttribute("error", "Please complete all required fields");
+            model.addAttribute("error", "Please fix the errors below");
             return "add-perk";
         }
 
@@ -242,7 +254,7 @@ public class PerkController {
             Membership membership = membershipService.findById(membershipId)
                     .orElseThrow(() -> new RuntimeException("Membership not found"));
 
-            perkService.createPerk(creator, membership, product, benefit, cal, region);
+            perkService.createPerk(creator, membership, product, benefitTrim, cal, regionTrim);
             return "redirect:/perks";
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,10 +33,42 @@ public class MembershipControllerTest {
         String type = "test type";
         String org = "test organization";
 
-        String view = membershipController.addMembership(type, org, description);
+        String view = membershipController.addMembership(type, org, description, model);
 
         assertEquals("redirect:/memberships", view);
         verify(membershipService, times(1)).createMembership(type, org, description);
+    }
+
+    @Test
+    void addMembershipTooLong() {
+        String longType = "a".repeat(101); // assumes max 100
+        String longOrg = "b".repeat(101);
+        String longDesc = "c".repeat(201); // assumes max 200
+
+        String view = membershipController.addMembership(longType, longOrg, longDesc, model);
+
+        assertEquals("add-membership", view);
+        verify(model).addAttribute(eq("fieldErrors"), any(Map.class));
+        verifyNoInteractions(membershipService); // service should not be called
+    }
+
+    @Test
+    void addMembershipTrimsInput() {
+        String type = "  My Type  ";
+        String org = "  Org Name  ";
+        String desc = "  Desc  ";
+
+        membershipController.addMembership(type, org, desc, model);
+
+        ArgumentCaptor<String> typeCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> orgCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> descCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(membershipService).createMembership(typeCaptor.capture(), orgCaptor.capture(), descCaptor.capture());
+
+        assertEquals("My Type", typeCaptor.getValue());
+        assertEquals("Org Name", orgCaptor.getValue());
+        assertEquals("Desc", descCaptor.getValue());
     }
 
     @Test
