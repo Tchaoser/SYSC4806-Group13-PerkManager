@@ -7,20 +7,36 @@
 <div class="container">
     <h1>Add Product</h1>
 
-    <form th:action="@{/products/add}" method="post">
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <form th:action="@{/products/add}" method="post" novalidate>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
         <div class="row">
-            <label>Name <span style="color:#a40000">*</span></label>
-            <input type="text" name="name" required/>
+            <label for="name">Name <span style="color:#a40000">*</span></label>
+            <input id="name" type="text" name="name" required
+                   th:value="${param.name != null ? param.name[0] : ''}" />
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('name')}"
+                 th:text="${fieldErrors.get('name')}"></div>
         </div>
 
         <div class="row">
-            <label>Company <span style="color:#a40000">*</span></label>
-            <input type="text" name="company" required/>
+            <label for="company">Company <span style="color:#a40000">*</span></label>
+            <input id="company" type="text" name="company" required
+                   th:value="${param.company != null ? param.company[0] : ''}" />
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('company')}"
+                 th:text="${fieldErrors.get('company')}"></div>
         </div>
 
         <div class="row">
-            <label>Description <span style="color:#a40000">*</span></label>
-            <input type="text" name="description" required/>
+            <label for="description">Description <span style="color:#a40000">*</span></label>
+            <input id="description" type="text" name="description" required
+                   th:value="${param.description != null ? param.description[0] : ''}" />
+            <div class="field-error"
+                 th:if="${fieldErrors != null and fieldErrors.containsKey('description')}"
+                 th:text="${fieldErrors.get('description')}"></div>
         </div>
 
         <div class="actions">
@@ -30,3 +46,5 @@
     </form>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
+</body>
+</html>

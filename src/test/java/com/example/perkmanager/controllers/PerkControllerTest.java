@@ -10,6 +10,7 @@ import com.example.perkmanager.services.PerkService;
 import com.example.perkmanager.services.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -121,6 +122,72 @@ public class PerkControllerTest {
         verify(model).addAttribute("memberships", memberships);
         verifyNoInteractions(perkService);
     }
+
+    @Test
+    void addPerkTooLong() {
+        List<Product> products = List.of(new Product());
+        List<Membership> memberships = List.of(new Membership());
+        when(productService.getAllProducts()).thenReturn(products);
+        when(membershipService.getAllMemberships()).thenReturn(memberships);
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("user");
+
+        Account account = new Account();
+        Product product = new Product();
+        Membership membership = new Membership();
+        when(accountService.findByUsername("user")).thenReturn(Optional.of(account));
+        when(productService.findById(1L)).thenReturn(Optional.of(product));
+        when(membershipService.findById(1L)).thenReturn(Optional.of(membership));
+
+        String longBenefit = "a".repeat(201); // assumes max 200
+        String longRegion = "b".repeat(101); // assumes max 100
+
+        String view = perkController.addPerk(1L, 1L, longBenefit, longRegion, null, userDetails, model);
+
+        assertEquals("add-perk", view);
+        verify(model).addAttribute(eq("fieldErrors"), any(Map.class));
+        verifyNoInteractions(perkService);
+    }
+
+    @Test
+    void addPerkTrimsInput() {
+        List<Product> products = List.of(new Product());
+        List<Membership> memberships = List.of(new Membership());
+        when(productService.getAllProducts()).thenReturn(products);
+        when(membershipService.getAllMemberships()).thenReturn(memberships);
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("user");
+
+        Account account = new Account();
+        Product product = new Product();
+        Membership membership = new Membership();
+        when(accountService.findByUsername("user")).thenReturn(Optional.of(account));
+        when(productService.findById(1L)).thenReturn(Optional.of(product));
+        when(membershipService.findById(1L)).thenReturn(Optional.of(membership));
+
+        String benefit = "  My Benefit  ";
+        String region = "  Canada  ";
+
+        perkController.addPerk(1L, 1L, benefit, region, null, userDetails, model);
+
+        ArgumentCaptor<String> benefitCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> regionCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(perkService).createPerk(
+                eq(account),
+                eq(membership),
+                eq(product),
+                benefitCaptor.capture(),
+                any(),
+                regionCaptor.capture()
+        );
+
+        assertEquals("My Benefit", benefitCaptor.getValue());
+        assertEquals("Canada", regionCaptor.getValue());
+    }
+
 
     @Test
     void toggleUpvote() {
