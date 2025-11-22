@@ -341,11 +341,12 @@ Further SQL/database development would typically proceed by adding new migration
 ## Installing and Running Jest Client Side Testing:
 1. Download and install Node.js and npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 2. Open a terminal (or cmd prompt) and navigate to `src/main/resources/` in your project.
-3. Run: npm test
+3. Run: `npm install` to install all required dependencies.
+4. Run: `npm test` to execute the tests.
 
 Any test failures will be displayed in the terminal (or cmd prompt).
 
-Note: Some tests can be run directly in intellij. For tests that require jQuery or DOM, set run with parameter: --env=jsdom
+**Note:** Some tests can be run directly in intellij. For tests that require jQuery or DOM, set run with parameter: --env=jsdom
 ![alt text](image.png)
 
 ## Creating Client-Side Tests:
