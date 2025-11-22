@@ -320,7 +320,7 @@ public class PerkController {
             Perk perk = perkService.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Perk not found"));
 
-            if (account.hasPerk(id)){
+            if (account.hasPerk(perk.getId())){
                 accountService.removePerkFromProfile(account, perk);
             } else {
                 accountService.addPerkToProfile(account, perk);
