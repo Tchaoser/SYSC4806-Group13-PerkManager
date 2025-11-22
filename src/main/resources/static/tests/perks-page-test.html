@@ -90,6 +90,7 @@
     <table>
         <thead>
         <tr>
+            <th>Save</th>
             <th>Benefit</th>
             <th>Membership Type</th>
             <th>Membership</th>
@@ -113,6 +114,17 @@
         </thead>
         <tbody>
         <tr>
+            <td>
+                <div class="perk-save-forms" data-perk-id="1" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-save-state="0">
+                    <form class="flat-form" action="/perks/1/save" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class = "btn-small save-perk"  type="submit">
+                            ★
+                        </button>
+                    </form>
+                </div>
+            </td>
             <td>10% off flights with Air Miles</td>
             <td>Loyalty Program</td>
             <td>Shoppers Optimum Rewards Member</td>
@@ -122,13 +134,13 @@
             <td>Airline flight ticket</td>
             <td>Canada</td>
             <td>2025-12-31</td>
-            <td>5</td>
+            <td>4</td>
             <td>
-                <div class="vote-forms" data-perk-id="1" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="1">
+                <div class="vote-forms" data-perk-id="1" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="0">
                     <form class="flat-form" action="/perks/1/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
-                        <button class="btn-small upvote  voted" type="submit">▲</button>
+                        <button class="btn-small upvote" type="submit">▲</button>
                     </form>
                     <form class="flat-form" action="/perks/1/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="_csrf" value="test-token"/>
@@ -140,6 +152,17 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <div class="perk-save-forms" data-perk-id="2" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-save-state="0">
+                    <form class="flat-form" action="/perks/2/save" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class = "btn-small save-perk"  type="submit">
+                            ★
+                        </button>
+                    </form>
+                </div>
+            </td>
             <td>15% off selected car rentals for CAA members</td>
             <td>Association</td>
             <td>CAA Membership benefits and roadside assistance</td>
@@ -167,6 +190,17 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <div id = "save_div" class="perk-save-forms" data-perk-id="3" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-save-state="0">
+                    <form class="flat-form" action="/perks/3/save" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button id="save_button" class = "btn-small save-perk"  type="submit">
+                            ★
+                        </button>
+                    </form>
+                </div>
+            </td>
             <td>5% cashback on groceries at Costco</td>
             <td>Wholesale Club</td>
             <td>Costco Executive Membership</td>
@@ -176,24 +210,35 @@
             <td>12-pack of Coca-Cola cans</td>
             <td>Canada</td>
             <td>2025-11-02</td>
-            <td id = "rating">0</td>
+            <td id="rating">0</td>
             <td>
                 <div class="vote-forms" data-perk-id="3" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-vote-state="0">
                     <form class="flat-form" action="/perks/3/upvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
-                        <button  id = "upvote_button" class="btn-small upvote" type="submit">▲</button>
+                        <button id="upvote_button" class="btn-small upvote" type="submit">▲</button>
                     </form>
                     <form class="flat-form" action="/perks/3/downvote" method="post"><input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="_csrf" value="test-token"/>
                         <input type="hidden" name="page" value="0"/>
-                        <button id = "downvote_button" class="btn-small downvote" type="submit">▼</button>
+                        <button id="downvote_button" class="btn-small downvote" type="submit">▼</button>
                     </form>
 
                 </div>
             </td>
         </tr>
         <tr>
+            <td>
+                <div class="perk-save-forms" data-perk-id="4" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-save-state="0">
+                    <form class="flat-form" action="/perks/4/save" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class = "btn-small save-perk"  type="submit">
+                            ★
+                        </button>
+                    </form>
+                </div>
+            </td>
             <td>$10 off dining with Visa</td>
             <td>Credit Card</td>
             <td>Visa Infinite Card Member</td>
@@ -221,6 +266,17 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <div class="perk-save-forms" data-perk-id="5" data-logged-in="true" data-csrf-header="X-CSRF-TOKEN" data-csrf-token="test-token" data-save-state="0">
+                    <form class="flat-form" action="/perks/5/save" method="post"><input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="_csrf" value="test-token"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <button class = "btn-small save-perk"  type="submit">
+                            ★
+                        </button>
+                    </form>
+                </div>
+            </td>
             <td>Room upgrade at partner hotels for Amex</td>
             <td>Credit Card</td>
             <td>Amex Gold Card Benefits</td>
@@ -251,18 +307,18 @@
     </table>
 
     <div class="pager">
-        <span>Total: 11 perks</span>
+        <span>Total: 12 perks</span>
         <br/>
 
         <span>
-
+            
             <span class="current">1</span>
         </span><span>
             <a href="/perks?page=1&amp;size=5&amp;sort=&amp;direction=asc&amp;membershipType=&amp;region=&amp;expiryOnly=false">2</a>
-
+            
         </span><span>
             <a href="/perks?page=2&amp;size=5&amp;sort=&amp;direction=asc&amp;membershipType=&amp;region=&amp;expiryOnly=false">3</a>
-
+            
         </span>
         <a href="/perks?page=1&amp;size=5&amp;sort=&amp;direction=asc&amp;membershipType=&amp;region=&amp;expiryOnly=false">Next</a>
     </div>
@@ -278,9 +334,10 @@
 </div>
 
 <script src="/js/votes.js" type = "module"></script>
+<script src="/js/save-perks-search.js" type = "module"></script>
 <script src="/js/perks-table.js" type = "module"></script>
 <script type = "module">
-    window.ALL_PERKS = "[{\"product\":{\"name\":\"Air Canada Flight\",\"company\":\"Air Canada\",\"description\":\"Airline flight ticket\"},\"voteState\":1,\"rating\":5,\"membership\":{\"organizationName\":\"Shoppers Drug Mart\",\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\"},\"isAuthenticated\":true,\"benefit\":\"10% off flights with Air Miles\",\"csrfParam\":\"_csrf\",\"expiryDate\":1767243599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":1,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"Uber Ride\",\"company\":\"Uber Technologies\",\"description\":\"Rideshare service booking\"},\"voteState\":1,\"rating\":5,\"membership\":{\"organizationName\":\"CAA\",\"type\":\"Association\",\"description\":\"CAA Membership benefits and roadside assistance\"},\"isAuthenticated\":true,\"benefit\":\"15% off selected car rentals for CAA members\",\"csrfParam\":\"_csrf\",\"expiryDate\":1767243599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":2,\"page\":0,\"region\":\"North America\"},{\"product\":{\"name\":\"Coca-Cola 12-pack\",\"company\":\"Coca-Cola\",\"description\":\"12-pack of Coca-Cola cans\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"Costco\",\"type\":\"Wholesale Club\",\"description\":\"Costco Executive Membership\"},\"isAuthenticated\":true,\"benefit\":\"5% cashback on groceries at Costco\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762145999000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":3,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"Uber Ride\",\"company\":\"Uber Technologies\",\"description\":\"Rideshare service booking\"},\"voteState\":0,\"rating\":1,\"membership\":{\"organizationName\":\"Visa\",\"type\":\"Credit Card\",\"description\":\"Visa Infinite Card Member\"},\"isAuthenticated\":true,\"benefit\":\"$10 off dining with Visa\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762318799000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":4,\"page\":0,\"region\":\"Global\"},{\"product\":{\"name\":\"Hilton Hotel Stay\",\"company\":\"Hilton Hotels\",\"description\":\"1-night stay at a Hilton hotel\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"American Express\",\"type\":\"Credit Card\",\"description\":\"Amex Gold Card Benefits\"},\"isAuthenticated\":true,\"benefit\":\"Room upgrade at partner hotels for Amex\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762491599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":5,\"page\":0,\"region\":\"Global\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":4,\"membership\":{\"organizationName\":\"Cineplex\",\"type\":\"Entertainment\",\"description\":\"Scene+ Rewards Program Member\"},\"isAuthenticated\":true,\"benefit\":\"2-for-1 Tuesdays at participating cinemas (Scene+)\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762664399000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":6,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"Air Canada Flight\",\"company\":\"Air Canada\",\"description\":\"Airline flight ticket\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"Air Canada\",\"type\":\"Frequent Flyer\",\"description\":\"Aeroplan Loyalty Member\"},\"isAuthenticated\":true,\"benefit\":\"Earn 200 bonus Aeroplan points on select flights\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762837199000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":7,\"page\":0,\"region\":\"Global\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":1,\"membership\":{\"organizationName\":\"Shoppers Drug Mart\",\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\"},\"isAuthenticated\":true,\"benefit\":\"javascripttest\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":702,\"page\":0,\"region\":\"\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":1,\"membership\":{\"organizationName\":\"Shoppers Drug Mart\",\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\"},\"isAuthenticated\":true,\"benefit\":\"javascripttest2\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762837200040,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":752,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\",\"description\":\"Chocolate wafer bar\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"CAA\",\"type\":\"Association\",\"description\":\"CAA Membership benefits and roadside assistance\"},\"isAuthenticated\":true,\"benefit\":\"test perk\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":802,\"page\":0,\"region\":\"\"},{\"product\":{\"name\":\"iPhone 15\",\"company\":\"Apple\",\"description\":\"Latest Apple smartphone\"},\"voteState\":0,\"rating\":0,\"membership\":{\"organizationName\":\"test org\",\"type\":\"test type\",\"description\":\"test desc\"},\"isAuthenticated\":true,\"benefit\":\"200% off iPhone 15\",\"csrfParam\":\"_csrf\",\"expiryDate\":1764392400950,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":852,\"page\":0,\"region\":\"Global\"}]";
+    window.ALL_PERKS = "[{\"product\":{\"description\":\"Airline flight ticket\",\"name\":\"Air Canada Flight\",\"company\":\"Air Canada\"},\"saveState\":0,\"voteState\":0,\"rating\":4,\"membership\":{\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\",\"organizationName\":\"Shoppers Drug Mart\"},\"isAuthenticated\":true,\"benefit\":\"10% off flights with Air Miles\",\"csrfParam\":\"_csrf\",\"expiryDate\":1767243599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":1,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"description\":\"Rideshare service booking\",\"name\":\"Uber Ride\",\"company\":\"Uber Technologies\"},\"saveState\":0,\"voteState\":1,\"rating\":5,\"membership\":{\"type\":\"Association\",\"description\":\"CAA Membership benefits and roadside assistance\",\"organizationName\":\"CAA\"},\"isAuthenticated\":true,\"benefit\":\"15% off selected car rentals for CAA members\",\"csrfParam\":\"_csrf\",\"expiryDate\":1767243599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":2,\"page\":0,\"region\":\"North America\"},{\"product\":{\"description\":\"12-pack of Coca-Cola cans\",\"name\":\"Coca-Cola 12-pack\",\"company\":\"Coca-Cola\"},\"saveState\":0,\"voteState\":0,\"rating\":0,\"membership\":{\"type\":\"Wholesale Club\",\"description\":\"Costco Executive Membership\",\"organizationName\":\"Costco\"},\"isAuthenticated\":true,\"benefit\":\"5% cashback on groceries at Costco\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762145999000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":3,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"description\":\"Rideshare service booking\",\"name\":\"Uber Ride\",\"company\":\"Uber Technologies\"},\"saveState\":0,\"voteState\":0,\"rating\":1,\"membership\":{\"type\":\"Credit Card\",\"description\":\"Visa Infinite Card Member\",\"organizationName\":\"Visa\"},\"isAuthenticated\":true,\"benefit\":\"$10 off dining with Visa\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762318799000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":4,\"page\":0,\"region\":\"Global\"},{\"product\":{\"description\":\"1-night stay at a Hilton hotel\",\"name\":\"Hilton Hotel Stay\",\"company\":\"Hilton Hotels\"},\"saveState\":0,\"voteState\":0,\"rating\":0,\"membership\":{\"type\":\"Credit Card\",\"description\":\"Amex Gold Card Benefits\",\"organizationName\":\"American Express\"},\"isAuthenticated\":true,\"benefit\":\"Room upgrade at partner hotels for Amex\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762491599000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":5,\"page\":0,\"region\":\"Global\"},{\"product\":{\"description\":\"Chocolate wafer bar\",\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\"},\"saveState\":0,\"voteState\":0,\"rating\":4,\"membership\":{\"type\":\"Entertainment\",\"description\":\"Scene+ Rewards Program Member\",\"organizationName\":\"Cineplex\"},\"isAuthenticated\":true,\"benefit\":\"2-for-1 Tuesdays at participating cinemas (Scene+)\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762664399000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":6,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"description\":\"Airline flight ticket\",\"name\":\"Air Canada Flight\",\"company\":\"Air Canada\"},\"saveState\":0,\"voteState\":0,\"rating\":0,\"membership\":{\"type\":\"Frequent Flyer\",\"description\":\"Aeroplan Loyalty Member\",\"organizationName\":\"Air Canada\"},\"isAuthenticated\":true,\"benefit\":\"Earn 200 bonus Aeroplan points on select flights\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762837199000,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":7,\"page\":0,\"region\":\"Global\"},{\"product\":{\"description\":\"Chocolate wafer bar\",\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\"},\"saveState\":0,\"voteState\":0,\"rating\":1,\"membership\":{\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\",\"organizationName\":\"Shoppers Drug Mart\"},\"isAuthenticated\":true,\"benefit\":\"javascripttest\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":702,\"page\":0,\"region\":\"\"},{\"product\":{\"description\":\"Chocolate wafer bar\",\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\"},\"saveState\":0,\"voteState\":0,\"rating\":1,\"membership\":{\"type\":\"Loyalty Program\",\"description\":\"Shoppers Optimum Rewards Member\",\"organizationName\":\"Shoppers Drug Mart\"},\"isAuthenticated\":true,\"benefit\":\"javascripttest2\",\"csrfParam\":\"_csrf\",\"expiryDate\":1762837200040,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":752,\"page\":0,\"region\":\"Canada\"},{\"product\":{\"description\":\"Chocolate wafer bar\",\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\"},\"saveState\":0,\"voteState\":0,\"rating\":0,\"membership\":{\"type\":\"Association\",\"description\":\"CAA Membership benefits and roadside assistance\",\"organizationName\":\"CAA\"},\"isAuthenticated\":true,\"benefit\":\"test perk\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":802,\"page\":0,\"region\":\"\"},{\"product\":{\"description\":\"Latest Apple smartphone\",\"name\":\"iPhone 15\",\"company\":\"Apple\"},\"saveState\":0,\"voteState\":0,\"rating\":0,\"membership\":{\"type\":\"test type\",\"description\":\"test desc\",\"organizationName\":\"test org\"},\"isAuthenticated\":true,\"benefit\":\"200% off iPhone 15\",\"csrfParam\":\"_csrf\",\"expiryDate\":1764392400950,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":852,\"page\":0,\"region\":\"Global\"},{\"product\":{\"description\":\"Chocolate wafer bar\",\"name\":\"KitKat\",\"company\":\"Nestl\u00E9\"},\"saveState\":0,\"voteState\":0,\"rating\":0,\"membership\":{\"type\":\"Credit Card\",\"description\":\"Amex Gold Card Benefits\",\"organizationName\":\"American Express\"},\"isAuthenticated\":true,\"benefit\":\"Buy One Get One Free Kitkat\",\"csrfParam\":\"_csrf\",\"expiryDate\":null,\"csrfHeader\":\"\",\"csrfToken\":\"\",\"id\":902,\"page\":0,\"region\":\"\"}]";
 </script>
 </body>
 </html>

@@ -38,7 +38,7 @@ function updateTable(html) {
         if (newPager) pagerDiv.innerHTML = newPager.innerHTML;
     }
 
-    if (typeof initVotes === "function") initVotes();
+    if (typeof initPerksSave === "function") initPerksSave();
 
     bindTableLinks();
 }
