@@ -10,7 +10,7 @@ function initVotes() {
         const upBtn = container.querySelector('form[action*="/upvote"] button');
         const downBtn = container.querySelector('form[action*="/downvote"] button');
 
-        const ratingCell = container.closest("tr").querySelector("td:nth-child(10)");
+        const ratingCell = container.closest("tr").querySelector("td:nth-child(11)");
         const displayedRating = parseInt(ratingCell.textContent);
         const baseRating = displayedRating - voteState;
         let currentVote = voteState;
@@ -73,4 +73,6 @@ function initVotes() {
 
 document.addEventListener("DOMContentLoaded", initVotes);
 
-module.exports = initVotes;
+if (typeof module === 'object') {
+    module.exports = initVotes;
+}
