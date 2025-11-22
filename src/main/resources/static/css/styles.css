@@ -282,6 +282,11 @@ form {
     display: flex;
     gap: 6px;
 }
+/* Save buttons */
+.btn-small.save-perk.saved {
+    background-color: #007bff;
+    color: #fff;
+}
 
 /* Voting buttons */
 .btn-small.upvote.voted {
