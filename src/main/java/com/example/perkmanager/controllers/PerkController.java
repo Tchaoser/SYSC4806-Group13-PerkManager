@@ -47,6 +47,7 @@ public class PerkController {
             @RequestParam Optional<String> membershipType,
             @RequestParam Optional<String> region,
             @RequestParam Optional<Boolean> expiryOnly,
+            @RequestParam Optional<Boolean> myMembershipsOnly,
             @RequestParam Optional<String> sort,
             @RequestParam Optional<String> direction,
             @RequestParam Optional<Integer> page,
@@ -60,8 +61,11 @@ public class PerkController {
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"))
                     : null;
 
+            Optional<Set<Membership>> userMemberships = myMembershipsOnly.orElse(false)
+                    ? Optional.of(accountService.findByUsername(userDetails.getUsername()).get().getMemberships())
+                    : Optional.empty();
 
-            List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, Optional.empty());
+            List<Perk> perks = perkService.filterPerks(membershipType, region, expiryOnly, userMemberships);
             perks = perkService.sortPerks(perks, sort, direction);
 
             // Pagination
@@ -98,8 +102,6 @@ public class PerkController {
             model.addAttribute("saveStates", saveStates);
             model.addAttribute("voteStates", voteStates);
             model.addAttribute("isAuthenticated", currentUser != null);
-
-
             model.addAttribute("membershipType", membershipType.orElse(""));
             model.addAttribute("membershipTypes", membershipService.getAllMembershipTypes());
             model.addAttribute("region", region.orElse(""));
@@ -110,6 +112,8 @@ public class PerkController {
             model.addAttribute("size", pageSize);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("totalPerks", total);
+            model.addAttribute("myMembershipsOnly", myMembershipsOnly.orElse(false));
+
 
             ObjectMapper mapper = new ObjectMapper();
 
