@@ -55,7 +55,7 @@ public class PerkControllerTest {
 
         String view = perkController.listPerks(
                 Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), null,
                 model
         );
@@ -66,6 +66,7 @@ public class PerkControllerTest {
         verify(model).addAttribute("size", 5);
         verify(model).addAttribute("totalPages", 1);
         verify(model).addAttribute("totalPerks", perkList.size());
+        verify(model).addAttribute("myMembershipsOnly", false);
     }
 
     @Test
