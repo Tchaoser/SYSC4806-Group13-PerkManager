@@ -52,20 +52,6 @@ public class ProfileController {
         return "profile";
     }
 
-    //adding membership to current user
-    @PostMapping("/memberships/add")
-    public String addMembership(@RequestParam("membershipId") Long membershipId) {
-        Optional<Account> current = getCurrentAccount();
-        //security check
-        if (current.isEmpty()) {
-            return "redirect:/login";
-        }
-        Membership membership = membershipService.findById(membershipId)
-                .orElseThrow(() -> new IllegalArgumentException("Membership not found"));
-        accountService.addMembership(current.get(), membership);
-        return "redirect:/profile";
-    }
-
     //removing a membership from a user
     @PostMapping("/memberships/remove")
     public String removeMembership(@RequestParam("membershipId") Long membershipId) {
@@ -77,21 +63,6 @@ public class ProfileController {
         Membership membership = membershipService.findById(membershipId)
                 .orElseThrow(() -> new IllegalArgumentException("Membership not found"));
         accountService.removeMembership(current.get(), membership);
-        return "redirect:/profile";
-    }
-
-    // Perk endpoints
-    @PostMapping("/perks/add")
-    public String addPerk(@RequestParam("perkId") Long perkId) {
-        Optional<Account> current = getCurrentAccount();
-        if (current.isEmpty()) {
-            return "redirect:/login";
-        }
-
-        Perk perk = perkService.findById(perkId)
-                .orElseThrow(() -> new IllegalArgumentException("Perk not found"));
-
-        accountService.addPerkToProfile(current.get(), perk);
         return "redirect:/profile";
     }
 
