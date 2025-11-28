@@ -8,15 +8,34 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service implementation for Spring Security's UserDetailsService.
+ * Loads user account information from the database for authentication purposes.
+ * Converts Account entities to Spring Security UserDetails objects.
+ *
+ */
 @Service
 public class AccountUserDetailsService implements UserDetailsService {
 
     private final AccountService accountService;
 
+  /**
+   * Constructs an AccountUserDetailsService with the specified AccountService.
+   *
+   * @param accountService the service for account operations
+   */
     public AccountUserDetailsService(AccountService accountService) {
         this.accountService = accountService;
     }
 
+  /**
+   * Loads user details by username for Spring Security authentication.
+   * Retrieves the account from the database and converts it to a UserDetails object.
+   *
+   * @param username the username to load
+   * @return a UserDetails object containing the user's authentication information
+   * @throws UsernameNotFoundException if the user with the given username is not found
+   */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountService.findByUsername(username)
