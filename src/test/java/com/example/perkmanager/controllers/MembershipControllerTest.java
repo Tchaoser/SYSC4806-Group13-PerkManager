@@ -1,6 +1,7 @@
 package com.example.perkmanager.controllers;
 
 import com.example.perkmanager.model.Membership;
+import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,14 @@ public class MembershipControllerTest {
 
     private MembershipController membershipController;
     private MembershipService membershipService;
+    private AccountService accountService;
     private Model model;
 
     @BeforeEach
     void setup() {
         membershipService = mock(MembershipService.class);
-        membershipController = new MembershipController(membershipService);
+        accountService = mock(AccountService.class);
+        membershipController = new MembershipController(membershipService, accountService);
         model = mock(Model.class);
     }
 
@@ -93,7 +96,7 @@ public class MembershipControllerTest {
 
         when(membershipService.getAllMemberships()).thenReturn(List.of(membership));
 
-        String view = membershipController.listMemberships(model);
+        String view = membershipController.listMemberships(null, model);
 
         assertEquals("memberships", view);
 
@@ -107,4 +110,6 @@ public class MembershipControllerTest {
         assertEquals("test type", m.getType());
         assertEquals("test organization", m.getOrganizationName());
     }
+
+
 }
