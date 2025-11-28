@@ -20,9 +20,9 @@
             <strong>Username:</strong> <span th:text="${account.username}">username</span>
         </div>
 
-
+        <!-- Membership Section -->
         <div class="profile-section">
-            <!-- Membership Section -->
+            <!-- Linked Memberships Column -->
             <div class="profile-column">
                 <h2>Linked Memberships</h2>
                 <div th:if="${#lists.isEmpty(memberships)}">
@@ -38,14 +38,27 @@
                         <button class="btn-small" type="submit">Remove</button>
                     </form>
                 </div>
-                <form th:action="@{/memberships}" method="get">
+            </div>
+
+            <!-- Add Membership Column -->
+            <div class="profile-column">
+                <h2>Add Membership</h2>
+                <form th:action="@{/profile/memberships/add}" method="post" class="profile-form">
+                    <select name="membershipId" required>
+                        <option value="" disabled selected>-- Select a membership --</option>
+                        <option th:each="m : ${allMemberships}"
+                                th:value="${m.id}"
+                                th:text="${m.type} + ' - ' + ${m.organizationName}">
+                        </option>
+                    </select>
                     <div class="actions">
-                        <button type="submit" class="btn-primary">Get More Memberships</button>
+                        <button type="submit" class="btn-primary">Add</button>
                     </div>
                 </form>
             </div>
-
-            <!-- Perk Section -->
+        </div>
+        <!-- Perk Section -->
+        <div class="profile-section">
             <div class="profile-column">
                 <h2>Linked Perks</h2>
                 <div th:if="${#lists.isEmpty(perks)}">
@@ -64,9 +77,20 @@
                         <button class="btn-small" type="submit">Remove</button>
                     </form>
                 </div>
-                <form th:action="@{/perks}" method="get">
+            </div>
+
+            <div class="profile-column">
+                <h2>Add Perk</h2>
+                <form th:action="@{/profile/perks/add}" method="post" class="profile-form">
+                    <select name="perkId" required>
+                        <option value="" disabled selected>-- Select a perk --</option>
+                        <option th:each="p : ${allPerks}"
+                                th:value="${p.id}"
+                                th:text="${p.benefit}">
+                        </option>
+                    </select>
                     <div class="actions">
-                        <button type="submit" class="btn-primary">Get More Perks</button>
+                        <button type="submit" class="btn-primary">Add</button>
                     </div>
                 </form>
             </div>

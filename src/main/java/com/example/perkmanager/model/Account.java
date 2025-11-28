@@ -53,9 +53,6 @@ public class Account {
     public void addMembership(Membership membership) { memberships.add(membership); }
     public void removeMembership(Membership membership) { memberships.remove(membership); }
     public void setMemberships(Set<Membership> memberships) { this.memberships = memberships; }
-    public boolean hasMembership(Long id) {
-        return memberships != null && memberships.stream().anyMatch(m -> m.getId().equals(id));
-    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

@@ -86,7 +86,7 @@
                     <form class="flat-form" th:action="@{/perks/{id}/save(id=${perk.id})}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <input type="hidden" name="page" th:value="${page}"/>
-                        <button class = "btn-small save"  th:classappend="${saveStates[perk.id] == 1} ? ' saved' : ''"type="submit">
+                        <button class = "btn-small save-perk"  th:classappend="${saveStates[perk.id] == 1} ? ' saved' : ''"type="submit">
                             ★
                         </button>
                     </form>

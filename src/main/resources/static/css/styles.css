@@ -283,7 +283,7 @@ form {
     gap: 6px;
 }
 /* Save buttons */
-.btn-small.save.saved {
+.btn-small.save-perk.saved {
     background-color: #007bff;
     color: #fff;
 }
