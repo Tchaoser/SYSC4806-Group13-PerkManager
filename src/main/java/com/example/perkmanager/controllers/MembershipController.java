@@ -144,7 +144,7 @@ public class MembershipController {
     /**
      * Used to save memberships to user profile from the memberships page.
      *
-     * @param id The is of the membership to be added.
+     * @param id The id of the membership to be added.
      * @param userDetails The information of the user.
      * @return The html package to redirect the user to.
      */
