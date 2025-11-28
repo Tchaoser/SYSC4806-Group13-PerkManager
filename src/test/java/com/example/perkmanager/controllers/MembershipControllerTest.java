@@ -1,16 +1,20 @@
 package com.example.perkmanager.controllers;
 
+import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
+import com.example.perkmanager.model.Perk;
 import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -112,5 +116,29 @@ public class MembershipControllerTest {
         assertEquals("test description", m.getDescription());
         assertEquals("test type", m.getType());
         assertEquals("test organization", m.getOrganizationName());
+    }
+
+    @Test
+    void toggleSavePerk() {
+        Account account = new Account();
+        when(accountService.findByUsername(anyString())).thenReturn(Optional.of(account));
+
+        Membership membership = new Membership();
+        membership.setId(1L);
+        when(membershipService.findById(1L)).thenReturn(Optional.of(membership));
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("user");
+
+        String view = membershipController.toggleSaveMembership(1L, userDetails);
+
+        assertEquals("redirect:/memberships", view);
+        verify(accountService).addMembership(account, membership);
+
+        account.addMembership(membership);
+
+        view = membershipController.toggleSaveMembership(1L, userDetails);
+        assertEquals("redirect:/memberships", view);
+        verify(accountService).removeMembership(account, membership);
     }
 }
