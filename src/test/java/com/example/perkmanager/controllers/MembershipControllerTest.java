@@ -1,14 +1,20 @@
 package com.example.perkmanager.controllers;
 
+import com.example.perkmanager.model.Account;
 import com.example.perkmanager.model.Membership;
+import com.example.perkmanager.model.Perk;
+import com.example.perkmanager.services.AccountService;
 import com.example.perkmanager.services.MembershipService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,12 +24,14 @@ public class MembershipControllerTest {
 
     private MembershipController membershipController;
     private MembershipService membershipService;
+    private AccountService accountService;
     private Model model;
 
     @BeforeEach
     void setup() {
         membershipService = mock(MembershipService.class);
-        membershipController = new MembershipController(membershipService);
+        accountService = mock(AccountService.class);
+        membershipController = new MembershipController(membershipService,  accountService);
         model = mock(Model.class);
     }
 
@@ -90,10 +98,12 @@ public class MembershipControllerTest {
         membership.setDescription("test description");
         membership.setType("test type");
         membership.setOrganizationName("test organization");
+        List<Membership> memberships = new ArrayList<>();
+        memberships.add(membership);
 
-        when(membershipService.getAllMemberships()).thenReturn(List.of(membership));
+        when(membershipService.getAllMemberships()).thenReturn(memberships);
 
-        String view = membershipController.listMemberships(model);
+        String view = membershipController.listMemberships(null, model);
 
         assertEquals("memberships", view);
 
@@ -106,5 +116,29 @@ public class MembershipControllerTest {
         assertEquals("test description", m.getDescription());
         assertEquals("test type", m.getType());
         assertEquals("test organization", m.getOrganizationName());
+    }
+
+    @Test
+    void toggleSavePerk() {
+        Account account = new Account();
+        when(accountService.findByUsername(anyString())).thenReturn(Optional.of(account));
+
+        Membership membership = new Membership();
+        membership.setId(1L);
+        when(membershipService.findById(1L)).thenReturn(Optional.of(membership));
+
+        UserDetails userDetails = mock(UserDetails.class);
+        when(userDetails.getUsername()).thenReturn("user");
+
+        String view = membershipController.toggleSaveMembership(1L, userDetails);
+
+        assertEquals("redirect:/memberships", view);
+        verify(accountService).addMembership(account, membership);
+
+        account.addMembership(membership);
+
+        view = membershipController.toggleSaveMembership(1L, userDetails);
+        assertEquals("redirect:/memberships", view);
+        verify(accountService).removeMembership(account, membership);
     }
 }
