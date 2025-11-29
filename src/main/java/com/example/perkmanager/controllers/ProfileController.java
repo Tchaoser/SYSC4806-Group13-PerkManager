@@ -12,9 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -36,38 +34,22 @@ public class ProfileController {
         model.addAttribute("isAuthenticated", current.isPresent());
         model.addAttribute("account", current.orElse(null));
 
-        var memberships = current.map(Account::getMemberships).orElseGet(java.util.Collections::emptySet);
-        var availableMemberships = membershipService.getAllMemberships().stream()
-                .filter(m -> memberships.stream().noneMatch(u -> u.getId().equals(m.getId())))
-                .collect(java.util.stream.Collectors.toSet());
+        List<Membership> memberships = new ArrayList<>(
+                current.map(Account::getMemberships)
+                        .orElseGet(java.util.Collections::emptySet)
+        );
 
+        memberships.sort(Comparator.comparing(Membership::getOrganizationName));
         model.addAttribute("memberships", memberships);
-        model.addAttribute("allMemberships", availableMemberships);
 
-        var perks = current.map(Account::getSavedPerks)
-                .orElseGet(java.util.Collections::emptySet);
+        List<Perk> perks = new ArrayList<>(
+                current.map(Account::getSavedPerks)
+                        .orElseGet(java.util.Collections::emptySet)
+        );
 
-        var availablePerks = perkService.getAllPerks().stream()
-                .filter(p -> perks.stream().noneMatch(sp -> sp.getId().equals(p.getId())))
-                .collect(java.util.stream.Collectors.toSet());
-
+        perks.sort(Comparator.comparing(perk -> perk.getMembership().getOrganizationName()));
         model.addAttribute("perks", perks);
-        model.addAttribute("allPerks", availablePerks);
         return "profile";
-    }
-
-    //adding membership to current user
-    @PostMapping("/memberships/add")
-    public String addMembership(@RequestParam("membershipId") Long membershipId) {
-        Optional<Account> current = getCurrentAccount();
-        //security check
-        if (current.isEmpty()) {
-            return "redirect:/login";
-        }
-        Membership membership = membershipService.findById(membershipId)
-                .orElseThrow(() -> new IllegalArgumentException("Membership not found"));
-        accountService.addMembership(current.get(), membership);
-        return "redirect:/profile";
     }
 
     //removing a membership from a user
@@ -81,21 +63,6 @@ public class ProfileController {
         Membership membership = membershipService.findById(membershipId)
                 .orElseThrow(() -> new IllegalArgumentException("Membership not found"));
         accountService.removeMembership(current.get(), membership);
-        return "redirect:/profile";
-    }
-
-    // Perk endpoints
-    @PostMapping("/perks/add")
-    public String addPerk(@RequestParam("perkId") Long perkId) {
-        Optional<Account> current = getCurrentAccount();
-        if (current.isEmpty()) {
-            return "redirect:/login";
-        }
-
-        Perk perk = perkService.findById(perkId)
-                .orElseThrow(() -> new IllegalArgumentException("Perk not found"));
-
-        accountService.addPerkToProfile(current.get(), perk);
         return "redirect:/profile";
     }
 
