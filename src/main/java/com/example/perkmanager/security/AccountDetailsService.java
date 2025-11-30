@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class AccountUserDetailsService implements UserDetailsService {
+public class AccountDetailsService implements UserDetailsService {
 
     private final AccountService accountService;
 
@@ -24,7 +24,7 @@ public class AccountUserDetailsService implements UserDetailsService {
    *
    * @param accountService the service for account operations
    */
-    public AccountUserDetailsService(AccountService accountService) {
+    public AccountDetailsService(AccountService accountService) {
         this.accountService = accountService;
     }
 

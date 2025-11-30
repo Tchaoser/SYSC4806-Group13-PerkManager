@@ -19,6 +19,9 @@ import java.util.Set;
 @Table(name = "perks")
 public class Perk {
 
+  public static final int BENEFIT_MAX_LENGTH = 200;
+  public static final int REGION_MAX_LENGTH = 100;
+
   /**
    * Unique identifier for this perk.
    */

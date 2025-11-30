@@ -14,6 +14,10 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "memberships")
 public class Membership {
 
+  public static final int TYPE_MAX_LENGTH = 100;
+  public static final int ORG_NAME_MAX_LENGTH = 100;
+  public static final int DESCRIPTION_MAX_LENGTH = 500;
+
   /**
    * The unique identifier for the membership.
    */

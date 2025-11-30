@@ -1,6 +1,6 @@
 package com.example.perkmanager.config;
 
-import com.example.perkmanager.security.AccountUserDetailsService;
+import com.example.perkmanager.security.AccountDetailsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,12 +18,12 @@ import static org.mockito.Mockito.when;
 public class SecurityConfigTest {
 
     private SecurityConfig securityConfig;
-    private AccountUserDetailsService userDetailsService;
+    private AccountDetailsService userDetailsService;
 
     @BeforeEach
     public void setUp() {
         securityConfig = new SecurityConfig();
-        userDetailsService = mock(AccountUserDetailsService.class);
+        userDetailsService = mock(AccountDetailsService.class);
 
     }
 
