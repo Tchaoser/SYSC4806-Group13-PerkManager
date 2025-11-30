@@ -48,6 +48,7 @@
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
+<script th:src="@{/js/save-memberships.js}" type = "module"></script>
 <script th:inline="javascript" type = "module">
     window.ALL_MEMBERSHIPS = /*[[${membershipsJson}]]*/ [];
 </script>
