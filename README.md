@@ -153,14 +153,17 @@ perkmanager/
 │  │  │  │  │ 
 │  │  │  │  ├─ js/
 │  │  │  │  │  ├─ perks-table.js            # Handles dynamic perks table updates, sorting, pagination, and preloading
+│  │  │  │  │  ├─ save-memberships.js       # Handles saving and unsaving memberships for logged-in users
 │  │  │  │  │  ├─ save-perks.js             # Manages saving and unsaving perks for logged-in users
 │  │  │  │  │  └─ votes.js                  # Handles perk upvoting and downvoting with live UI updates
 │  │  │  │  │ 
 │  │  │  │  ├─ tests/
 │  │  │  │  │  ├─ footer.test.js            # Verifies footer HTML elements render correctly
+│  │  │  │  │  ├─ membership-page-test.html # Captured static page used by membership save tests
 │  │  │  │  │  ├─ navbar.test.js            # Verifies navbar HTML elements render correctly
 │  │  │  │  │  ├─ profile.test.js           # Verifies profile page HTML and dynamic content
 │  │  │  │  │  ├─ votes.test.js             # Tests perk upvoting/downvoting functionality
+│  │  │  │  │  ├─ save-memberships.test.js  # Tests saving/unsaving memberships with simulated DOM and fetch calls
 │  │  │  │  │  ├─ save-perks.test.js        # Tests saving/unsaving perks with simulated DOM and fetch calls
 │  │  │  │  │  └─ perks-page-test.html      # Captured static page used by perk voting and save tests
 │  │  │  │ 

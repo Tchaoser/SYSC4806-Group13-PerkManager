@@ -117,7 +117,7 @@ public class PerkService {
                     return p.getExpiryDate().after(now); // only include future expiry dates
                 })
                 // User memberships filter
-                .filter(p -> userMemberships.isEmpty() || userMemberships.get().isEmpty() ||
+                .filter(p -> userMemberships.isEmpty() ||
                         (p.getMembership() != null && userMemberships.get().contains(p.getMembership())))
                 .collect(Collectors.toList());
     }
