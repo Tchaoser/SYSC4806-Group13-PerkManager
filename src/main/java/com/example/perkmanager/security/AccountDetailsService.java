@@ -19,7 +19,7 @@ public class AccountDetailsService implements UserDetailsService {
     private final AccountService accountService;
 
     /**
-     * Constructs an AccountUserDetailsService with the specified AccountService.
+     * Constructs an AccountDetailsService with the specified AccountService.
      *
      * @param accountService the service for account operations
      */
