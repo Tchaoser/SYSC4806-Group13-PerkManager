@@ -2,29 +2,93 @@
 [![Java CI with Maven](https://github.com/Tchaoser/SYSC4806-Group13-PerkManager/actions/workflows/maven.yml/badge.svg)](https://github.com/Tchaoser/SYSC4806-Group13-PerkManager/actions/workflows/maven.yml)
 
 **Project Members:**
-* Kyle Foisy 101215573  
-* Peter Grose 101219562  
-* Sapthakeerthi Udayakumar 101289957  
-* Lucas Warburton 101276823  
-* Aziz Hamad 101232108
+
+* Kyle Foisy — 101215573
+* Peter Grose — 101219562
+* Sapthakeerthi Udayakumar — 101289957
+* Lucas Warburton — 101276823
+* Aziz Hamad — 101232108
 
 ---
 
-## Project Overview
+## **Project Overview**
 
-**Perk Manager** allows users to create profiles, which may be tied to memberships (e.g., Air Miles, CAA, Visa). The system allows users to view or add perks. Perks may be discounts or benefits tied to specific memberships and products.
+**PerkManager** is a full-stack web application that helps users track and discover discounts or other perks tied to
+their memberships. A user profile may include any number of memberships (e.g., Air Miles, CAA, Visa), and perks describe
+benefits such as *"“"10% off movies with Visa"”"* or *"Free domestic flight with 10,000 Air Miles"*. Perks may include
+expiry dates, geographic restrictions, and user-submitted descriptions.
 
-**Current Implementation (Partial)**
+The central idea is to make it easy for users to find and organize perks that actually apply to *their* memberships.
+Logged-in users receive personalized perk search results tailored to their profile, while guests can still search
+globally without personalization.
 
-* Users can **register and log in**.
-* Users can **add new perks** and **view existing perks**.
-* Backend services for **accounts, perks, memberships, and products** are in place.
-* Thymeleaf templates exist for **adding perks, listing perks, and basic navigation**.
-* Controllers and views for several features are still under development and will be expanded in future versions.
+### **Completed Implementation**
 
-This version forms the foundation for personalized perk searches, voting, and filtering.
+The final version of **PerkManager** includes the full feature set described in the project proposal:
 
-The text below outlines the current Perk Manager project structure, including backend code, templates, tests, configuration, and CI/CD workflows, with high-level comments for each file.
+#### **User & Profile Features**
+
+* Users can **register, log in, and manage profiles**.
+* Users can **save and remove perks and memberships** from their profile.
+* Guest users (not logged-in) can browse perks, but do not receive personalized results.
+
+#### **Perk Features**
+
+* Users can **create new perks, memberships, and products**.
+* Perks include **expiry date**, **description**, **vote count**, and **membership/product linkage**.
+* Users can **upvote or downvote perks**; the perks page can be sorted by:
+    * Score (Upvotes and Downvotes)
+    * Expiry date
+* Users can **find perks** via the home page's Top-Rated Perks and Soon-to-Expire Perks sections, or by filtering by:
+    * Membership types
+    * User memberships specifically
+    * Region
+    * Expiry
+* Full **CRUD** support for products and memberships required for posting perks.
+
+#### **Front-End Functionality**
+
+* Thymeleaf templates for all pages: perks, products, memberships, profile, login, signup, etc.
+* Dynamic JavaScript for updating tables, handling votes, and saving perk searches.
+
+#### **Back-End Functionality**
+
+* Spring Boot application with full domain model (User, Membership, Product, Perk).
+* Business logic handled through dedicated services.
+* Persistent storage using Spring Data JPA and schema managed with SQL migrations.
+
+---
+
+## **Client-Side Testing (Jest)**
+
+As part of the project’s **client-side testing** subtopic, the application includes a suite of **Jest** tests for DOM
+behavior and JavaScript functionality.
+
+This was integrated into the Node.js toolchain and demonstrated in the group presentation. The Jest tests cover:
+
+* DOM loading using **jsdom**
+* Event simulation (e.g., clicking vote/save buttons)
+* Fetch call mocking (verifying correct POST requests)
+* Verification of elements such as the navbar/footer
+* Logic for filtering, updating, and rendering perk tables
+
+Example tests include verifying that clicking a vote button triggers the correct API call, that UI updates occur in
+response to user actions, and that DOM fragments render as expected.
+
+---
+
+### **Subtopic Summary**
+
+* Jest was chosen because it is modern, widely used, well-documented, and integrates easily with Node.js.
+* It supports **jquery** and **jsdom**, matching our client-side codebase.
+* Jasmine and Mocha were evaluated but not used due to higher setup overhead and weaker integration with our DOM and
+  mock requirements.
+* A GitHub Actions workflow runs Jest as part of the CI pipeline.
+
+This fulfills the "Client-Side Testing" subtopic requirement and demonstrates how front-end tests complement the Java
+integration tests in the backend.
+
+## **Final Project Structure**
 
 ```
 perkmanager/
@@ -37,28 +101,33 @@ perkmanager/
 │  │  │  │  └─ SecurityConfig.java          # Login/authentication setup
 │  │  │  │
 │  │  │  ├─ controllers/
-│  │  │  │  ├─ HomeController.java          # Routes homepage and static pages
-│  │  │  │  ├─ PerkController.java          # Handles creating, listing, and voting on perks
-│  │  │  │  ├─ UserController.java          # Manages user profiles and memberships
-│  │  │  │  └─ MembershipController.java    # Lists available memberships, handles add/remove
+│  │  │  │  ├─ AccountController.java       # Manages user registration, signup, and login
+│  │  │  │  ├─ HomeController.java          # Manages homepage and featured perks sections
+│  │  │  │  ├─ PerkController.java          # Manages creating, listing, and voting on perks
+│  │  │  │  ├─ ProductController.java       # Manages product creation, listing, and form validation
+│  │  │  │  ├─ ProfilController.java        # Manages user profiles and saved perks and memberships 
+│  │  │  │  └─ MembershipController.java    # Manages available memberships, handles add/remove
 │  │  │  │
 │  │  │  ├─ model/
-│  │  │  │  ├─ User.java                    # JPA entity: user (name, email, memberships)
+│  │  │  │  ├─ Account.java                 # JPA entity: account (name, email, memberships)
 │  │  │  │  ├─ Membership.java              # JPA entity: membership (CAA, Visa, etc.)
 │  │  │  │  ├─ Product.java                 # JPA entity: product or service (flight, movie, etc.)
 │  │  │  │  └─ Perk.java                    # JPA entity: perk (description, votes, expiry)
 │  │  │  │
 │  │  │  ├─ repositories/
-│  │  │  │  ├─ UserRepository.java          # Spring Data JPA interface for User CRUD
-│  │  │  │  ├─ MembershipRepository.java    # JPA repo for Membership entity
-│  │  │  │  ├─ ProductRepository.java       # JPA repo for Product entity
-│  │  │  │  └─ PerkRepository.java          # JPA repo for Perk entity + custom queries
+│  │  │  │  ├─ AccountRepository.java       # Manages CRUD operations and username lookup for users
+│  │  │  │  ├─ MembershipRepository.java    # Manages CRUD operations for memberships
+│  │  │  │  ├─ ProductRepository.java       # Manages CRUD operations for products
+│  │  │  │  └─ PerkRepository.java          # Manages CRUD operations for perks and custom queries
+│  │  │  │
+│  │  │  ├─ security/
+│  │  │  │  └─ AccountDetailsService.java   # Loads user account details for Spring Security authentication
 │  │  │  │
 │  │  │  ├─ services/
-│  │  │  │  ├─ UserService.java             # Handles profile logic and membership linking
-│  │  │  │  ├─ PerkService.java             # Core business logic for perks (posting, voting, expiry)
-│  │  │  │  ├─ MembershipService.java       # Manages membership CRUD and validation
-│  │  │  │  └─ ProductService.java          # Manages product CRUD and validation
+│  │  │  │  ├─ AccountService.java          # Manages user accounts, profiles, and membership linking
+│  │  │  │  ├─ PerkService.java             # Manages perks, including creation, voting, and expiry
+│  │  │  │  ├─ MembershipService.java       # Manages memberships and CRUD operations
+│  │  │  │  └─ ProductService.java          # Manages products and CRUD operations
 │  │  │  │
 │  │  │  └─ utils/
 │  │  │     └─ PasswordHashGen.java         # Standalone utility to generate bcrypt hashes for demo accounts
@@ -66,89 +135,113 @@ perkmanager/
 │  │  ├─ resources/
 │  │  │  ├─ db/
 │  │  │  │  ├─ migrations/
-│  │  │  │  │  ├─ V1__create_schema.sql    # SQL migration: creates all tables
-│  │  │  │  │  └─ V2__insert_base_data.sql # SQL migration: inserts base reference data (memberships, products)
+│  │  │  │  │  ├─ V1__create_schema.sql     # SQL migration: creates all tables
+│  │  │  │  │  └─ V2__insert_base_data.sql  # SQL migration: inserts base reference data (memberships, products)
+│  │  │  │  │
 │  │  │  │  ├─ data/
-│  │  │  │  │  └─ demo_data.sql            # Demo/staging data with bcrypt passwords and sample perks
+│  │  │  │  │  └─ demo_data.sql             # Demo/staging data with bcrypt passwords and sample perks
+│  │  │  │  │
 │  │  │  │  └─ maintenance/
-│  │  │  │     ├─ drop_all.sql             # Helper to drop all tables if you want a clean slate
-│  │  │  │     └─ reset_all.sql            # Helper to drop + re-run migrations + load demo data
-│  │  │  ├─ node_modules/                  #Directory Containing Node.js and Jest libraries and dependancies
+│  │  │  │     ├─ drop_all.sql              # Helper to drop all tables if you want a clean slate
+│  │  │  │     └─ reset_all.sql             # Helper to drop + re-run migrations + load demo data
+│  │  │  │ 
+│  │  │  ├─ node_modules/                   # Directory containing generated Node.js and Jest libraries and dependancies
+│  │  │  │
 │  │  │  ├─ static/
 │  │  │  │  ├─ css/
-│  │  │  │  │  └─ styles.css               # File for global styling
-│  │  │  │  └─ js/
-│  │  │  │  │  ├─ perks-table.js           # Updates displayed perks table
-│  │  │  │  │  └─ votes.js                 # Handles perk upvoting/downvoting
-│  │  │  │  └─ tests/
-│  │  │  │  │  ├─ footer.test.js           # Tests footer.html elements
-│  │  │  │  │  ├─ navbar.test.js           # Tests navbar.html elements
-│  │  │  │  │  ├─ profile.test.js          # Tests profile.html elements
-│  │  │  │  │  ├─ votes.test.js            # Tests votes.js functionality
-│  │  │  │  │  └─ perks-page-test.html     # Captured page for votes.test.js
+│  │  │  │  │  └─ styles.css                # File for global styling
+│  │  │  │  │ 
+│  │  │  │  ├─ js/
+│  │  │  │  │  ├─ perks-table.js            # Handles dynamic perks table updates, sorting, pagination, and preloading
+│  │  │  │  │  ├─ save-perks.js             # Manages saving and unsaving perks for logged-in users
+│  │  │  │  │  └─ votes.js                  # Handles perk upvoting and downvoting with live UI updates
+│  │  │  │  │ 
+│  │  │  │  ├─ tests/
+│  │  │  │  │  ├─ footer.test.js            # Verifies footer HTML elements render correctly
+│  │  │  │  │  ├─ navbar.test.js            # Verifies navbar HTML elements render correctly
+│  │  │  │  │  ├─ profile.test.js           # Verifies profile page HTML and dynamic content
+│  │  │  │  │  ├─ votes.test.js             # Tests perk upvoting/downvoting functionality
+│  │  │  │  │  ├─ save-perks.test.js        # Tests saving/unsaving perks with simulated DOM and fetch calls
+│  │  │  │  │  └─ perks-page-test.html      # Captured static page used by perk voting and save tests
+│  │  │  │ 
 │  │  │  ├─ templates/
 │  │  │  │  ├─ fragments/
-│  │  │  │  │  ├─ head.html                # Reusable head component
-│  │  │  │  │  ├─ navbar.html              # Reusable navbar component
-│  │  │  │  │  └─ footer.html              # Reusable footer component
-│  │  │  │  ├─ add-membership.html         # Page for creating new Memberships
-│  │  │  │  ├─ add-perk.html               # Page for creating new Perks
-│  │  │  │  ├─ add-product.html            # Page for creating new Products
-│  │  │  │  ├─ index.html                  # Homepage showing navigation options
-│  │  │  │  ├─ perks.html                  # Displays all perks (sortable by votes or expiry)
-│  │  │  │  ├─ memberships.html            # Displays all memberships
-│  │  │  │  ├─ products.html               # Displays all products
-│  │  │  │  ├─ profiles.html               # Displays the user's profile
-│  │  │  │  ├─ login.html                  # Login page for existing users
-│  │  │  │  └─ signup.html                 # Registration page for new users
+│  │  │  │  │  ├─ head.html                 # Reusable head component
+│  │  │  │  │  ├─ navbar.html               # Reusable navbar component
+│  │  │  │  │  └─ footer.html               # Reusable footer component
+│  │  │  │  │
+│  │  │  │  ├─ add-membership.html          # Page for creating new Memberships
+│  │  │  │  ├─ add-perk.html                # Page for creating new Perks
+│  │  │  │  ├─ add-product.html             # Page for creating new Products
+│  │  │  │  ├─ index.html                   # Homepage showing navigation options
+│  │  │  │  ├─ perks.html                   # Displays all perks (sortable by votes or expiry)
+│  │  │  │  ├─ memberships.html             # Displays all memberships
+│  │  │  │  ├─ products.html                # Displays all products
+│  │  │  │  ├─ profile.html                 # Displays the user's profile
+│  │  │  │  ├─ login.html                   # Login page for existing users
+│  │  │  │  └─ signup.html                  # Registration page for new users
 │  │  │  │
-│  │  │  ├─ application.properties         # Base config (active profile, Thymeleaf settings)
-│  │  │  ├─ application-local.properties   # Local dev settings
-│  │  │  ├─ package.json                   #Config file for Node.js for running Jest
-│  │  │  └─ package-lock.json              #Config file for Node.js for running Jest
+│  │  │  ├─ application.properties          # Base config (active profile, Thymeleaf settings)
+│  │  │  ├─ application-local.properties    # Local dev settings
+│  │  │  ├─ package.json                    # Config file for Node.js for running Jest
+│  │  │  └─ package-lock.json               # Config file for Node.js for running Jest
 │  │
 │  └─ test/java/com/example/perkmanager/
 │     ├─ config/
-│     │  └─ SecurityConfigTest.java       # Tests authentication and access control setup
+│     │  └─ SecurityConfigTest.java         # Verifies authentication and access control setup
 │     │
 │     ├─ controllers/
-│     │  └─ AccountControllerTest.java    # Verifies login, registration, and session routes
-│     │  └─ HomeControllerTest.java       # Verifies home page logic, featured top-rated and expiring perks
-│     │  └─ MembershipControllerTest.java # Verifies membership listing, add form, and creation
-│     │  └─ PerkControllerTest.java       # Verifies listing, adding, voting, and form handling for perks
-│     │  └─ ProductControllerTest.java    # Verifies product listing, add form, and creation
-│     │  └─ ProfileControllerTest.java    # Verifies user profile view, membership add/remove, and guest handling
+│     │  └─ AccountControllerTest.java      # Verifies login, registration, and session routes
+│     │  └─ HomeControllerTest.java         # Verifies home page logic, featured top-rated and expiring perks
+│     │  └─ MembershipControllerTest.java   # Verifies membership listing, add form, and creation
+│     │  └─ PerkControllerTest.java         # Verifies listing, adding, voting, and form handling for perks
+│     │  └─ ProductControllerTest.java      # Verifies product listing, add form, and creation
+│     │  └─ ProfileControllerTest.java      # Verifies user profile view, membership add/remove, and guest handling
 │     │
 │     ├─ model/
-│     │  ├─ AccoutTest.java               # Tests User entity fields, relationships, validation
-│     │  ├─ MembershipTest.java           # Tests Membership entity mapping and constraints
-│     │  ├─ ProductTest.java              # Tests Product entity persistence and associations
-│     │  └─ PerkTest.java                 # Tests Perk entity logic (expiry, voting count)
+│     │  ├─ AccoutTest.java                 # Verifies User entity fields, relationships, validation
+│     │  ├─ MembershipTest.java             # Verifies Membership entity mapping and constraints
+│     │  ├─ ProductTest.java                # Verifies Product entity persistence and associations
+│     │  └─ PerkTest.java                   # Verifies Perk entity logic (expiry, voting count)
 │     │
 │     └─ services/
-│        ├─ AccountServiceTest.java       # Verifies account creation, login, and linking logic
-│        ├─ PerkServiceTest.java          # Tests business logic (votes, expiry filters)
-│        ├─ MembershipServiceTest.java    # Tests membership CRUD and validation
-│        └─ ProductServiceTest.java       # Tests product CRUD and validation
+│        ├─ AccountServiceTest.java         # Verifies account creation, login, and linking logic
+│        ├─ PerkServiceTest.java            # Verifies business logic (votes, expiry filters)
+│        ├─ MembershipServiceTest.java      # Verifies membership CRUD and validation
+│        └─ ProductServiceTest.java         # Verifies product CRUD and validation
 │
-├─ pom.xml              # Maven build file (Spring Boot, JPA, Thymeleaf, etc.)
-├─ .gitignore           # Ignore build output, logs, local env files
-├─ .env                 # Environment variables (DB creds, Azure URL, etc.)
+├─ pom.xml                                  # Maven build file (Spring Boot, JPA, Thymeleaf, etc.)
+├─ .gitignore                               # Ignored files and directories (build output, logs, local env files, etc.)
+├─ .env                                     # Environment variables (DB credentials, Azure URL, etc.)
 │
 ├─ .github/
 │  └─ workflows/
-│     ├─ maven.yml       # CI workflow: builds Java project using Maven on push/PR to main
-│     ├─ jest.yml        # CI workflow: runs Jest unit testing to verify front-end elements
-│     └─ main-perkmanager.yml # CD workflow: builds JAR and deploys PerkManager to Azure Web App
+│     ├─ maven.yml                          # CI workflow: builds Java project using Maven on push/PR to main
+│     ├─ jest.yml                           # CI workflow: runs Jest unit testing to verify front-end elements
+│     └─ main-perkmanager.yml               # CD workflow: builds JAR and deploys PerkManager to Azure Web App
 │
-└─ README.md            # Project overview, setup, usage, and contribution guide
+└─ README.md                                # Project overview, setup, usage, and contribution guide
 ```
+
 ---
+
+## Database Schema
+
+<img width="314" height="519" alt="image" src="https://github.com/user-attachments/assets/69dcc21d-3d38-4618-94fd-76a08066a148" />
+
+## UML Class Diagram
+
+<img width="476" height="885" alt="model" src="https://github.com/user-attachments/assets/f50e3f87-8975-426a-84ee-78bea532eb0f" />
+
+---
+
 # How to run locally:
 
 1. Download and unzip the project.
-2. Follow the steps for connecting to the Avien Database Below in "PerkManager: Developer Database Setup (Windows)".
+2. Follow the steps for connecting to the Shared Aiven Database below in "PerkManager: Developer Database Setup (
+   Windows)".
 3. Execute the following command in a terminal window in the project root directory:
+
 ```
 mvn clean spring-boot:run
 ```
@@ -159,33 +252,27 @@ mvn clean spring-boot:run
 
 ## Prerequisites
 
-* Java 17+
-* Maven
-* IntelliJ IDEA
-* Internet access (for shared Aiven DB)
-* **Docker** (only needed if you want a local DB)
-* Node.js and npm for Jasmine Testing
+* Java 17+, Maven, IntelliJ IDEA
+* Internet access (for shared PostgreSQL)
+* Node.js & npm (for Jasmine testing)
 
 ---
 
-## 1 Shared Aiven Database (first-time)
+## Shared Aiven Database
 
-**Purpose:** shared cloud DB for all devs.
+> Cloud DB shared for all developers. Follow **The Twelve-Factor App** principles: no local DB needed.
 
-### A. Spring Boot / repo
+### 1. Configure Spring Boot
 
-In `src/main/resources/application.properties` include the password line (everything else is already committed):
+In `src/main/resources/application.properties`, set:
 
 ```properties
-spring.datasource.password=${DATABASE_PASSWORD}   # Enter the Aiven password
+spring.datasource.password=${DATABASE_PASSWORD}  # Enter your Aiven password
 ```
 
-> Only the password line may need to be filled in locally. 
-> The deployment should use the environment variable saved on Azure
+> The deployment environment uses the same environment variable (`DATABASE_PASSWORD`) on Azure.
 
----
-
-### B. Verify connection in IntelliJ (shared DB)
+### 2. Verify Connection in IntelliJ
 
 1. Open **Database** tool window → **+ → Data Source → PostgreSQL**
 2. Use these values:
@@ -199,146 +286,52 @@ spring.datasource.password=${DATABASE_PASSWORD}   # Enter the Aiven password
 | Password | `<AIVEN PASSWORD>`                              |
 | SSL Mode | `require`                                       |
 
-3. Click **Test Connection** → OK to save.
+3. Click **Test Connection → OK**.
 
----
-
-### C. Run the app (one-time / when changing schema)
+### 3. Run the App
 
 * Run `PerkmanagerApplication` (IntelliJ or `mvn spring-boot:run`)
-* Hibernate will auto-create/update tables for your JPA entities.
-* After the first run, you can browse the shared DB in IntelliJ anytime without running the app (Aiven DB is always
-  online).
+* Hibernate auto-creates/updates tables.
+* Once run, you can browse the shared DB anytime without restarting the app.
 
 ---
 
-## Optional: Local Docker Database (committed local config)
+## SQL Scripts: Developer Workflow
 
-**Purpose:** isolated testing / offline development.
+> Stop Spring Boot before running scripts.
 
-> `application-local.properties` exists in the repo points at the local DB 
+| Script                     | Purpose                                                 |
+|----------------------------|---------------------------------------------------------|
+| `V1__create_schema.sql`    | Creates all tables from scratch (drops existing tables) |
+| `V2__insert_base_data.sql` | Populates memberships and products                      |
+| `demo_data.sql`            | Adds demo accounts, perks, and relationships            |
 
-### A. Start the local DB (Windows CMD / PowerShell)
+**Demo accounts**:
 
-First, ensure Docker Desktop is running.
+| Username | Password  |
+|----------|-----------|
+| alice    | password1 |
+| bob      | password2 |
+| charlie  | password3 |
+| dana     | password4 |
+| evan     | password5 |
 
-From the directory containing `docker-compose.yml`:
+**Optional Maintenance**:
 
-```cmd
-docker-compose up -d
-```
+* `drop_all.sql` - Drops all tables
+* `reset_all.sql` - Clears data but keeps schema
 
-* Starts Postgres on `localhost:5432`
-* DB: `perkmanager_dev` | User: `devuser` | Password: `devpass` (safe to commit)
+**Day-to-Day Workflow**:
 
-### B. Verify connection in IntelliJ (local DB)
+1. Stop app
+2. Run `reset_all.sql` (if needed)
+3. Run `V2__insert_base_data.sql` + `demo_data.sql`
+4. Start app and log in with demo accounts
 
-1. Open **Database** tool window → **+ → Data Source → PostgreSQL**
-2. Use these values:
-
-| Field    | Value             |
-|----------|-------------------|
-| Host     | `localhost`       |
-| Port     | `5432`            |
-| Database | `perkmanager_dev` |
-| User     | `devuser`         |
-| Password | `devpass`         |
-
-3. Click **Test Connection** → OK to save.
-
-To stop the local DB (optional)
-
-```cmd
-docker-compose down
-```
-
-Data persists in Docker volume and can be restarted with `docker-compose up -d`.
-
----
-
-## How to switch between Shared and Local
-
-You **do not** edit property files to switch. You change the active Spring profile.
-
-### Windows CMD
-
-* Local DB:
-
-  ```cmd
-  set SPRING_PROFILES_ACTIVE=local
-  mvn spring-boot:run
-  ```
-* Back to shared DB:
-
-  ```cmd
-  set SPRING_PROFILES_ACTIVE=
-  mvn spring-boot:run
-  ```
-
----
-
-## SQL Scripts: Developer Guide
-
-**Important:** Stop the Spring Boot application before running any SQL scripts. The shared Aiven database restricts superuser connections while the app is running.
-
-If you’re running the scripts in IntelliJ, you can either highlight the entire file and click the green Run button, or click the Run button first and then select the whole SQL file to execute.
-
-### Workflow
-
-1. **Create or rebuild schema**  
-   Use `V1__create_schema.sql` to create all tables from scratch. This file **drops any existing tables** and sets up the schema with constraints and indexes.
-
-2. **Insert base entities**  
-   Use `V2__insert_base_data.sql` to populate **memberships** and **products**. This is required for the app to function.
-
-3. **Load demo data**  
-   Use `demo_data.sql` to insert **demo accounts, perks, and relationships**. The passwords are bcrypt-hashed and compatible with Spring Security login.
-
-
-   **Demo account usernames and passwords (from `PasswordHashGen`):**
-
-    * `alice` → `password1`
-    * `bob` → `password2`
-    * `charlie` → `password3`
-    * `dana` → `password4`
-    * `evan` → `password5`
-
-### Optional Maintenance
-
-* `drop_all.sql`: Drops all tables entirely. Only needed if you want a complete wipe.
-* `reset_all.sql`: Clears all data but **keeps the schema** and resets ID sequences. Useful for resetting demo data without rebuilding the schema.
-
-> **Example workflow for day-to-day development:**
->
-> 1. Stop the app.
-> 2. Run `reset_all.sql` (or skip if schema is new).
-> 3. Run `V2__insert_base_data.sql` + `demo_data.sql`.
-> 4. Start the app and log in with demo accounts.
-
-This ensures your database is in a consistent state for testing and development.
-
-Further SQL/database development would typically proceed by adding new migration files for schema changes or new data, rather than modifying existing ones, to keep versioning and reproducibility intact.
-
----
-## Database Schema
-<img width="314" height="519" alt="image" src="https://github.com/user-attachments/assets/69dcc21d-3d38-4618-94fd-76a08066a148" />
-
-## UML Class Diagram
-<img width="476" height="885" alt="model" src="https://github.com/user-attachments/assets/f50e3f87-8975-426a-84ee-78bea532eb0f" />
-
-
-## Quick reminders / rationale
-
-
-* **Shared Aiven DB**: easy collaboration, everyone sees the same data. Fill only the Aiven password locally.
-* **Local Docker DB**: safe environment for experiments, start it with `docker-compose up -d`. The local
-  config is committed and uses `devpass`.
-* **Switching**: Use IntelliJ Run Configuration (`SPRING_PROFILES_ACTIVE=local`) to pick local; remove it (
-  `SPRING_PROFILES_ACTIVE=`) to use shared. No edits to property files are required to switch.
-
-  ---
+> For schema changes, always create new migration files instead of modifying existing ones.
 
 ## Installing and Running Jest Client Side Testing:
+
 1. Download and install Node.js and npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 2. Open a terminal (or cmd prompt) and navigate to `src/main/resources/` in your project.
 3. Run: `npm install` to install all required dependencies.
@@ -346,29 +339,32 @@ Further SQL/database development would typically proceed by adding new migration
 
 Any test failures will be displayed in the terminal (or cmd prompt).
 
-**Note:** Some tests can be run directly in intellij. For tests that require jQuery or DOM, set run with parameter: --env=jsdom
+**Note:** Some tests can be run directly in intellij. For tests that require jQuery or DOM, set run with parameter:
+--env=jsdom
 ![alt text](image.png)
 
 ## Creating Client-Side Tests:
 
-- Jest will run any JS files within the given directory if they have <name>.test.js and they have describe() or test() in them.
+- Jest will run any JS files within the given directory if they have <name>.test.js and they have describe() or test()
+  in them.
 
 To create a test suite for a .js file, use:
+
 ```javascript
-describe("test suite description here", function() {
+describe("test suite description here", function () {
     beforeEach(() => {
         //Setup code here
     });
 
     test("Verify contents of footer", () => {
-        expect("some actual value").to//Some condition specified by jest relative to expected value
+        expect("some actual value").to //Some condition specified by jest relative to expected value
 
     });
 });
 ```
 
 ### Example:
+
 ![alt text](image-1.png)
 ![alt text](image-2.png)
 ---
-
