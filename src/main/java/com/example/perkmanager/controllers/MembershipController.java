@@ -31,7 +31,7 @@ public class MembershipController {
      * Constructs a MembershipController with required services.
      *
      * @param membershipService service used for membership CRUD operations
-     * @param accountService service used for user account operations
+     * @param accountService    service used for user account operations
      */
     public MembershipController(MembershipService membershipService, AccountService accountService) {
         this.membershipService = membershipService;
@@ -43,7 +43,7 @@ public class MembershipController {
      * Also prepares JSON metadata for dynamic frontend interactions.
      *
      * @param userDetails the current authenticated user (if any)
-     * @param model Spring model used to pass attributes to the view
+     * @param model       Spring model used to pass attributes to the view
      * @return the memberships view template
      */
     @GetMapping
@@ -122,10 +122,10 @@ public class MembershipController {
      * Handles submission of the new membership creation form.
      * Validates input fields and creates a membership if valid.
      *
-     * @param type the type of membership (e.g., Credit Card, Air Miles)
+     * @param type             the type of membership (e.g., Credit Card, Air Miles)
      * @param organizationName the organization providing the membership
-     * @param description a descriptive name or details for the membership
-     * @param model Spring model used for returning validation errors
+     * @param description      a descriptive name or details for the membership
+     * @param model            Spring model used for returning validation errors
      * @return redirect to memberships list on success, or back to form on validation failure
      */
     @PostMapping("/add")
@@ -140,23 +140,22 @@ public class MembershipController {
         String descTrim = (description != null) ? description.trim() : null;
 
         Map<String, String> fieldErrors = new HashMap<>();
-
         if (typeTrim == null || typeTrim.isEmpty()) {
             fieldErrors.put("type", "Type is required");
-        } else if (typeTrim.length() > 100) {
-            fieldErrors.put("type", "Type must be at most 100 characters");
+        } else if (typeTrim.length() > Membership.TYPE_MAX_LENGTH) {
+            fieldErrors.put("type", "Type must be at most " + Membership.TYPE_MAX_LENGTH + " characters");
         }
 
         if (orgTrim == null || orgTrim.isEmpty()) {
             fieldErrors.put("organizationName", "Organization name is required");
-        } else if (orgTrim.length() > 100) {
-            fieldErrors.put("organizationName", "Organization name must be at most 100 characters");
+        } else if (orgTrim.length() > Membership.ORG_NAME_MAX_LENGTH) {
+            fieldErrors.put("organizationName", "Organization name must be at most " + Membership.ORG_NAME_MAX_LENGTH + " characters");
         }
 
         if (descTrim == null || descTrim.isEmpty()) {
             fieldErrors.put("description", "Description is required");
-        } else if (descTrim.length() > 500) {
-            fieldErrors.put("description", "Description must be at most 500 characters");
+        } else if (descTrim.length() > Membership.DESCRIPTION_MAX_LENGTH) {
+            fieldErrors.put("description", "Description must be at most " + Membership.DESCRIPTION_MAX_LENGTH + " characters");
         }
 
         if (!fieldErrors.isEmpty()) {
@@ -174,7 +173,7 @@ public class MembershipController {
      * Toggles whether a membership is saved to the authenticated user's profile.
      * If the user has the membership, it is removed; otherwise, it is added.
      *
-     * @param id the ID of the membership to toggle
+     * @param id          the ID of the membership to toggle
      * @param userDetails the authenticated user's details
      * @return redirect back to the memberships page
      */
