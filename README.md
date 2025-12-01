@@ -1,6 +1,9 @@
 **Project Status:**
 [![Java CI with Maven](https://github.com/Tchaoser/SYSC4806-Group13-PerkManager/actions/workflows/maven.yml/badge.svg)](https://github.com/Tchaoser/SYSC4806-Group13-PerkManager/actions/workflows/maven.yml)
 
+**Azure Deployment Link:**
+https://perkmanager-bmanbbccczdtcca4.canadacentral-01.azurewebsites.net/
+
 **Project Members:**
 
 * Kyle Foisy — 101215573
